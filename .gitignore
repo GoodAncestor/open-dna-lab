@@ -1,0 +1,78 @@
+# ---------------------------------------------------------------------------
+# Personal genomic data — belongs in colbyt/genomics, never here.
+#
+# This lab sequences human genomes including the operator's own. Everything
+# downstream of a personal sample is excluded by type below. Filenames are not
+# trusted: some human data has been named methylation_*, so directory-level
+# excludes back up the extension rules.
+# ---------------------------------------------------------------------------
+
+# Raw signal and basecalls
+*.pod5
+*.fast5
+*.blow5
+*.slow5
+
+# Reads
+*.fastq
+*.fastq.*
+*.fq
+*.fq.*
+
+# Alignments
+*.bam
+*.bai
+*.cram
+*.crai
+*.sam
+
+# Variants
+*.vcf
+*.vcf.*
+*.gvcf
+*.bcf
+
+# Panels and intervals tied to clinical questions
+*.bed
+*.bed.*
+*.interval_list
+
+# Methylation output — named by extension and by the misleading prefix
+*.bedmethyl
+*.bedMethyl
+methylation_*
+*_methylation.*
+
+# Whole directories that only ever hold sample-derived output
+runs/
+panels/
+vcf/
+basecalls/
+alignments/
+
+# Reference genomes: large, re-fetchable, not source
+ref/
+*.fa
+*.fa.*
+*.fasta
+*.fasta.*
+*.2bit
+
+# ---------------------------------------------------------------------------
+# Build products
+# ---------------------------------------------------------------------------
+publish/
+site/_generated/
+.pdfcache/
+_print.html
+
+# ---------------------------------------------------------------------------
+# Environment
+# ---------------------------------------------------------------------------
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
+handoff/
+*.local

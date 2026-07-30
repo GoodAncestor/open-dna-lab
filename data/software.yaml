@@ -1,0 +1,205 @@
+# Good Ancestor open lab — software register
+#
+# Single source of truth for the software stack. The site's software page
+# generates from this file; do not duplicate the list into markdown.
+#
+# Keep in step with software/environment.yml — anything with `conda:` or `pip:`
+# should appear there, and CI has no way to catch a drift between them.
+#
+#   install: how it arrives. `vendor` means a manual download, everything else
+#            is a command you can run.
+#   role:    what it does in this lab, in one line.
+
+meta:
+  updated: 2026-07-29
+
+groups:
+  - id: ours
+    name: Good Ancestor libraries
+    lead: >
+      Our own stack, split so that the parts which do not care what species you
+      are stay separate from the parts that do. If you work on another organism,
+      bio-core is the layer to build on.
+    items:
+      - id: bio-core
+        name: bio-core
+        link: https://github.com/GoodAncestor/bio-core
+        role: >
+          Organism-agnostic mechanism — modBAM and bedMethyl readers, the
+          context-aware methylation model, coordinate handling, evidence
+          tiering, HTML and PDF report rendering.
+        install: pip install git+https://github.com/GoodAncestor/bio-core
+
+      - id: geneask
+        name: GeneAsk
+        link: https://github.com/GoodAncestor/GeneAsk
+        role: >
+          Human variant interpretation. Clinical screen against a bundled
+          157-gene panel, trait genotypes with multi-source confidence,
+          pharmacogenomics.
+        install: pip install git+https://github.com/GoodAncestor/GeneAsk
+
+      - id: methylask
+        name: MethylAsk
+        link: https://github.com/GoodAncestor/MethylAsk
+        role: >
+          Human methylation interpretation. Public methylation databases,
+          epigenetic clocks, Illumina array normalisation, each finding tagged
+          with an evidence tier.
+        install: pip install git+https://github.com/GoodAncestor/MethylAsk
+
+      - id: dna-report
+        name: DNA-Report
+        link: https://github.com/GoodAncestor/DNA-Report
+        role: >
+          The front door. Detects what a file is, routes it to whichever engines
+          apply, merges the findings into one report. Live at
+          dna.goodancestor.com.
+        install: pip install git+https://github.com/GoodAncestor/DNA-Report
+
+  - id: sequencing
+    name: Sequencing
+    lead: >
+      Everything from the flow cell to a methylation table. MinKNOW is the only
+      piece that needs a manual download and an ONT account.
+    items:
+      - id: minknow
+        name: MinKNOW
+        link: https://nanoporetech.com/software/other/minknow
+        role: Device control, live basecalling, adaptive sampling.
+        install: vendor
+        note: >
+          Free ONT Community account required. Version 24.11.10 or later for
+          the Mk1D.
+
+      - id: dorado
+        name: Dorado
+        link: https://github.com/nanoporetech/dorado
+        role: Basecaller, including modified-base calling for methylation.
+        install: see software/install-dorado.sh
+        note: >
+          HAC runs in real time on modest hardware. SUP is roughly ten times
+          slower and is the mode that matters here, because super-accuracy plus
+          modified-base calling is what the epigenome work needs.
+
+      - id: modkit
+        name: modkit
+        link: https://github.com/nanoporetech/modkit
+        role: >
+          Turns Dorado's MM/ML tags into bedMethyl, pileups, and differentially
+          methylated regions.
+        install: conda install -c bioconda modkit
+
+      - id: pod5
+        name: pod5
+        link: https://github.com/nanoporetech/pod5-file-format
+        role: Inspect, merge, and subset raw signal archives.
+        install: conda install -c bioconda pod5
+
+  - id: analysis
+    name: Alignment and analysis
+    lead: >
+      Standard long-read tooling. All of it installs from bioconda in one go
+      with software/environment.yml.
+    items:
+      - id: minimap2
+        name: minimap2
+        link: https://github.com/lh3/minimap2
+        role: Long-read alignment.
+        install: conda install -c bioconda minimap2
+
+      - id: samtools
+        name: samtools
+        link: https://www.htslib.org/
+        role: BAM handling, faidx, flagstat.
+        install: conda install -c bioconda samtools
+
+      - id: mosdepth
+        name: mosdepth
+        link: https://github.com/brentp/mosdepth
+        role: Per-target coverage against a panel BED.
+        install: conda install -c bioconda mosdepth
+
+      - id: bedtools
+        name: bedtools
+        link: https://bedtools.readthedocs.io/
+        role: BED manipulation for adaptive-sampling panels.
+        install: conda install -c bioconda bedtools
+
+      - id: nanoplot
+        name: NanoPlot
+        link: https://github.com/wdecoster/NanoPlot
+        role: Read length distributions and run QC.
+        install: conda install -c bioconda nanoplot
+
+      - id: clair3
+        name: Clair3
+        link: https://github.com/HKU-BAL/Clair3
+        role: Small variant calling, trained for nanopore data.
+        install: conda install -c bioconda clair3
+
+      - id: sniffles
+        name: Sniffles
+        link: https://github.com/fritzsedlazeck/Sniffles
+        role: Structural variant calling.
+        install: conda install -c bioconda sniffles
+
+      - id: whatshap
+        name: whatshap
+        link: https://whatshap.readthedocs.io/
+        role: >
+          Read-backed phasing. Long reads carry variants and methylation on the
+          same molecule, which is what makes allele-specific methylation
+          measurable.
+        install: conda install -c bioconda whatshap
+
+  - id: instruments
+    name: Instrument control
+    lead: >
+      The design target is that agents run the instruments, so the ranking here
+      is by quality of the programmatic surface rather than by features.
+    items:
+      - id: oc-cal
+        name: open-colorimeter-utils
+        link: https://pypi.org/project/open-colorimeter-utils/
+        role: >
+          Builds calibrations.json from a standard curve, which is what defines
+          the tests in the instrument's own menu. Ships the oc-cal command.
+        install: pip install open-colorimeter-utils
+
+      - id: requests
+        name: requests
+        link: https://requests.readthedocs.io/
+        role: >
+          The OpenFlexure microscope exposes an HTTP/JSON API, so driving it
+          needs nothing more specialised than an HTTP client.
+        install: pip install requests
+
+      - id: circuitpython
+        name: CircuitPython
+        link: https://circuitpython.org/
+        role: >
+          Firmware on the colorimeters themselves. Open source and editable on
+          the device — not something you install on the host.
+        install: on-device
+
+  - id: repo
+    name: Running this repository
+    lead: What the register, the validator, and the site build need.
+    items:
+      - id: pyyaml
+        name: PyYAML
+        link: https://pyyaml.org/
+        role: Reads data/items.yaml for the validator and the site generator.
+        install: conda install pyyaml
+
+      - id: conda
+        name: conda or mamba
+        link: https://mamba.readthedocs.io/
+        role: Creates the environment from software/environment.yml.
+        install: vendor
+
+      - id: make
+        name: Make
+        role: Wraps the common tasks. Run make help.
+        install: preinstalled on macOS and Linux

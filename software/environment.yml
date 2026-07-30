@@ -1,0 +1,30 @@
+name: openlab
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.11
+
+  # sequencing analysis
+  - minimap2        # long-read alignment
+  - samtools        # BAM handling, flagstat, index
+  - mosdepth        # per-target coverage
+  - bedtools        # BED manipulation for adaptive sampling panels
+  - seqkit          # FASTA/FASTQ utilities
+  - nanoplot        # run QC plots, read length distributions
+  - pod5            # raw signal file handling
+  - modkit          # Dorado MM/ML tags -> bedMethyl, pileups, DMR
+  - clair3          # small variants, ONT-aware
+  - sniffles        # structural variants
+  - whatshap        # read-backed phasing, for allele-specific methylation
+
+  # instrument control
+  - pip
+  - pip:
+      - open-colorimeter-utils   # oc-cal, calibration curves
+      - pymmcore-plus            # Micro-Manager from Python
+      - useq-schema              # declarative acquisition, agent-friendly
+      - requests                 # OpenFlexure HTTP API
+
+  # register validation
+  - pyyaml

@@ -1,0 +1,743 @@
+# Good Ancestor open lab — item register
+#
+# Single source of truth. The site, the buy list, and the inventory table all
+# generate from this file. Do not duplicate item data in markdown.
+#
+# There is no status field. An item is either on the buy list or it is owned:
+#
+#   priority:      critical | high | medium | low  — presence puts it on the buy
+#                  list. Absence means it is already on the bench.
+#   contingent_on: an item id. A fallback, bought only if the named item
+#                  fails. Kept off the buy list and off the total.
+#   confidence:    verified (checked against a vendor page, date recorded)
+#                  estimated (my figure, unconfirmed)
+#   revisit:       ruled_out only. Rejected for now, worth reconsidering later.
+#
+# All prices USD.
+
+meta:
+  updated: 2026-07-29
+  currency: USD
+  note: >
+    Prices marked estimated have not been checked against a vendor.
+    Confirm before ordering. Used-equipment prices move fast.
+
+# ---------------------------------------------------------------------------
+# OWNED — IO Rodeo order (single order, about $1,400)
+# ---------------------------------------------------------------------------
+
+instruments:
+  - id: open-colorimeter-plus
+    name: Open Colorimeter Plus
+    vendor: IO Rodeo
+    variant: 0.2 mL tube
+    price: 200
+    confidence: verified
+    source: https://iorodeo.com/products/open-colorimeter-plus
+    function: fluorometer
+    notes: >
+      TSL2591 sensor at 90 deg to the excitation LED, second TSL2591 at 180 deg
+      for excitation normalisation. Removable cover accepts emission filters.
+      Minimum fill 50 uL. Gain and integration time are user-settable on both
+      sensors. Firmware is CircuitPython, open source.
+      Fluorescence section of the vendor Product Guide is marked "in progress" —
+      no suggested filters published as of 2026-07.
+
+  - id: uv-open-colorimeter
+    name: UV Open Colorimeter
+    vendor: IO Rodeo
+    variant: 255 nm
+    price: 262
+    confidence: verified
+    source: https://iorodeo.com/products/uv-open-colorimeter
+    function: uv-absorbance
+    notes: >
+      Vendor has published a DNA quantification tutorial for this instrument
+      with the 255 nm board. Absorbance-based, so no dsDNA selectivity.
+
+  - id: multichannel-colorimeter
+    name: Multichannel Open Colorimeter
+    vendor: IO Rodeo
+    price: 185
+    confidence: verified
+    source: https://iorodeo.com/products/multichannel-colorimeter
+    function: absorbance
+    notes: Uses AS7341 10-channel sensor, 415-680 nm.
+
+  - id: rodeostat-hc
+    name: Rodeostat HC potentiostat
+    vendor: IO Rodeo
+    variant: high current range
+    price: 240
+    confidence: verified
+    source: https://iorodeo.com/pages/rodeostat
+    function: electrochemistry
+    notes: >
+      For electrochemistry experiments — cyclic voltammetry, amperometry,
+      sensor development. No part of the DNA sequencing path uses it.
+
+  - id: openflexure-v7
+    name: OpenFlexure Microscope Kit v7
+    vendor: IO Rodeo
+    price: 200
+    confidence: verified
+    source: https://iorodeo.com/products/openflexure-microscope-kit
+    function: microscopy
+    notes: >
+      Ships motorised — Sangaboard v0.5 (pre-programmed), 28BYJ-48 steppers,
+      Pi Camera v2, illumination kit, all printed parts.
+      With the 40X objective and 50 mm achromat this is the high-resolution
+      build. Effective magnification is f_tube / f_obj = 50/4 = about 12.5x
+      at the objective's full 0.65 NA, not 40x.
+      Exposes an HTTP/JSON API — usable as an agent-controlled instrument today.
+    optics:
+      - id: obj-40x
+        name: 40X Plan objective
+        vendor: IO Rodeo
+        variant: silver
+        price: 45
+        confidence: verified
+        source: iorodeo-order-2026
+        notes: Dry, confirmed from the barrel marking. No immersion oil needed.
+
+      - id: achromat-50
+        name: Achromatic lens for OpenFlexure
+        vendor: IO Rodeo
+        price: 25
+        confidence: verified
+        source: iorodeo-order-2026
+        notes: 12.7 mm dia, 50 mm focal length doublet. Tube lens for the high-res build.
+
+      - id: obj-10x
+        name: 10X objective, RMS 160 mm tube
+        price: 40
+        confidence: estimated
+        optional: true
+        rationale: >
+          Gives about 3.1x effective magnification in the OpenFlexure high-res
+          module, 1.18 x 0.89 mm field, about 1.3 um resolution, roughly 460 tiles
+          to cover a 22 x 22 mm coverslip. The 40x needs about 7,450 tiles for the
+          same area. This is what makes unattended slide scanning finish overnight.
+
+      - id: obj-20x
+        name: 20X objective, RMS 160 mm tube
+        price: 60
+        confidence: estimated
+        optional: true
+
+  - id: pi4
+    name: Raspberry Pi 4 Model B
+    vendor: IO Rodeo
+    price: 100
+    confidence: verified
+    source: iorodeo-order-2026
+    function: compute
+    notes: Host for the OpenFlexure.
+
+  - id: xiao-microscope
+    name: openUC2 x Seeed XIAO Microscope
+    price: 109
+    confidence: verified
+    source: https://www.seeedstudio.com/XIAO-Microscope-p-5971.html
+    notes: >
+      XIAO ESP32S3 with OV2560, motorised focus, Wi-Fi,
+      browser control, autonomous timelapse to SD. Entry point to the openUC2
+      software stack. Not a replacement for the OpenFlexure.
+
+# Emitters — LED boards, catalogued by wavelength. What each one is FOR is the
+# useful column; the price is trivia.
+#
+# Electrically every board fits every instrument — 4-pin JST SH / STEMMA QT. Two
+# things actually constrain a pairing:
+#   sensor range   TSL2591 (Open Colorimeter, Plus) broad visible-IR
+#                  AS7341  (Multichannel) 415-680 nm, 10 channels
+#                  AS7331  (UV Open Colorimeter) 230-430 nm
+#   mounting       radial boards need the radial cuvette holder; surface boards
+#                  use the standard one
+#
+# The radial/surface pairs at 400/405, 470 and 625/630 were bought deliberately:
+# surface fires axially for straight-line absorbance, radial fires sideways for
+# the 90 degree fluorescence path in the Plus.
+#
+# Three of the twelve are in the sequencing path — 255 and 278 for purity, 470
+# radial for fluorometry. The rest serve colorimetry and electrochemistry.
+emitters:
+  vendor: IO Rodeo
+  source: https://iorodeo.com/pages/led-boards
+  confidence: verified
+  items:
+    - id: led-278
+      name: 278 nm emitter
+      wavelength_nm: 278
+      price: 26
+      format: surface
+      goes_in: UV Open Colorimeter
+      for: >
+        Protein absorbance. Tryptophan and tyrosine peak near 280. Paired with
+        the built-in 255 nm channel this gives the approximate 260/280 purity
+        proxy. Neither reaches 230, which is why A260/230 stays unmeasurable
+        on this bench.
+
+    - id: led-365
+      name: 365 nm emitter
+      wavelength_nm: 365
+      price: 21
+      format: radial
+      goes_in: UV Open Colorimeter, or the Plus
+      for: >
+        Fluorescence excitation for AccuBlue Broad Range (350/460), Hoechst
+        33258, DAPI, quinine. Also drives plastic autofluorescence, which
+        argues against it for tube-based assays.
+
+    - id: led-400
+      name: 400 nm emitter
+      wavelength_nm: 400
+      price: 14
+      format: radial
+      goes_in: UV Open Colorimeter, or the Plus
+      for: Violet-excited dyes.
+
+    - id: led-405
+      name: 405 nm emitter
+      wavelength_nm: 405
+      price: 15
+      format: surface
+      goes_in: UV Open Colorimeter, or the standard Open Colorimeter
+      for: >
+        The p-nitrophenol wavelength — readout for alkaline phosphatase and
+        beta-galactosidase. This is the ELISA channel.
+
+    - id: led-470r
+      name: 470 nm emitter
+      wavelength_nm: 470
+      price: 14
+      format: radial
+      goes_in: Open Colorimeter Plus — the fluorometer
+      for: >
+        The DNA fluorometry channel. AccuClear (468 nm), PicoGreen, SYBR, FITC,
+        GFP. This is the board the emission filter is being chosen for, and the
+        radial format is the one to use: IO Rodeo measured about a 16-fold
+        signal gain from a radial LED and a shortened mount, 4,056 against 252
+        RFU on their own DNA assay.
+
+    - id: led-470
+      name: 470 nm emitter
+      wavelength_nm: 470
+      price: 7
+      format: surface
+      goes_in: standard Open Colorimeter, or Multichannel
+      for: Blue absorbance, rather than the fluorescence path.
+
+    - id: led-520
+      name: 520 nm emitter
+      wavelength_nm: 520
+      price: 7
+      format: surface
+      goes_in: standard Open Colorimeter, or Multichannel
+      for: Pink and magenta solutions. Nitrite by Griess sits near 540 nm.
+
+    - id: led-625
+      name: 625 nm emitter
+      wavelength_nm: 625
+      price: 14
+      format: radial
+      goes_in: standard Open Colorimeter
+      for: Turbidity and cell density — the practical stand-in for OD600.
+
+    - id: led-630
+      name: 630 nm emitter
+      wavelength_nm: 630
+      price: 7
+      format: surface
+      goes_in: standard Open Colorimeter, or Multichannel
+      for: OD600 stand-in. 630 nm is a standard plate-reader wavelength.
+
+    - id: led-660
+      name: 660 nm emitter
+      wavelength_nm: 660
+      price: 7
+      format: surface
+      goes_in: standard Open Colorimeter, or Multichannel
+      for: Chlorophyll a peaks at 662 nm. Also methylene blue and modified Lowry.
+
+    - id: led-850
+      name: 850 nm emitter
+      wavelength_nm: 850
+      price: 7
+      format: surface
+      goes_in: standard Open Colorimeter (TSL2591)
+      for: >
+        Near-IR. Few chromophores absorb here so scattering dominates, which
+        measures cell density in pigmented cultures where visible turbidity
+        readings are confounded.
+
+# ---------------------------------------------------------------------------
+# SEQUENCING
+# ---------------------------------------------------------------------------
+
+sequencing:
+  - id: minion-mk1d-pack
+    name: MinION Mk1D Pack
+    vendor: Oxford Nanopore
+    price: 5150
+    confidence: verified
+    source: https://nanoporetech.com/products/sequence/minion
+    notes: >
+      Includes sequencing consumables and five flow cells. Device alone is around $3,200. USB-C only to a host computer;
+      USB-A adapters unsupported. Requires MinKNOW 24.11.10 or later. Network
+      access required at all times for telemetry, which is also what enables
+      flow cell warranty replacement. Licence states the device is not intended
+      for providing sequencing services to third parties.
+
+    # Everything that goes on or into the MinION. Flow cells are the consumable
+    # that governs running cost, and the wash kit is what makes them reusable.
+    consumables:
+      - id: flowcell-r1041
+        name: MinION flow cell R10.4.1
+        vendor: Oxford Nanopore
+        part: FLO-MIN114
+        price: 988
+        unit: each
+        confidence: verified
+        source: https://stockroom.tamu.edu/products/Flow-Cell-R10-4-1-FLO-MIN114-76595-418-p651044536
+        quantity: 5
+        consumable: true
+        reusable_with: wash-kit
+        # Already paid for inside the pack price. Listed for the running cost it
+        # implies, but excluded from totals so the pack is not counted twice.
+        included_in: minion-mk1d-pack
+        notes: >
+          Five included in the Mk1D pack. A consumable, but not single-use —
+          the Flow Cell Wash Kit reloads a half-spent cell for roughly $17 a
+          wash, so cost per run depends on how hard each cell is worked rather
+          than on the $988 sticker. Yield 20-40 Gb over 48 h on a fresh cell.
+          Human genome at 30x needs roughly 3-4 cells merged, or one cell with
+          adaptive sampling for 30-50x on a panel under 1% of the genome.
+          Store at 4 C. Pore-check before loading: warm 20 min, expect about
+          1,200 pores, require at least 800, claim warranty before loading if
+          below.
+
+      - id: wash-kit
+        name: Flow Cell Wash Kit
+        vendor: Oxford Nanopore
+        part: EXP-WSH004
+        price: 111
+        confidence: verified
+        source: https://stockroom.tamu.edu/products/Flow-Cell-Wash-Kit-Oxford-Nanopore-Technologies-6-reactions-76487-116-p577969515
+        kit_item: true
+        notes: >
+          Six washes. This is what turns the flow cell from single-use into
+          reusable — reload a half-spent cell for roughly $17 per wash.
+
+      - id: lsk114
+        name: Ligation Sequencing Kit V14
+        vendor: Oxford Nanopore
+        part: SQK-LSK114
+        price: 610
+        confidence: estimated
+        pack: 6 reactions
+        # Comes with the Mk1D pack, and is also offered as an option on it.
+        # Price kept here for the reorder cost once the bundle is used up.
+        included_in: minion-mk1d-pack
+        notes: >
+          Supplied with the Mk1D pack. Preserves base modifications. No
+          PCR-based kit can be used for epigenome work — amplification erases
+          methylation. The figure is the reorder price once the bundled
+          reactions are used up.
+
+      - id: flongle-adapter
+        name: Flongle adapter
+        vendor: Oxford Nanopore
+        part: FLGIntSP
+        price: 500
+        confidence: estimated
+        kit_item: true
+        rationale: >
+          Unlocks $90 pilot runs. A Flongle reports read N50 directly, which is
+          a better fragment-length assay than a gel and answers extraction
+          quality, library prep, and read length in one $90 experiment.
+
+      - id: flongle-flowcells
+        name: Flongle flow cells
+        vendor: Oxford Nanopore
+        part: FLO-FLG114
+        price: 90
+        unit: each
+        quantity: 6
+        confidence: verified
+        source: https://oxfordnanoporedx.com/products
+        consumable: true
+        kit_item: true
+
+      - id: nebnext-v2
+        name: NEBNext Companion Module v2 for ONT Ligation Sequencing
+        vendor: New England Biolabs
+        part: E7672S
+        price: 1275
+        confidence: estimated
+        pack: 24 reactions
+        kit_item: true
+        notes: >
+          ONT recommends v2 over the older E7180S — better dA-tailing and
+          ligation from FFPEv2 Repair Buffer and Salt-T4 Ligase, lower cost per
+          prep. Pack size is 24 reactions against a need of one or two.
+          Splitting or sourcing a partial pack is worth pursuing.
+
+library_prep:
+  - id: ampure-xp
+    name: AMPure XP beads
+    vendor: Beckman Coulter
+    part: A63880
+    price: 300
+    confidence: estimated
+    pack: 5 mL
+    priority: high
+    notes: >
+      LSK114 runs two bead cleanups — after end-prep and after adapter
+      ligation. Core to library prep, not optional.
+
+extraction:
+  - id: edta-tubes
+    name: EDTA vacutainer tubes, purple top
+    price: 50
+    confidence: estimated
+    priority: medium
+
+  - id: phlebotomy
+    name: Venous draw
+    price: 100
+    confidence: estimated
+    priority: medium
+    notes: >
+      Mobile phlebotomy service or local clinic. Blood gives longer fragments
+      and higher DIN than saliva. Saliva carries a 10-30% bacterial DNA
+      fraction, which is flow cell capacity paid for and unused.
+
+  - id: oragene
+    name: Oragene OG-500 saliva kits
+    vendor: DNA Genotek
+    price: 25
+    unit: each
+    quantity: 4
+    confidence: estimated
+    priority: low
+
+# ---------------------------------------------------------------------------
+# QC
+# ---------------------------------------------------------------------------
+
+qc:
+  - id: qubit3
+    name: Qubit 3 Fluorometer, used
+    vendor: Thermo Fisher
+    price: 1400
+    confidence: verified
+    source: eBay listing observed 2026-07
+    # Fallback only, bought if the Open Colorimeter Plus we already own
+    # cannot do fluorometric quant well enough for library QC.
+    contingent_on: open-colorimeter-plus
+    contingency: >
+      Buy only if the Open Colorimeter Plus fails as a fluorometer. That
+      question is settled by the emission filter and the IO Rodeo filter-slot
+      dimensions, so resolve those first — this is the expensive answer to a
+      question that has a cheap one.
+    rationale: >
+      Functionally identical to the Qubit 4 for dsDNA HS and BR. The 4 adds
+      RNA IQ, which this workflow does not need. Assays are shared between the
+      3 and 4, so consumable supply is safe despite the 3 being discontinued.
+      A published home-sequencing account records skipping fluorometric quant
+      and getting poor pore occupancy with no way to tell whether extraction
+      or library prep had failed.
+    alternatives:
+      - {name: Qubit 4 used, price: 2850, verdict: "skip — premium buys RNA IQ only"}
+      - {name: DeNovix QFX used, price: 3000, verdict: "networked data export, cheaper assays, $1,600 premium"}
+
+  - id: accuclear
+    name: AccuClear Ultra High Sensitivity dsDNA Quantitation Kit
+    vendor: Biotium
+    variant: trial size, 200 assays
+    confidence: estimated
+    priority: high
+    notes: >
+      Ex/Em 468/507 nm, linear 0.03-250 ng, store 2-8 C, 20X buffer concentrate.
+      468 nm excitation matches the owned 470 nm LED board.
+      The 7-standard set ships only in the 1,000-assay kit; trial size includes
+      one 25 ng/uL standard. Make your own dilution series.
+      Range covers both Nanobind eluates and dilute post-AMPure libraries.
+    alternatives:
+      - name: AccuBlue Broad Range
+        spec: 350/460 nm, 2-2000 ng
+        verdict: >
+          110 nm Stokes shift makes filtering far easier and pairs with the
+          365 nm radial board. Rejected on two counts — polypropylene tubes
+          autofluoresce under 365 nm, and a 2 ng floor is too high for
+          library QC.
+      - name: AccuGreen High Sensitivity
+        spec: 502/523 nm, 0.1-100 ng
+        verdict: Buy this instead if a Qubit is acquired. Designed for Qubit optics.
+
+  - id: emission-filter
+    name: Emission filter for Open Colorimeter Plus
+    spec: about 500 nm longpass, paired with the radial 470 nm board
+    price: 30
+    confidence: estimated
+    priority: high
+    notes: >
+      Longpass, not bandpass. IO Rodeo ran this assay and reported comparable
+      results from both, with longpass giving higher RFU and bandpass slightly
+      lower background. Longpass is the cheaper part, so it wins on their own
+      numbers. Use the radial 470 nm board with it — their measured gain from
+      radial excitation and a shortened mount was about 16-fold.
+    lead: >
+      blog.iorodeo.com/open-colorimeter-plus-led-boards/ — the vendor's own DNA
+      assay results. Also github.com/traulab/diynafluor, an open-source DNA
+      fluorometer from AliExpress parts for about $80.
+    options:
+      - {source: "eBay, MidOpt used, seller discount-optics", price: 30, confidence: verified}
+      - {source: "Thorlabs FEL0500 longpass", price: 90, confidence: estimated}
+      - {source: "Edmund #29363, 525 nm CWL 25 mm OD4 50 nm BP", price: 275, confidence: verified, note: "bandpass — the earlier plan, superseded"}
+    technique: >
+      Two stacked OD3 filters give OD6. Cheaper than one mid-tier filter and
+      often sufficient in 90 deg geometry, where the background is scatter
+      rather than the direct beam.
+    open_question: >
+      Filter slot dimensions are unpublished — 12.5 mm versus 25 mm changes the
+      price by half. Worth asking IO Rodeo in the same message whether a 230 nm
+      board exists: the AS7331 in the UV Open Colorimeter already reads down to
+      230 nm, so A260/230 is a missing emitter rather than a missing detector,
+      and a 230 nm board would close the last gap in the QC bench.
+
+  - id: excitation-filter
+    name: Excitation filter, 470/40 bandpass
+    price: 30
+    confidence: estimated
+    contingent_on: emission-filter
+    contingency: >
+      Add only if fluorescence background is high once the emission filter is
+      in. Blue LEDs have a long red tail that leaks through the emission
+      filter, and cleaning up the excitation often buys more than upgrading the
+      emission filter.
+
+# ---------------------------------------------------------------------------
+# BENCH
+# ---------------------------------------------------------------------------
+
+bench:
+  - id: sous-vide
+    name: Sous vide immersion circulator
+    spec: holds 56 C and 65 C in a water bath
+    notes: >
+      ONT's consumables list specifies a thermal cycler at 20 C and 65 C. A
+      published home run used a heat block at 56 C and 65 C, with the 20 C
+      end-prep step at room temperature. Both temperatures are in active use:
+      65 C for LSK114 end-prep and FFPE repair, 56 C for Nanobind lysis.
+      A used thermal cycler at $200-500 covers the same ground and adds PCR.
+
+  - id: vortex
+    name: Vortex mixer
+    price: 100
+    confidence: estimated
+    priority: high
+    notes: For reagents. Never for HMW DNA or enzyme mixes.
+
+  - id: pcr-tubes
+    name: 0.2 mL thin-walled tubes
+    price: 40
+    confidence: estimated
+    priority: high
+    notes: >
+      Not for PCR — no step here amplifies. These are the cuvettes for the Open
+      Colorimeter Plus, which is built around the 0.2 mL tube format. Without
+      them the fluorometer has nothing to read a sample in.
+
+# Owned bench equipment — tools, not consumables. Pipettes are instruments and
+# are listed as such; the tips they take are consumables and are listed below.
+bench_equipment:
+  - id: pipette-100
+    name: ONiLAB adjustable single-channel micropipette, 10-100 uL
+    price: 26.99
+    confidence: verified
+    source: amazon-order-2026-01-26
+    flag: uncalibrated
+    approved: true
+
+  - id: pipette-1000
+    name: ONiLAB adjustable single-channel micropipette, 100-1000 uL
+    price: 27.99
+    confidence: verified
+    source: amazon-order-2026-01-26
+    flag: uncalibrated
+    approved: true
+
+  - id: mini-centrifuge
+    name: ONiLAB Scientific mini centrifuge
+    asin: B08TT24L1V
+    link: https://www.amazon.com/dp/B08TT24L1V
+    price: 79
+    confidence: verified
+    source: amazon-order-2026-01-26
+    spec: 7000 rpm, 2680 x g max, 8 x 0.2/0.5/1.5/2.0 mL rotor + 32 x 0.2 mL PCR strip rotor
+    flag: g-force-limited
+    approved: true
+    note: >
+      2,680 x g. Adequate for quick collection spins. ONT's optional equipment
+      list names an Eppendorf 5424 or equivalent, which reaches 21,130 x g.
+      Silica spin columns generally want 8,000-16,000 x g.
+
+  - id: tube-rack-60
+    name: Polypropylene microcentrifuge tube rack, 60-well, 0.5/1.5 mL
+    price: 5.59
+    confidence: verified
+    source: amazon-order-2026-01-26
+
+  - id: magnetic-rack-visosci
+    name: VISOSCI magnetic separator
+    asin: B0CG4KFWCQ
+    link: https://www.amazon.com/dp/B0CG4KFWCQ
+    note: >
+      Bead separator for AMPure cleanups in LSK114. Supersedes the printed
+      1.5 mL magnetic rack that was previously on the buy list.
+
+  - {id: ice-bucket, name: Ice bucket}
+  - {id: freezer, name: Chest freezer, adjustable setpoint, note: "Manual defrost, which suits reagent storage. Verify with a probe over 24 h. No flammables inside."}
+  - {id: printer-3d, name: 3D printer}
+
+# Owned consumables — things that get used up.
+consumables:
+  - id: nanobind
+    name: PacBio Nanobind HMW DNA kit
+    vendor: PacBio
+    note: >
+      Extraction chemistry for high-molecular-weight DNA. The kit ships in
+      variants matched to the sample type — Blood and Cell Culture, Tissue,
+      Plant Nuclei — and the protocols differ between them, so check which
+      variant you have before starting. Blood and Cell Culture is the one for
+      the human sequencing path here.
+
+  # Amazon order 111-2672589-3182644, placed 2026-01-26, $113.57 total
+  - id: tips-20
+    name: ONiLAB universal pipettor tips, 20 uL, DNase/RNase free, 96/rack
+    price: 11.99
+    confidence: verified
+    source: amazon-order-2026-01-26
+    note: Non-filtered. No pipette currently matched to this volume.
+
+  - id: tips-200
+    name: Kashi Scientific racked pipette tips, 200 uL, non-filtered, 96
+    price: 8.99
+    confidence: verified
+    source: amazon-order-2026-01-26
+    note: Non-filtered. No P200 currently owned.
+
+  - id: water-nf
+    name: CryoKing nuclease-free water, 25 x 1.8 mL individual packs
+    price: 23.99
+    confidence: verified
+    source: amazon-order-2026-01-26
+    note: >
+      Single-use aliquots. Preferable to a bulk bottle — no repeated opening,
+      no contamination accumulation. Satisfies the ONT nuclease-free water
+      requirement; no need to also buy AM9937.
+
+  - id: lobind-protein
+    name: Eppendorf Protein LoBind tubes, 1.5 mL, PCR Clean, 100 pk
+    asin: B005GRGDZS
+    part: 022431081
+    link: https://www.amazon.com/dp/B005GRGDZS
+    price: 37
+    confidence: verified
+    source: amazon-order-2026-01-26
+    flag: wrong-variant
+    approved: true
+    note: >
+      This is Protein LoBind. ONT specifies DNA LoBind (Eppendorf 022431021),
+      a different surface treatment. DNA LoBind minimises DNA adsorption to
+      the tube wall, which is the reason to use them at all when handling
+      15 uL of library.
+
+  - id: ethanol-denatured
+    name: Natural Cosmetic Labs ethyl alcohol 99.5%, denatured 40-B, 32 oz spray
+    asin: B0B3555QMF
+    link: https://www.amazon.com/dp/B0B3555QMF
+    price: 16.95
+    confidence: verified
+    source: amazon-order-2026-01-26
+    flag: not-molecular-grade
+    approved: true
+    note: >
+      SDA formula 40-B is denatured with denatonium benzoate. Denaturants can
+      carry through a bead wash and inhibit downstream enzymes. Spray-bottle
+      packaging is for surface work.
+      Suitable for wiping down the bench. Not suitable for AMPure washes.
+
+  - id: tips-1000
+    name: Rainin HR-1000WS wide-orifice tips, 1000 uL, 5 racks x 100
+    part: HR-1000WS
+    source: ebay-2026-07
+    note: >
+      Universal fit, not LTS — seats on the owned ONiLAB P1000. Wide orifice
+      reduces shear on HMW DNA and eases the viscous Ligation Buffer.
+
+  - id: everclear
+    name: Everclear 190 proof grain alcohol
+    note: >
+      Undenatured, bought from a liquor store. Replaces the molecular-grade
+      ethanol that was on the buy list — 190 proof is 95% ethanol, and AMPure
+      washes are made fresh to 70% in nuclease-free water, so the dilution
+      absorbs the difference. No denaturants to carry through a bead wash,
+      which is what ruled out the owned 40-B spray.
+
+  # Owned, not in the Amazon order
+  - {id: widebore-tips, name: Wide-bore filter tips}
+  - {id: filter-tips, name: Filter tips}
+
+# ---------------------------------------------------------------------------
+# GAPS FOUND IN THE EXISTING BENCH — 2026-07-29 audit
+# ---------------------------------------------------------------------------
+
+gaps:
+  - id: pipette-small
+    name: Small-volume pipettes — P2 or P10, and P20
+    priority: critical
+    rationale: >
+      Owned range starts at 10 uL. LSK114 and any fluorometric assay require
+      1 uL handling, which the 10-100 uL unit cannot do. Accuracy at the
+      bottom of a pipette's range is also its worst, so the 12 uL flow cell
+      load currently sits in the least reliable part of the only pipette
+      that can reach it.
+    spec: P2 (0.1-2 uL), P10 (0.5-10 uL), P20 (2-20 uL)
+    source_advice: >
+      Buy refurbished-and-calibrated from Gilson, Rainin, or Eppendorf, or
+      buy cheap and send for calibration before first use. A P20 delivering
+      18 uL when set to 20 fails silently; the symptom is a flow cell that
+      underperforms with no attributable cause.
+    price: 400
+    confidence: estimated
+
+  - id: scale-pocket
+    name: Digital pocket scale, 0.01 g
+    asin: B07ZQZ962K
+    link: https://www.amazon.com/gp/product/B07ZQZ962K
+    priority: medium
+    price: 18.99
+    confidence: verified
+    source: https://www.amazon.com/gp/product/B07ZQZ962K
+    rationale: >
+      Gravimetric pipette check is free once a scale exists — 1 uL of water
+      weighs 1 mg. Also needed for making buffers and standards. Replaces the
+      analytical balance that was on this list: 0.01 g resolution will not
+      verify sub-10 uL pipettes, but it covers buffer and standard prep for
+      a fraction of the cost.
+
+
+# ---------------------------------------------------------------------------
+# COMPUTE — all owned, all well beyond requirement
+# ---------------------------------------------------------------------------
+
+# Compute and storage. The live fleet — hosts, capacity, and current state —
+# is at https://status.goodancestor.com/ ; this section records only what the
+# sequencing path needs from it.
+compute:
+  - {id: laptop, name: M5 Max laptop, ram_gb: 128}
+  - {id: gpu-fleet, name: RTX 5090 / RTX 6000 fleet, notes: "ONT's recommended spec is a single RTX 5090 laptop GPU for real-time SUP with CpG 5mC/5hmC calling."}
+  - {id: nas, name: NAS, capacity_tb: 500, notes: "About 7 GB of POD5 per gigabase. A 30 Gb run is roughly 210 GB. Capacity permits keeping every raw signal file and re-basecalling as Dorado modification models improve."}
