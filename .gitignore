@@ -76,3 +76,7 @@ venv/
 .DS_Store
 handoff/
 *.local
+
+# Local-only working notes — internal, not for the public repo.
+BRIEF.md
+HANDOFF.md
