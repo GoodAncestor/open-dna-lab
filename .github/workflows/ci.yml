@@ -1,0 +1,55 @@
+name: ci
+
+# No workflow inputs are interpolated into run: steps — every step operates on
+# checked-out repo content only, so there is no injection surface here.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      # The leakage scan runs first. If personal genomic data has reached this
+      # repo, that is the finding — nothing else about the build matters until
+      # it is resolved.
+      - name: Leakage scan
+        run: ./scripts/leakage_scan.sh
+
+      # Catches the dozen banned constructions only. The two rules the house
+      # style rests on cannot be grepped, so a green run here is not a passed
+      # voice check — it is a spellcheck.
+      - name: Doc voice check
+        run: ./scripts/doc_voice_check.sh
+
+      - name: Validate register
+        run: python3 software/validate_register.py
+
+      - name: Generate pages from register
+        run: python3 scripts/gen_pages.py
+
+      - name: Build site
+        run: ./publish.sh build
+
+      # The generated pages are build products and are gitignored. A diff here
+      # means someone committed one, which puts a stale copy of the register in
+      # version control alongside the real one.
+      - name: Confirm no generated pages are tracked
+        run: |
+          if git ls-files --error-unmatch site/_generated >/dev/null 2>&1; then
+            echo "site/_generated is tracked; it is a build product"
+            exit 1
+          fi
+          echo "clean"
