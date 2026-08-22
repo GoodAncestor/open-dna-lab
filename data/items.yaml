@@ -519,6 +519,101 @@ qc:
       emission filter.
 
 # ---------------------------------------------------------------------------
+# COLORIMETRY — reagents for the caffeine and vitamin C bench-qualification
+# assays. See site/colorimetry-protocol.md. None of this touches the DNA path;
+# it exists so the colorimeters get characterised against a known answer before
+# a $988 flow cell depends on one of their readings.
+# ---------------------------------------------------------------------------
+
+colorimetry:
+  - id: caffeine-anhydrous
+    name: Caffeine anhydrous USP powder
+    price: 20
+    confidence: estimated
+    priority: medium
+    notes: >
+      The calibration standard for the 278 nm caffeine assay. Weigh it on a
+      balance, never by volume: a level teaspoon holds several grams, which is
+      in the range that has killed people. Label the stock solution.
+      Compounding-ingredient suppliers sell it. At 1 g per litre of stock,
+      100 g lasts for years.
+
+  - id: caffeine-tablets
+    name: Caffeine tablets, 200 mg
+    price: 8
+    confidence: estimated
+    priority: medium
+    notes: >
+      The reference sample for the recovery check. The excipients are cellulose
+      and magnesium stearate. Neither absorbs in the UV. The label claim is a
+      specification with its own tolerance, not a certified value, so the check
+      is good to a few percent.
+
+  - id: ascorbic-acid
+    name: L-ascorbic acid USP powder
+    price: 18
+    confidence: estimated
+    priority: medium
+    notes: >
+      The vitamin C standard. It degrades in solution within a day even when
+      acidified, so make the stock fresh each session. The powder keeps if you
+      store it dry and dark.
+
+  - id: dcpip
+    name: 2,6-dichlorophenolindophenol sodium salt
+    price: 45
+    confidence: estimated
+    priority: medium
+    notes: >
+      The redox dye for the vitamin C assay. Blue above about pH 6, with a peak
+      near 600 nm. Pink below pH 6, with a peak near 520 nm. Colourless once
+      reduced. VWR, Thermo, Sigma and Lab Alley all list it, and 1 g is far
+      more than this bench will use. The solution weakens daily. Store it in an
+      amber bottle at 4 C.
+
+  - id: stabilising-acid
+    name: Metaphosphoric acid, or oxalic acid
+    price: 25
+    confidence: estimated
+    priority: medium
+    notes: >
+      Holds vitamin C against oxidation during extraction and reading.
+      Metaphosphoric acid at 3% is the AOAC choice and also precipitates
+      protein. Oxalic acid at 0.4% is cheaper and works for juices and tablets.
+      Metaphosphoric acid degrades in solution, so make it fresh. Do not
+      swallow oxalic acid: it is toxic.
+
+  - id: syringe-filters
+    name: Syringe filters, 0.45 um, 25 mm, 100 pk
+    price: 22
+    confidence: estimated
+    priority: medium
+    notes: >
+      Undissolved excipient and coffee grounds scatter light, and the
+      instrument reads scatter as absorbance. Filter every real sample before
+      it goes in a cuvette.
+
+  - id: volumetric-flasks
+    name: Volumetric flasks, 100 mL and 1 L, Class A
+    price: 45
+    confidence: estimated
+    priority: medium
+    notes: >
+      Every concentration on the colorimetry page traces back to one weighing
+      and one flask. A graduated cylinder is not accurate enough to carry a
+      calibration curve.
+
+  - id: ascorbate-oxidase
+    name: Ascorbate oxidase
+    optional: true
+    notes: >
+      Destroys vitamin C in one half of a split sample, so the difference
+      between the halves is vitamin C rather than total reducing capacity. This
+      is the specific way to do it. The protocol starts with the cheap
+      substitutes, copper and air or brief alkali, and this enzyme is what
+      would calibrate them.
+
+# ---------------------------------------------------------------------------
 # BENCH
 # ---------------------------------------------------------------------------
 

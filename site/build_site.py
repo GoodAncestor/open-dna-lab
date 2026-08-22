@@ -125,6 +125,10 @@ li{font-size:.95rem;margin-bottom:.35rem}
 strong{color:var(--foam);font-weight:600}
 em{color:var(--light)}
 code{font-family:var(--mono);font-size:.85em;background:rgba(143,227,208,0.08);padding:.1em .4em;border-radius:3px;color:var(--light)}
+pre{font-family:var(--mono);font-size:.8rem;line-height:1.55;background:rgba(143,227,208,0.05);
+  border:1px solid var(--border);border-left:3px solid var(--sand-dim);border-radius:6px;
+  padding:.95rem 1.15rem;margin:1.3rem 0;overflow-x:auto;color:var(--text);white-space:pre}
+pre code{background:none;padding:0;border-radius:0;font-size:inherit;color:inherit}
 
 /* ---------- cards ---------- */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;margin:1.5rem 0}
@@ -570,6 +574,18 @@ def render_markdown_block(md):
                 block += f"<cite>{inline(cite.lstrip('—').lstrip('-').strip())}</cite>"
             block += "</blockquote>"
             out.append(block); continue
+        # fenced code block. Without this the fence lines fall through to the
+        # paragraph branch and the whole block collapses onto one line.
+        if s.startswith("```"):
+            lang = s[3:].strip()
+            i += 1
+            code = []
+            while i < len(lines) and not lines[i].strip().startswith("```"):
+                code.append(lines[i]); i += 1
+            i += 1                                    # consume closing fence
+            cls = f' class="lang-{lang}"' if lang else ""
+            out.append(f"<pre{cls}><code>{html.escape(chr(10).join(code))}</code></pre>")
+            continue
         # headings
         if s.startswith("### "):
             out.append(f"<h3>{inline(s[4:])}</h3>"); i += 1; continue
@@ -596,7 +612,7 @@ def render_markdown_block(md):
             out.append("<ol>" + "".join(items) + "</ol>"); continue
         # paragraph (gather until blank / block start)
         para = []
-        while i < len(lines) and lines[i].strip() and not re.match(r"^(\||>|#|-\s|\d+\.\s|!>)", lines[i].strip()):
+        while i < len(lines) and lines[i].strip() and not re.match(r"^(\||>|#|-\s|\d+\.\s|!>|```)", lines[i].strip()):
             para.append(lines[i].strip()); i += 1
         out.append(f"<p>{inline(' '.join(para))}</p>")
     return "\n".join(out)
@@ -733,6 +749,10 @@ h2 .hl { color:#1a4f8b; }
 h3 { font-size:11.5pt; font-weight:700; margin:10pt 0 4pt; color:#1a4f8b; break-after:avoid; font-family:Helvetica,Arial,sans-serif; }
 h4 { font-size:10.5pt; font-weight:700; margin:6pt 0 3pt; color:#111; }
 p { margin:4pt 0; font-size:10pt; }
+pre { font-family:'Courier New',monospace; font-size:8.5pt; line-height:1.4; background:#f7f7f5;
+  border:0.5pt solid #ccc; border-left:2pt solid #1a4f8b; padding:6pt 8pt; margin:6pt 0;
+  white-space:pre-wrap; overflow-wrap:anywhere; break-inside:avoid; }
+pre code { background:none; padding:0; font-size:inherit; }
 section p, .container p { font-size:10pt; }
 ul,ol { margin:4pt 0 4pt 16pt; }
 li { font-size:9.5pt; margin-bottom:1.5pt; }
@@ -858,7 +878,8 @@ def render_footer(fm):
 NAV_PAGES = [("index.html", "Overview"), ("inventory.html", "Inventory"),
              ("buy-list.html", "Buy list"), ("software.html", "Software"),
              ("open-questions.html", "Open questions"),
-             ("protocol.html", "Protocol")]
+             ("protocol.html", "Protocol"),
+             ("colorimetry.html", "Colorimetry")]
 
 def render_nav(active):
     links = "".join(

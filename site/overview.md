@@ -64,6 +64,11 @@ and 470 nm excites the dye used to measure concentration. The other nine do cell
 density, chlorophyll, and enzyme assays — the colorimetry and biology side of the
 lab rather than the sequencing side.
 
+We check both instruments against something whose answer is already known before
+we trust them with DNA. [Caffeine and vitamin C](/colorimetry) cost about a
+dollar a run, and both are sold as tablets with a label claim to measure
+against.
+
 
 **Potentiostat**
 

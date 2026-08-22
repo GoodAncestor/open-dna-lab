@@ -41,6 +41,10 @@ SECTIONS = [
     ("bench_equipment", "Bench equipment", ""),
     ("bench", "Bench", ""),
     ("consumables", "Consumables", ""),
+    ("colorimetry", "Colorimetry reagents",
+     "Standards and reagents for the caffeine and vitamin C assays on the "
+     "[colorimetry page](/colorimetry). These sit outside the sequencing path. "
+     "They check the instruments against a known answer first."),
     ("compute", "Compute and storage",
      "Live host state, capacity, and uptime are on the "
      "[fleet dashboard](https://status.goodancestor.com/). Listed here is only "

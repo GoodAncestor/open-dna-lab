@@ -38,6 +38,7 @@ declare -a PAGES=(
   "$GEN/software.md:software.html"
   "$GEN/open-questions.md:open-questions.html"
   "$SITE/sequencing-protocol.md:protocol.html"
+  "$SITE/colorimetry-protocol.md:colorimetry.html"
 )
 
 echo "==> validate register"
