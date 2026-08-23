@@ -358,8 +358,7 @@ and pH 7, and see whether the number moves.
 
 Direct UV has the same problem as caffeine in coffee. Juice contains flavonoids
 and other UV-absorbing compounds, and the reading is their sum. The difference
-blank above is what makes the UV route usable. It works there as it does for
-DCPIP.
+blank above makes the UV route usable. It works there as it does for DCPIP.
 
 ## Calibration files
 sub: One .toml file per test, fitted by oc-cal into the calibrations.json the instrument reads
