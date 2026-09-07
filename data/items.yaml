@@ -16,7 +16,7 @@
 # All prices USD.
 
 meta:
-  updated: 2026-07-29
+  updated: 2026-09-06
   currency: USD
   note: >
     Prices marked estimated have not been checked against a vendor.
@@ -40,8 +40,10 @@ instruments:
       for excitation normalisation. Removable cover accepts emission filters.
       Minimum fill 50 uL. Gain and integration time are user-settable on both
       sensors. Firmware is CircuitPython, open source.
-      Fluorescence section of the vendor Product Guide is marked "in progress" —
-      no suggested filters published as of 2026-07.
+      Assembled and available for testing, confirmed by the owner 2026-09-06.
+      DNA quantification remains unvalidated against a reference instrument.
+      Vendor fluorescence experiments describe filters and mounting geometry.
+      Match those details to the assembled hardware revision before calibration.
 
   - id: uv-open-colorimeter
     name: UV Open Colorimeter
@@ -54,6 +56,9 @@ instruments:
     notes: >
       Vendor has published a DNA quantification tutorial for this instrument
       with the 255 nm board. Absorbance-based, so no dsDNA selectivity.
+      Assembled and available for testing, confirmed by the owner 2026-09-06.
+      Measurements at 255/278 nm are not A260/A280. Reference UV purity
+      measurements provide a comparison. Record unresolved purity if unavailable.
 
   - id: multichannel-colorimeter
     name: Multichannel Open Colorimeter
@@ -62,7 +67,9 @@ instruments:
     confidence: verified
     source: https://iorodeo.com/products/multichannel-colorimeter
     function: absorbance
-    notes: Uses AS7341 10-channel sensor, 415-680 nm.
+    notes: >
+      Uses AS7341 10-channel sensor, 415-680 nm. Assembled and available
+      for testing, confirmed by the owner 2026-09-06. Assay validation pending.
 
   - id: rodeostat-hc
     name: Rodeostat HC potentiostat
@@ -89,7 +96,8 @@ instruments:
       With the 40X objective and 50 mm achromat this is the high-resolution
       build. Effective magnification is f_tube / f_obj = 50/4 = about 12.5x
       at the objective's full 0.65 NA, not 40x.
-      Exposes an HTTP/JSON API — usable as an agent-controlled instrument today.
+      Exposes an HTTP/JSON API. Assembled and available for testing, confirmed
+      by the owner 2026-09-06. Acquisition and scale calibration remain to be recorded.
     optics:
       - id: obj-40x
         name: 40X Plan objective
@@ -159,7 +167,7 @@ instruments:
 # surface fires axially for straight-line absorbance, radial fires sideways for
 # the 90 degree fluorescence path in the Plus.
 #
-# Three of the twelve are in the sequencing path — 255 and 278 for purity, 470
+# Three of the twelve are in the sequencing path — 255 and 278 for UV experiments, 470
 # radial for fluorometry. The rest serve colorimetry and electrochemistry.
 emitters:
   vendor: IO Rodeo
@@ -174,7 +182,7 @@ emitters:
       goes_in: UV Open Colorimeter
       for: >
         Protein absorbance. Tryptophan and tyrosine peak near 280. Paired with
-        the built-in 255 nm channel this gives the approximate 260/280 purity
+        the built-in 255 nm channel this gives an experimental 255/278 nm
         proxy. Neither reaches 230, which is why A260/230 stays unmeasurable
         on this bench.
 
@@ -307,15 +315,11 @@ sequencing:
         # implies, but excluded from totals so the pack is not counted twice.
         included_in: minion-mk1d-pack
         notes: >
-          Five included in the Mk1D pack. A consumable, but not single-use —
-          the Flow Cell Wash Kit reloads a half-spent cell for roughly $17 a
-          wash, so cost per run depends on how hard each cell is worked rather
-          than on the $988 sticker. Yield 20-40 Gb over 48 h on a fresh cell.
-          Human genome at 30x needs roughly 3-4 cells merged, or one cell with
-          adaptive sampling for 30-50x on a panel under 1% of the genome.
-          Store at 4 C. Pore-check before loading: warm 20 min, expect about
-          1,200 pores, require at least 800, claim warranty before loading if
-          below.
+          Five included in the recorded Mk1D pack. Verify stock, storage history,
+          and the flow-cell check before use. Follow current ONT instructions
+          for storage, loading, washing, and replacement conditions. Measure
+          yield and callable coverage. Flow-cell count does not guarantee 30x
+          whole-genome coverage. The first validation uses adaptive sampling off.
 
       - id: wash-kit
         name: Flow Cell Wash Kit
@@ -353,9 +357,9 @@ sequencing:
         confidence: estimated
         kit_item: true
         rationale: >
-          Unlocks $90 pilot runs. A Flongle reports read N50 directly, which is
-          a better fragment-length assay than a gel and answers extraction
-          quality, library prep, and read length in one $90 experiment.
+          Optional pilot for preparation and sequencing performance. Read N50
+          reflects extraction, library selection, and sequencing. Measure input
+          fragment size separately. Verify current expansion and kit requirements.
 
       - id: flongle-flowcells
         name: Flongle flow cells
@@ -437,10 +441,10 @@ qc:
     # cannot do fluorometric quant well enough for library QC.
     contingent_on: open-colorimeter-plus
     contingency: >
-      Buy only if the Open Colorimeter Plus fails as a fluorometer. That
-      question is settled by the emission filter and the IO Rodeo filter-slot
-      dimensions, so resolve those first — this is the expensive answer to a
-      question that has a cheap one.
+      Purchase remains a fallback. Seek reference fluorometry through a loan,
+      shared lab, or measurement service. If access is unavailable, record the
+      pilot limitations. Compare extraction and library concentrations before
+      deciding whether a purchase is needed.
     rationale: >
       Functionally identical to the Qubit 4 for dsDNA HS and BR. The 4 adds
       RNA IQ, which this workflow does not need. Assays are shared between the
@@ -501,11 +505,11 @@ qc:
       often sufficient in 90 deg geometry, where the background is scatter
       rather than the direct beam.
     open_question: >
-      Filter slot dimensions are unpublished — 12.5 mm versus 25 mm changes the
-      price by half. Worth asking IO Rodeo in the same message whether a 230 nm
-      board exists: the AS7331 in the UV Open Colorimeter already reads down to
-      230 nm, so A260/230 is a missing emitter rather than a missing detector,
-      and a 230 nm board would close the last gap in the QC bench.
+      IO Rodeo documents a 6 x 6 mm filter holder in its fluorescence article.
+      Confirm the assembled holder revision, fitted filter, optical background,
+      and assay performance against reference fluorometry. The current UV bench
+      has no validated A260/A230 measurement. A new emitter would also require
+      compatible optics and reference comparison.
 
   - id: excitation-filter
     name: Excitation filter, 470/40 bandpass
@@ -622,18 +626,17 @@ bench:
     name: Sous vide immersion circulator
     spec: holds 56 C and 65 C in a water bath
     notes: >
-      ONT's consumables list specifies a thermal cycler at 20 C and 65 C. A
-      published home run used a heat block at 56 C and 65 C, with the 20 C
-      end-prep step at room temperature. Both temperatures are in active use:
-      65 C for LSK114 end-prep and FFPE repair, 56 C for Nanobind lysis.
-      A used thermal cycler at $200-500 covers the same ground and adds PCR.
+      Match incubation equipment to the selected extraction and library
+      instructions. Confirm actual sample temperatures with a probe before
+      substituting a water bath for specified equipment. Record the method and
+      temperature checks in the readiness checklist.
 
   - id: vortex
     name: Vortex mixer
     price: 100
     confidence: estimated
     priority: high
-    notes: For reagents. Never for HMW DNA or enzyme mixes.
+    notes: Follow the mixing instructions for each reagent and extraction stage.
 
   - id: pcr-tubes
     name: 0.2 mL thin-walled tubes
@@ -675,9 +678,10 @@ bench_equipment:
     flag: g-force-limited
     approved: true
     note: >
-      2,680 x g. Adequate for quick collection spins. ONT's optional equipment
-      list names an Eppendorf 5424 or equivalent, which reaches 21,130 x g.
-      Silica spin columns generally want 8,000-16,000 x g.
+      2,680 x g. Adequate for quick collection spins. The cited PacBio blood
+      procedure includes a 10,000 x g recovery spin. Borrow suitable equipment
+      or review an explicit recovery adaptation. Do not infer equivalent force
+      from an rpm setting. Record recovery and residual DNA on the disk.
 
   - id: tube-rack-60
     name: Polypropylene microcentrifuge tube rack, 60-well, 0.5/1.5 mL
@@ -703,11 +707,10 @@ consumables:
     name: PacBio Nanobind HMW DNA kit
     vendor: PacBio
     note: >
-      Extraction chemistry for high-molecular-weight DNA. The kit ships in
-      variants matched to the sample type — Blood and Cell Culture, Tissue,
-      Plant Nuclei — and the protocols differ between them, so check which
-      variant you have before starting. Blood and Cell Culture is the one for
-      the human sequencing path here.
+      Owned extraction kit. Exact variant and catalog number remain unconfirmed.
+      Record the physical kit identity before selecting a procedure or collecting
+      the sample. PacBio blood document 102-573-500 REV04 lists CBB 102-301-900
+      and PanDNA 103-260-000. Other kits require their own instructions.
 
   # Amazon order 111-2672589-3182644, placed 2026-01-26, $113.57 total
   - id: tips-20
@@ -742,13 +745,13 @@ consumables:
     price: 37
     confidence: verified
     source: amazon-order-2026-01-26
-    flag: wrong-variant
+    flag: stage-specific
     approved: true
     note: >
-      This is Protein LoBind. ONT specifies DNA LoBind (Eppendorf 022431021),
-      a different surface treatment. DNA LoBind minimises DNA adsorption to
-      the tube wall, which is the reason to use them at all when handling
-      15 uL of library.
+      Correct tube for the cited PacBio blood extraction procedure, which lists
+      this exact part number. ONT specifies DNA LoBind for library preparation.
+      Keep the two stages distinct. Review a library-stage tube substitution
+      through measured recovery before generalizing it.
 
   - id: ethanol-denatured
     name: Natural Cosmetic Labs ethyl alcohol 99.5%, denatured 40-B, 32 oz spray

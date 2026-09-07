@@ -1,0 +1,1 @@
+measurement_code,stage,instrument_id,firmware,assay,assay_lot,led_nm,filter_id,tube_type,gain,integration_ms,blank_code,standard_or_check,replicate,dilution_factor,raw_signal,reference_ng_per_ul,estimated_ng_per_ul,measurement_utc,notes
