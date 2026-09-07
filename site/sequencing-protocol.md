@@ -139,7 +139,7 @@ The intended analysis chain is:
 
 Keep the same private sample identity across all files. Preserve the `MM` and `ML` tags through alignment. FASTQ cannot preserve these modification tags. Keep the reference FASTA, checksum, assembly, contig names, and model versions with the analysis.
 
-Use the [analysis handoff](/downloads/nanopore-analysis.md) for the local command and its required inputs. The initial supported scope is autosomal small germline variants plus measured CpG 5mC. Structural variants, copy-number changes, repeat expansions, and X, Y, and mitochondrial variants require separate analysis. Phased methylation also needs separate validation. Array-trained age clocks remain disabled for Nanopore until platform validation supports their use.
+Use the [analysis handoff](/downloads/nanopore-analysis.md) for the local command and its required inputs. The integration accepts one POD5 file or one BAM. Merge all single-sample run chunks using the documented POD5 preparation step before requesting a complete-run analysis. The initial supported scope is autosomal small germline variants plus measured CpG 5mC. Structural variants, copy-number changes, repeat expansions, and X, Y, and mitochondrial variants require separate analysis. Phased methylation also needs separate validation. Array-trained age clocks remain disabled for Nanopore until platform validation supports their use.
 
 ## 8. Review the evidence before publishing a method
 

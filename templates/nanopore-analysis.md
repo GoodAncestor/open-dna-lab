@@ -18,6 +18,26 @@ The same aligned BAM feeds the variant and methylation branches. The workflow ch
 
 BAM must retain `MM` and `ML` modification tags. FASTQ cannot carry those tags. Dorado is required for POD5 and for realignment when the BAM header cannot verify the reference. CpG pileup combines strands while keeping 5mC distinct from other modifications.
 
+## Combine a complete run's POD5 chunks
+
+The integration accepts one POD5 file or one BAM file. A MinKNOW run can contain multiple POD5 chunks. Supplying one chunk analyzes only that chunk.
+
+1. Identify every chunk belonging to this single sample and completed run.
+2. Keep chunks from other samples and barcoded mixtures outside the input directory.
+3. Record the input file list, sizes, checksums, run metadata, and read count.
+4. Check the installed POD5 tool version and merge help.
+5. Merge into a new file outside the input directory.
+
+```bash
+pod5 merge --help
+pod5 merge '/private/source/run-pod5' --recursive \
+  --output '/private/merged/complete-run.pod5'
+```
+
+Keep duplicate-read detection enabled. Investigate overlapping inputs instead of disabling the check. Verify the merged read count and sample/run metadata, record its checksum, and retain the original chunks. Provide the merged file to `dna-report analyze`. The merge requires additional disk space.
+
+The directory and recursive-input behavior are documented in the [official POD5 changelog](https://github.com/nanoporetech/pod5-file-format/blob/master/CHANGELOG.md). The [official merge examples](https://github.com/nanoporetech/pod5-file-format/blob/master/python/pod5/README.md#pod5-merge) describe output selection and duplicate-read checks. Confirm these options against the installed release before use.
+
 ## Configure the local workflow
 
 Set these variables in a private shell configuration. Replace every example path and identifier with the reviewed local value. The workflow does not download references or models.
