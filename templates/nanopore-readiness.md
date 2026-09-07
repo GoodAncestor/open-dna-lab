@@ -2,6 +2,26 @@
 
 Copy this blank form into private storage. Record pass, fail, or pending for each item, with evidence and the reviewer date. Record the reason for any unresolved item and the limited purpose of a pilot that proceeds without it. Resolve kit identity and sample handling before collection.
 
+## Next decisions and their evidence
+
+Use the [first bench session](first-bench-session.md) and [shared run record](openlab-run-record.yaml) to collect the evidence below. Instrument calibration can start while the exact extraction kit and small-volume pipettes remain unknown. All status cells begin pending; this table records no completed measurements.
+
+| Decision | Evidence needed | Status / evidence artifact / next action |
+|---|---|---|
+| Start standards and imaging session | Available assay/standards and their instructions; microscope test slide; recorded optical configuration. Missing standards allow a labelled stability or capture exercise. | pending / / |
+| Choose the extraction procedure | Physical kit name: ___; catalog: ___; lot: ___; matching sample-specific document and revision: ___. | pending / / |
+| Make the required transfers | Small-volume pipettes available: ___; ranges: ___; accuracy/repeatability records at the planned volumes. | pending / / |
+| Use the open fluorometer for DNA mass | Calibration, independent checks, dilution recovery and range/matrix evidence. State reference agreement separately if reference access remains pending. | pending / / |
+| Use a lower-force recovery step | Kit-specific comparison plan; recovered volume and mass, retained material, repeats and limitations. Longer time alone does not establish equivalence. | pending / / |
+| Use the bath/block and printed rack | Measured tube temperature/stability; actual rack/tube separation and recovery observations. Record accepted scope for each adaptation. | pending / / |
+| Prepare the first personal library | Extraction QC, sample tracking, sufficient measured native DNA, applicable kit instructions and an explicit decision about unresolved properties. | pending / / |
+| Run the computational handoff | Reference dataset identity, input/output hashes, pinned tools/models/reference, both branches completed and exclusions reviewed. Report rendering and read-processing accuracy need separate evidence. | pending / / |
+| Commit the sequencing run | Library and flow-cell checks, raw-signal retention, verified private backup, acquisition configuration and a coverage objective. | pending / / |
+
+**Current decision / purpose of any limited pilot:** __________________
+
+**Reviewer / date / next measurement:** ______________________________
+
 ## Before sample collection
 
 - Record the private sample and run codes.

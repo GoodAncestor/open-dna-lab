@@ -135,3 +135,5 @@ The former 20–40 Gb yield, three-to-four-cell 30× estimate, and 30–50× tar
 ## Recording an adaptation
 
 Record the original proposal, practical reason, exact departure, expected benefit, possible failure, and validation measurement. Add the outcome, uncertainty, and next revision after the run. Publish useful failures as well as methods that work, after reviewing the material for personal data.
+
+Use the [first bench session worksheet](/downloads/first-bench-session.md) to plan the comparison and the [shared record](/downloads/openlab-run-record.yaml) to retain its evidence. Choose the acceptance limit before reading the results. Keep an adaptation within its measured range and record the next comparison when a property remains unresolved.

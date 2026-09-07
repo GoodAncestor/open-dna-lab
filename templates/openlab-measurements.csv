@@ -1,0 +1,1 @@
+run_id,measurement_id,sample_id,event_id,protocol_id,protocol_version,instrument_id,configuration_id,operator,timestamp,measurement,value,unit,status,qc_status,criterion_id,standard_id,preparation_id,replicate,read_repeat,matrix,dilution_factor,blank_id,calibration_id,adaptation_id,artifact,checksum,derived_from,notes

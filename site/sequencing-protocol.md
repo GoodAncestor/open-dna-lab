@@ -14,6 +14,8 @@ The colorimeters, fluorometers, and OpenFlexure microscope are assembled and ava
 
 Download the blank [readiness checklist](/downloads/nanopore-readiness.md), [run record](/downloads/nanopore-run-record.yaml), and [instrument comparison table](/downloads/fluorometer-comparison.csv). Complete them in private storage. This public repository contains methods and blank forms only.
 
+Start with the [first bench session worksheet](/downloads/first-bench-session.md) for fluorometer standards, colorimeter checks and OpenFlexure image scale. The [shared record guide](/downloads/openlab-record-guide.md), [session record](/downloads/openlab-run-record.yaml) and [measurement table](/downloads/openlab-measurements.csv) link raw measurements, configurations and adaptations to existing sample or collection-event IDs. Kit identity and pipette availability can remain open while instrument checks begin.
+
 The [adaptation register](/adaptations) preserves the practical alternatives: open fluorometry, UV experiments, Flongle pilots, water baths, printed racks, and handling techniques. Choose and record the adaptations for each run. Manufacturer instructions provide the comparison method.
 
 ## 1. Fix the method before collecting a sample
