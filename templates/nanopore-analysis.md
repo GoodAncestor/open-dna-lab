@@ -54,7 +54,7 @@ export DNAREPORT_ONT_TIMEOUT='86400'
 export DNAREPORT_ONT_SCRATCH_GB='500'
 ```
 
-Provide installed `samtools`, `modkit`, and Clair3's `run_clair3.sh` on the executable search path. Their paths can also be set with `DNAREPORT_ONT_SAMTOOLS`, `DNAREPORT_ONT_MODKIT`, and `DNAREPORT_ONT_CLAIR3`.
+Provide installed `samtools`, `modkit` version 0.6.2 or later, and Clair3's `run_clair3.sh` on the executable search path. Their paths can also be set with `DNAREPORT_ONT_SAMTOOLS`, `DNAREPORT_ONT_MODKIT`, and `DNAREPORT_ONT_CLAIR3`.
 
 For POD5, configure local Dorado canonical and modification models:
 
@@ -89,7 +89,9 @@ An existing small-variant file can be supplied with `--nanopore-vcf /private/sou
 
 A bedMethyl input uses `--reference-build GRCh38`. Add `--combined-strands` only when it was produced with a strand-combining operation such as modkit `--combine-strands`. This methylation-only input does not itself supply small-variant data. Record the coordinate convention, modification type, strand treatment, and site coverage.
 
-For native inputs, the CLI writes `report.json` and `report.md` beside `report.html`. These sidecars preserve structured results and provenance. BAM, VCF, and bedMethyl intermediates in scratch remain temporary. Keep the original source and configuration so they can be regenerated.
+For native inputs, the CLI writes `report.json` and `report.md` beside `report.html`. These sidecars preserve structured results and provenance. BAM, VCF, and bedMethyl intermediates in scratch remain temporary by default. Keep the original source and configuration so they can be regenerated.
+
+To retain analysis artifacts locally, add `--artifacts-dir /private/reports/native-artifacts` to the BAM or POD5 command. The CLI creates a new private directory containing `variants.pass.vcf`, the complete `cpg.bed`, and `provenance.json`. It retains the filtered variant callset and methylation measurements. It does not retain the aligned BAM. Keep source POD5 or BAM and the reference/model configuration separately. Artifact export is disabled on cloud workers.
 
 ## Review the result
 
