@@ -103,7 +103,7 @@ We are building a [Mothbox](https://mothbox.org/) [2](https://blog.iorodeo.com/m
 
 Sequencing your own genome at home is already possible.  What most of those write-ups have in common is that they hand the hard part — checking whether your DNA sample is good enough to sequence in the first place — to a $3,000 commercial instrument. Or they skip the check entirely and hope.
 
-This lab tests affordable open hardware for DNA quality control. We will compare the assembled fluorometers with reference measurements before using them to set library input mass. Input DNA sizing and UV purity measurements remain separate checks. The [adaptation register](/adaptations) preserves lower-cost alternatives and the tests that could validate them. An optional Flongle pilot can test library preparation and sequencing performance.
+This lab tests affordable open hardware for DNA quality control. We will compare the assembled fluorometers with reference measurements before using them to set library input mass. Input DNA sizing and UV purity measurements remain separate checks. The [adaptation register](/adaptations) preserves lower-cost alternatives and the tests that could validate them. An optional short sequencing pilot can test library preparation and sequencing performance.
 
 Even still -- the simple answer for most people is to have their genome sequenced at a professional lab. At a vendor like [Renew Biotechnologies](https://www.renewbt.com/) you can get a high quality genome and epigenome run for a few thousand dollars.  
 

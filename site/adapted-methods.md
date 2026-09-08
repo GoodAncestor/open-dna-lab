@@ -54,17 +54,19 @@ OD3 + OD3 suggests OD6 only under compatible spectral and optical conditions. Sc
 
 The [caffeine and vitamin C exercises](/colorimetry) remain useful instrument tests. Tablet labels are comparison targets, with uncertainty from formulation and preparation. These exercises do not establish a DNA assay's performance.
 
-## Fragment sizing with a Flongle pilot
+## Fragment sizing without a Flongle
 
 **Proposal retained:** Prepare a small sequencing pilot before a full MinION run. Record read N50, yield, mapping, quality, and preparation observations.
 
-**Access reason:** A pilot can exercise several stages without buying a gel or sizing instrument. Its total cost includes preparation reagents and the compatible adapter and expansion.
+**Availability:** The ONT US price list showed no Flongle flow cell and no adapter on 2026-09-07. Ask ONT sales before you plan a Flongle pilot.
 
-**Departure:** Read lengths reflect extraction, library selection, and sequencing. They do not uniquely measure the input DNA size distribution.
+**Substitute:** Load the library on a MinION flow cell and stop the run after one to two hours. Read the length distribution in MinKNOW. Recover the cell with the Flow Cell Wash Kit, EXP-WSH004, and reload it later. Sequence the Lambda control library first. A poor control run indicates the preparation. A good control followed by a poor sample run indicates the extraction.
 
-**Test:** Compare pilot reads with input sizing when access becomes available. Keep read filtering and library selection constant across comparisons. If independent sizing is unavailable, report the observed read distribution and that limitation.
+**Departure:** Read lengths reflect extraction, library selection, and sequencing. They do not measure the input size distribution. A wash does not restore pores that a contaminated library has blocked.
 
-**Current status:** Optional pilot design. Confirm the exact Flongle combination and current instructions before execution. The historical $90 cell estimate is not a complete or current pilot quote.
+**Test:** Compare pilot reads with input sizing when access becomes available. Keep read filtering and library selection constant across comparisons. An agarose gel separates a tight high-molecular-weight band from a low smear, which identifies a sheared extraction.
+
+**Current status:** Pilot design pending an availability answer from ONT. The historical $90 cell estimate is withdrawn.
 
 ## Water bath and dry-block incubations
 

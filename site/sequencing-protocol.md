@@ -2,7 +2,7 @@
 title: Prepare a native genome and methylome run
 sub: From our assembled bench to a private DNA-Report
 status: Preparation protocol; end-to-end bench validation pending
-updated: 2026-09-06
+updated: 2026-09-07
 badge: Preparation
 ---
 
@@ -16,7 +16,7 @@ Download the blank [readiness checklist](/downloads/nanopore-readiness.md), [run
 
 Start with the [first bench session worksheet](/downloads/first-bench-session.md) for fluorometer standards, colorimeter checks and OpenFlexure image scale. The [shared record guide](/downloads/openlab-record-guide.md), [session record](/downloads/openlab-run-record.yaml) and [measurement table](/downloads/openlab-measurements.csv) link raw measurements, configurations and adaptations to existing sample or collection-event IDs. Kit identity and pipette availability can remain open while instrument checks begin.
 
-The [adaptation register](/adaptations) preserves the practical alternatives: open fluorometry, UV experiments, Flongle pilots, water baths, printed racks, and handling techniques. Choose and record the adaptations for each run. Manufacturer instructions provide the comparison method.
+The [adaptation register](/adaptations) preserves the practical alternatives: open fluorometry, UV experiments, sequencing pilots, water baths, printed racks, and handling techniques. Choose and record the adaptations for each run. Manufacturer instructions provide the comparison method.
 
 ## 1. Fix the method before collecting a sample
 
@@ -81,7 +81,9 @@ Do not blank against each standard. That would remove the signal needed for the 
 
 The filter and geometry must match the assembled instrument. IO Rodeo documents a 6 × 6 mm filter holder and several optical configurations. Confirm the hardware revision before selecting a filter. [IO Rodeo fluorescence measurements](https://blog.iorodeo.com/open-colorimeter-plus-led-boards/).
 
-A Flongle pilot is optional. It can test preparation and yield a read-length distribution, but that distribution also reflects library preparation and sequencing selection. Record it separately from input DNA sizing. Confirm the adapter, expansion, kit, and flow-cell protocol before using it.
+A sequencing pilot is optional. Its read-length distribution also reflects library preparation and sequencing selection. Record it separately from input DNA sizing.
+
+**Ask ONT sales whether the Flongle is still available.** The US price list showed no Flongle flow cell and no adapter on 2026-09-07. Without one, load the library on a MinION cell and stop the run after one to two hours. Recover the cell with the Flow Cell Wash Kit. A wash does not restore pores that a contaminated library has blocked. Sequence the Lambda control library first. See the [adaptation register](/adaptations).
 
 ## 4. Collect and extract the sample
 

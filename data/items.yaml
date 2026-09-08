@@ -355,11 +355,16 @@ sequencing:
         part: FLGIntSP
         price: 500
         confidence: estimated
-        kit_item: true
+        optional: true
+        availability: unconfirmed
         rationale: >
-          Optional pilot for preparation and sequencing performance. Read N50
-          reflects extraction, library selection, and sequencing. Measure input
-          fragment size separately. Verify current expansion and kit requirements.
+          Not listed on the ONT US price list as of 2026-09-07, and no
+          end-of-sale notice is published. Confirm with ONT sales before
+          ordering. The substitute is a short MinION run, stopped early and
+          recovered with the Flow Cell Wash Kit.
+        notes: >
+          Availability unconfirmed as of 2026-09-07. See the adaptation
+          register for the substitute pilot.
 
       - id: flongle-flowcells
         name: Flongle flow cells
@@ -370,8 +375,16 @@ sequencing:
         quantity: 6
         confidence: verified
         source: https://oxfordnanoporedx.com/products
+        availability: unconfirmed
         consumable: true
-        kit_item: true
+        optional: true
+        rationale: >
+          Not listed on the ONT US price list as of 2026-09-07. Confirm with ONT
+          sales before planning a pilot. Useful life is about four weeks from
+          receipt, so these cannot be stocked ahead of a run.
+        notes: >
+          Availability unconfirmed as of 2026-09-07. Four-week useful life
+          prevents stocking ahead of a run.
 
       - id: nebnext-v2
         name: NEBNext Companion Module v2 for ONT Ligation Sequencing
