@@ -972,12 +972,13 @@ gaps:
     confidence: estimated
 
   - id: bsa
-    name: Bovine serum albumin, 50 mg/ml
-    vendor: Invitrogen
-    part: AM2616
+    name: Albumin for flow cell priming
+    vendor: New England Biolabs
+    part: B9211S
+    variant: Recombinant Albumin, Molecular Biology Grade, glycerol-free, 20 mg/ml
     priority: high
-    price: 157
-    confidence: verified
+    price: 43
+    confidence: estimated
     storage: Follow the supplier label. Aliquot; avoid repeated freeze-thaw.
     options:
       - {source: "Thermo Fisher direct, thermofisher.com/order/catalog/product/AM2616", price: 157, confidence: verified, note: "$156.65; list $170. 1 x 50 mg at 50 mg/mL. The exact part ONT names."}
@@ -989,42 +990,47 @@ gaps:
       it against the cost of a compromised $988 flow cell, but it is legitimate
       to run the first cell without BSA and see, since ONT frames it as
       recommended rather than required.
-    neb_alternative_rejected: >
-      RULED OUT 2026-09-08 on the glycerol, after reading the NEB product
-      specifications. Do not buy albumin from NEB for this application.
+    neb_option_preferred: >
+      REVISED 2026-09-08 (Colby). The earlier entry ruled NEB out on glycerol.
+      That reasoning does not survive contact with the catalogue: NEB sells a
+      GLYCEROL-FREE version, B9211S, and the objection simply does not apply
+      to it. Ordering albumin on the NEB line is cheaper and lands in one
+      cold-chain shipment instead of two.
 
-      NEB's BSA, Molecular Biology Grade (B9000S) is 20 mg/ml in 20 mM
-      Tris-HCl, 100 mM KCl, 0.1 mM EDTA and 50 PERCENT GLYCEROL, stored at
-      -20 C, 36-month shelf life (spec sheet PS-B9000S v1.0). The priming mix
-      needs 240 ug of BSA in about 1,200 uL. From AM2616 at 50 mg/ml that is
-      ~5 uL carrying no glycerol. From B9000S at 20 mg/ml it is ~12 uL, half
-      of which is glycerol — roughly 0.5 percent glycerol in the mix that gets
-      flushed directly across the nanopore array. That is an unvalidated change
-      to the buffer contacting the membrane, on a $988 consumable, to save
-      about $150. The concentration difference is arithmetic and harmless; the
-      glycerol is the reason.
+      NEB's current albumin line, verified 2026-09-08:
+        B9000S  BSA, Molecular Biology Grade, 20 mg/ml, 50 percent glycerol.
+                DISCONTINUED 15 Dec 2022. Not orderable.
+        B9200S  Recombinant Albumin, Molecular Biology Grade. 20 mg/ml,
+                36-month shelf life, -20 C, contains glycerol. 12 mg, ~$43.
+        B9211S  The same, GLYCEROL-FREE. This is the one to order.
+      Both B9200S and B9211S are recombinant HUMAN serum albumin expressed in
+      yeast, not bovine.
 
-      NEB's other albumins are further away, not closer. Recombinant Albumin,
-      Molecular Biology Grade (B9200S, and glycerol-free B9211S) is recombinant
-      HUMAN serum albumin expressed in yeast — not bovine serum albumin at all.
-      It is a reasonable BSA substitute in restriction digests, which is what
-      NEB sells it for. It is not what ONT specified and has no published data
-      for flow cell priming.
+      Volume changes with the concentration, nothing else: the priming mix needs
+      240 ug of albumin, which is ~5 uL of AM2616 at 50 mg/ml or ~12 uL of the
+      NEB product at 20 mg/ml. 12 mg at 20 mg/ml is 0.6 mL, about 50 flow cells.
 
-      Buy AM2616. If a substitution is ever wanted, it needs a measured
-      comparison on pore occupancy, not a catalogue argument.
-    source: https://nanoporetech.com/document/genomic-dna-by-ligation-sqk-lsk114
-    rationale: >
-      Named in the LSK114 third-party consumables list and missing from this
-      register until 2026-09-07. Goes into the flow cell PRIMING mix, not the
-      library: 5 uL of the 50 mg/ml stock into 1,170 uL Flow Cell Flush plus
-      30 uL Flow Cell Tether, for a final 0.2 mg/ml. ONT frames it as
-      recommended rather than mandatory, "for optimal sequencing performance
-      and improved output" — it passivates the flow cell surface so library
-      is not lost to it. Cheap insurance on a $988 consumable, so treat it as
-      required here. ONT names Invitrogen UltraPure AM2616 specifically.
-      Not interchangeable with nuclease-free water, which is already owned and
-      is the diluent, not the additive.
+      Why this is a reasonable bet rather than a gamble: NEB converted every
+      BSA-containing NEBuffer to rAlbumin (r1.1, r2.1, r3.1, rCutSmart) and
+      states it "rigorously tested both and has not seen a difference in enzyme
+      performance," at the same price. rAlbumin is already arriving on this
+      bench inside the NEBNext v2 module. The function wanted here — coating
+      surfaces so material does not adsorb to them — is the same function NEB
+      sells it for.
+    residual_uncertainty: >
+      ONT names AM2616, non-acetylated BSA at 50 mg/ml. NEB's equivalence data
+      covers restriction digests, not nanopore flow cell priming, and nobody
+      has published rAlbumin for this use. The exposure is bounded: ONT frames
+      the BSA addition as recommended rather than required, so the worst case
+      is the output a run without it would have given. RECORD WHICH ALBUMIN WAS
+      USED IN THE RUN RECORD. If pore occupancy disappoints on the first cell,
+      this is one of the few deliberate deviations from the protocol and should
+      be on the list of things to change.
+    fallback: >
+      Invitrogen UltraPure BSA AM2616, 1 x 50 mg at 50 mg/ml, $156.65 from
+      Thermo or Fisher. The exact part ONT specifies. Buy this instead if a
+      first run underperforms and albumin is a suspect, or if a second
+      cold-chain shipment is not a concern.
 
   - id: scale-pocket
     name: Digital pocket scale, 0.01 g
