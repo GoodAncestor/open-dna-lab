@@ -728,7 +728,7 @@ bench:
 
   - id: vortex
     name: Vortex mixer
-    price: 50
+    price: 20
     confidence: estimated
     priority: high
     not_covered_by: >
@@ -736,9 +736,22 @@ bench:
       7000 rpm, 2680 x g, two rotors for 8 x 0.2/0.5/1.5/2.0 mL and 0.2 mL x 32
       PCR strips. It has no vortex function. ONiLAB sells the vortex as a
       separate product. Checked 2026-09-07.
+    selection_rule: >
+      Choose on MODE AND SPEED, not on model code. ONiLAB's own store does not
+      publish the MX-E / MX-Mini codes at all — those appear only in third-party
+      Amazon and eBay listings, where MX-E is the 100 x 100 x 79 mm body and
+      MX-Mini the 133 x 133 x 80 mm one. Both run 3,000 rpm on a 4 mm orbit,
+      which is the same mixing action. The code is a body size, so it does not
+      matter here.
+      What does matter: take VARIABLE speed (0-3,000 rpm) over fixed 3,000, and
+      take a unit with a CONTINUOUS mode as well as touch-start. Fixed 3,000 is
+      fine for driving AMPure beads back into suspension but too aggressive for
+      gentle reagent mixing, and touch-only means holding a tube down by hand
+      for every 30-second mix. Checked 2026-09-08.
     options:
-      - {source: "ONiLAB Mini Vortex Mixer, touch function, ASIN B0913J5TWS", price: 50, confidence: estimated}
-      - {source: "ONiLAB direct, onilabus.com/collections/vortex-mixer", confidence: estimated}
+      - {source: "ONiLAB Lab Vortex Mixer, variable 0-3000 rpm, touch start plus continuous, ASIN B089NWRMYZ", price: 20, confidence: verified, note: "Cheapest AND most capable on the vendor's own listing — from $19.99. Preferred."}
+      - {source: "ONiLAB Mini Vortex Mixer, touch function, aluminum base", price: 35, confidence: verified}
+      - {source: "ONiLAB Mini Vortex Mixer, touch function", price: 34, confidence: verified, note: "$33.99 on sale, $55.99 regular."}
     notes: >
       Follow the mixing instructions for each reagent and extraction stage.
       A mini touch vortex is sufficient; this does not need a full-size unit,
@@ -977,16 +990,29 @@ gaps:
       to run the first cell without BSA and see, since ONT frames it as
       recommended rather than required.
     neb_alternative_rejected: >
-      Asked 2026-09-07 whether this could ride along on the NEB order. It cannot
-      be treated as a drop-in. NEB's BSA Molecular Biology Grade (B9000S) was
-      DISCONTINUED in December 2022 and replaced by Recombinant Albumin,
-      Molecular Biology Grade (B9200S) at 20 mg/ml — recombinant albumin, not
-      BSA, and supplied in 50 percent glycerol. A glycerol-free version exists
-      (B9211S). ONT specifies non-acetylated BSA at 50 mg/ml, and 20 mg/ml
-      would mean 12.5 uL rather than 5 uL for the same 0.2 mg/ml final.
-      Substitution is UNVERIFIED for flow cell priming and is not recommended
-      without a measured comparison. Moot in any case — the NEB order lands
-      within 48 h of 2026-09-07.
+      RULED OUT 2026-09-08 on the glycerol, after reading the NEB product
+      specifications. Do not buy albumin from NEB for this application.
+
+      NEB's BSA, Molecular Biology Grade (B9000S) is 20 mg/ml in 20 mM
+      Tris-HCl, 100 mM KCl, 0.1 mM EDTA and 50 PERCENT GLYCEROL, stored at
+      -20 C, 36-month shelf life (spec sheet PS-B9000S v1.0). The priming mix
+      needs 240 ug of BSA in about 1,200 uL. From AM2616 at 50 mg/ml that is
+      ~5 uL carrying no glycerol. From B9000S at 20 mg/ml it is ~12 uL, half
+      of which is glycerol — roughly 0.5 percent glycerol in the mix that gets
+      flushed directly across the nanopore array. That is an unvalidated change
+      to the buffer contacting the membrane, on a $988 consumable, to save
+      about $150. The concentration difference is arithmetic and harmless; the
+      glycerol is the reason.
+
+      NEB's other albumins are further away, not closer. Recombinant Albumin,
+      Molecular Biology Grade (B9200S, and glycerol-free B9211S) is recombinant
+      HUMAN serum albumin expressed in yeast — not bovine serum albumin at all.
+      It is a reasonable BSA substitute in restriction digests, which is what
+      NEB sells it for. It is not what ONT specified and has no published data
+      for flow cell priming.
+
+      Buy AM2616. If a substitution is ever wanted, it needs a measured
+      comparison on pore occupancy, not a catalogue argument.
     source: https://nanoporetech.com/document/genomic-dna-by-ligation-sqk-lsk114
     rationale: >
       Named in the LSK114 third-party consumables list and missing from this
