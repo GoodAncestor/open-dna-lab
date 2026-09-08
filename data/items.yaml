@@ -879,24 +879,29 @@ consumables:
 gaps:
   - id: pipette-small
     name: P20 pipette, 2-20 uL
-    priority: high
-    # Revised 2026-09-07. Colby confirmed an ONiLAB 1-10 uL is also owned, so
-    # the 1 uL handling this entry was written around is covered. Owned set is
-    # now 1-10, 10-100, 100-1000. ONT's LSK114 third-party equipment list asks
-    # for P2, P10, P20, P100, P200 and P1000.
+    priority: low
+    optional: true
+    # Revised twice on 2026-09-07. First from critical to high once Colby
+    # confirmed the ONiLAB 1-10 uL is owned; then to low/optional once the
+    # LSK114 volumes were actually read. Owned set: 1-10, 10-100, 100-1000.
     rationale: >
-      The 10-20 uL band is the one nothing covers well. The 1-10 unit cannot
-      reach 12 uL at all, and the 10-100 unit hits it at the very bottom of
-      its range, where accuracy is worst. That is exactly where the flow cell
-      load and several LSK114 transfers sit.
+      Convenience, not a blocker. LSK114 asks for no single draw in the
+      10-20 uL band that the owned pipettes cannot make accurately. The
+      10 uL Salt-T4 DNA Ligase addition sits at the TOP of the 1-10 unit's
+      range, which is its most accurate point — better than 20 uL on the
+      10-100 unit, which is that unit's worst. The two awkward volumes,
+      15 uL (EB resuspension and eluate retention) and 12 uL (library into
+      the load), split as 10+5 and 10+2 on the 1-10 unit. Ruled by Colby
+      2026-09-07: 10-20 is covered by pipetting 10 twice.
+    residual_risk: >
+      Splitting the 15 uL eluate retention means two draws off a bead pellet
+      rather than one, which is two chances to carry beads over. Watch for it
+      in the first prep and record what happens. The 2 uL half of the 12 uL
+      library split is at 20 percent of the 1-10 unit's range.
+      Calibration is the larger accuracy exposure here, not range coverage:
+      all three ONiLAB units are uncalibrated and the pocket scale cannot
+      verify delivery below about 100 uL.
     spec: P20 (2-20 uL)
-    source_advice: >
-      Buy refurbished-and-calibrated from Gilson, Rainin, or Eppendorf, or
-      buy cheap and send for calibration before first use. A P20 delivering
-      18 uL when set to 20 fails silently; the symptom is a flow cell that
-      underperforms with no attributable cause. The three owned ONiLAB units
-      are all uncalibrated — the pocket scale gives a free gravimetric check
-      at 100 uL and above, but cannot verify sub-10 uL delivery.
     price: 150
     confidence: estimated
 
