@@ -16,7 +16,7 @@
 # All prices USD.
 
 meta:
-  updated: 2026-07-29
+  updated: 2026-09-06
   currency: USD
   note: >
     Prices marked estimated have not been checked against a vendor.
@@ -40,8 +40,10 @@ instruments:
       for excitation normalisation. Removable cover accepts emission filters.
       Minimum fill 50 uL. Gain and integration time are user-settable on both
       sensors. Firmware is CircuitPython, open source.
-      Fluorescence section of the vendor Product Guide is marked "in progress" —
-      no suggested filters published as of 2026-07.
+      Assembled and available for testing, confirmed by the owner 2026-09-06.
+      DNA quantification remains unvalidated against a reference instrument.
+      Vendor fluorescence experiments describe filters and mounting geometry.
+      Match those details to the assembled hardware revision before calibration.
 
   - id: uv-open-colorimeter
     name: UV Open Colorimeter
@@ -54,6 +56,9 @@ instruments:
     notes: >
       Vendor has published a DNA quantification tutorial for this instrument
       with the 255 nm board. Absorbance-based, so no dsDNA selectivity.
+      Assembled and available for testing, confirmed by the owner 2026-09-06.
+      Measurements at 255/278 nm are not A260/A280. Reference UV purity
+      measurements provide a comparison. Record unresolved purity if unavailable.
 
   - id: multichannel-colorimeter
     name: Multichannel Open Colorimeter
@@ -62,7 +67,9 @@ instruments:
     confidence: verified
     source: https://iorodeo.com/products/multichannel-colorimeter
     function: absorbance
-    notes: Uses AS7341 10-channel sensor, 415-680 nm.
+    notes: >
+      Uses AS7341 10-channel sensor, 415-680 nm. Assembled and available
+      for testing, confirmed by the owner 2026-09-06. Assay validation pending.
 
   - id: rodeostat-hc
     name: Rodeostat HC potentiostat
@@ -89,7 +96,8 @@ instruments:
       With the 40X objective and 50 mm achromat this is the high-resolution
       build. Effective magnification is f_tube / f_obj = 50/4 = about 12.5x
       at the objective's full 0.65 NA, not 40x.
-      Exposes an HTTP/JSON API — usable as an agent-controlled instrument today.
+      Exposes an HTTP/JSON API. Assembled and available for testing, confirmed
+      by the owner 2026-09-06. Acquisition and scale calibration remain to be recorded.
     optics:
       - id: obj-40x
         name: 40X Plan objective
@@ -159,7 +167,7 @@ instruments:
 # surface fires axially for straight-line absorbance, radial fires sideways for
 # the 90 degree fluorescence path in the Plus.
 #
-# Three of the twelve are in the sequencing path — 255 and 278 for purity, 470
+# Three of the twelve are in the sequencing path — 255 and 278 for UV experiments, 470
 # radial for fluorometry. The rest serve colorimetry and electrochemistry.
 emitters:
   vendor: IO Rodeo
@@ -174,7 +182,7 @@ emitters:
       goes_in: UV Open Colorimeter
       for: >
         Protein absorbance. Tryptophan and tyrosine peak near 280. Paired with
-        the built-in 255 nm channel this gives the approximate 260/280 purity
+        the built-in 255 nm channel this gives an experimental 255/278 nm
         proxy. Neither reaches 230, which is why A260/230 stays unmeasurable
         on this bench.
 
@@ -306,16 +314,26 @@ sequencing:
         # Already paid for inside the pack price. Listed for the running cost it
         # implies, but excluded from totals so the pack is not counted twice.
         included_in: minion-mk1d-pack
+        warranty: >
+          12 weeks from delivery date, minimum 800 pores. Verified 2026-09-07
+          from ONT's warranty and storage page. The warranty applies ONLY to a
+          flow cell check performed BEFORE the first sequencing run — it does
+          not apply to checks after sequencing and washing. Report failures
+          within 2 business days of the check. Practical consequence: check
+          every cell on arrival, before anything else, or a dud $988 cell is
+          unrecoverable.
+        storage: >
+          2-8 C from receipt (35.6-46.4 F). ONT: flow cells "do not tolerate
+          freezing temperatures even for short period of time." A domestic
+          fridge is in range, but the rear wall and the air off the cold vent
+          drop below freezing — front of a middle shelf, never the door, never
+          near the freezer compartment, probe-verified over 24 h first.
         notes: >
-          Five included in the Mk1D pack. A consumable, but not single-use —
-          the Flow Cell Wash Kit reloads a half-spent cell for roughly $17 a
-          wash, so cost per run depends on how hard each cell is worked rather
-          than on the $988 sticker. Yield 20-40 Gb over 48 h on a fresh cell.
-          Human genome at 30x needs roughly 3-4 cells merged, or one cell with
-          adaptive sampling for 30-50x on a panel under 1% of the genome.
-          Store at 4 C. Pore-check before loading: warm 20 min, expect about
-          1,200 pores, require at least 800, claim warranty before loading if
-          below.
+          Five included in the recorded Mk1D pack. Verify stock, storage history,
+          and the flow-cell check before use. Follow current ONT instructions
+          for storage, loading, washing, and replacement conditions. Measure
+          yield and callable coverage. Flow-cell count does not guarantee 30x
+          whole-genome coverage. The first validation uses adaptive sampling off.
 
       - id: wash-kit
         name: Flow Cell Wash Kit
@@ -325,7 +343,10 @@ sequencing:
         confidence: verified
         source: https://stockroom.tamu.edu/products/Flow-Cell-Wash-Kit-Oxford-Nanopore-Technologies-6-reactions-76487-116-p577969515
         kit_item: true
+        storage: Per the supplier label. Not a flow cell — does not share the 2-8 C rule.
         notes: >
+          Supplied with the recorded Mk1D pack (confirmed by Colby 2026-09-07);
+          price is the reorder cost.
           Six washes. This is what turns the flow cell from single-use into
           reusable — reload a half-spent cell for roughly $17 per wash.
 
@@ -339,6 +360,15 @@ sequencing:
         # Comes with the Mk1D pack, and is also offered as an option on it.
         # Price kept here for the reorder cost once the bundle is used up.
         included_in: minion-mk1d-pack
+        storage: >
+          -20 C for long-term storage. ONT states its sequencing kits keep
+          1-2 weeks at ambient (25 C) and up to 4 weeks at 4 C. Kits carry a
+          printed lot expiry — record it on arrival.
+        supplies: >
+          Contains AMPure XP Beads (AXP) at the volume both cleanups need, plus
+          LA, LNB, LFB, SFB, EB, DNA Control Sample, and the flow cell
+          components (Flow Cell Flush, Flow Cell Tether, Library Beads,
+          Sequencing Buffer). No separate priming kit is required.
         notes: >
           Supplied with the Mk1D pack. Preserves base modifications. No
           PCR-based kit can be used for epigenome work — amplification erases
@@ -351,11 +381,16 @@ sequencing:
         part: FLGIntSP
         price: 500
         confidence: estimated
-        kit_item: true
+        optional: true
+        availability: unconfirmed
         rationale: >
-          Unlocks $90 pilot runs. A Flongle reports read N50 directly, which is
-          a better fragment-length assay than a gel and answers extraction
-          quality, library prep, and read length in one $90 experiment.
+          Not listed on the ONT US price list as of 2026-09-07, and no
+          end-of-sale notice is published. Confirm with ONT sales before
+          ordering. The substitute is a short MinION run, stopped early and
+          recovered with the Flow Cell Wash Kit.
+        notes: >
+          Availability unconfirmed as of 2026-09-07. See the adaptation
+          register for the substitute pilot.
 
       - id: flongle-flowcells
         name: Flongle flow cells
@@ -366,8 +401,24 @@ sequencing:
         quantity: 6
         confidence: verified
         source: https://oxfordnanoporedx.com/products
+        availability: unconfirmed
         consumable: true
+        optional: true
         kit_item: true
+        warranty: >
+          4 weeks from receipt, minimum 50 pores — a THIRD of the MinION cell's
+          12 weeks. Verified 2026-09-07 from ONT's flow cell warranty page. As
+          with MinION cells, the warranty covers only a flow cell check run
+          BEFORE the first sequencing run.
+        storage: 2-8 C from receipt. Never freeze.
+        rationale: >
+          Not listed on the ONT US price list as of 2026-09-07. Confirm with ONT
+          sales before planning a pilot. Useful life is about four weeks from
+          receipt, so these cannot be stocked ahead of a run.
+        notes: >
+          Availability unconfirmed as of 2026-09-07. Four-week useful life
+          prevents stocking ahead of a run. The adapter carries no clock; only
+          the cells do, so order cells last, against a set run date.
 
       - id: nebnext-v2
         name: NEBNext Companion Module v2 for ONT Ligation Sequencing
@@ -377,6 +428,12 @@ sequencing:
         confidence: estimated
         pack: 24 reactions
         kit_item: true
+        storage: >
+          -20 C. NEB states expiry is lot-specific and printed on the
+          Certificate of Analysis — record it on arrival. NEB's product page
+          blocks automated retrieval; storage temperature taken from the
+          distributor listings 2026-09-07 and should be confirmed against the
+          box label.
         notes: >
           ONT recommends v2 over the older E7180S — better dA-tailing and
           ligation from FFPEv2 Repair Buffer and Salt-T4 Ligase, lower cost per
@@ -385,16 +442,32 @@ sequencing:
 
 library_prep:
   - id: ampure-xp
-    name: AMPure XP beads
+    name: AMPure XP beads (AXP)
     vendor: Beckman Coulter
     part: A63880
-    price: 300
-    confidence: estimated
+    price: 552
+    confidence: verified
     pack: 5 mL
-    priority: high
+    shelf_life: 18 months
+    storage: 2-8 C. Do not freeze — freezing destroys the beads permanently.
+    # SUPPLIED INSIDE THE KIT. ONT's SQK-LSK114 protocol lists kit contents as
+    # "Ligation Adapter (LA), Ligation Buffer (LNB), Long Fragment Buffer (LFB),
+    # S Fragment Buffer (SFB), AMPure XP Beads (AXP), Elution Buffer (EB)" and
+    # supplies AXP at the volume needed for both cleanups. Removed from the buy
+    # list 2026-09-07 (Colby); price kept for the reorder case only.
+    included_in: minion-mk1d-pack
+    source: https://nanoporetech.com/document/genomic-dna-by-ligation-sqk-lsk114
     notes: >
-      LSK114 runs two bead cleanups — after end-prep and after adapter
-      ligation. Core to library prep, not optional.
+      Supplied with SQK-LSK114 — do not buy separately for the bundled
+      reactions. LSK114 runs two bead cleanups: 60 uL of AXP at end-prep and
+      40 uL after adapter ligation, so 100 uL per prep, 600 uL across the six
+      bundled reactions. Beckman's smallest bottle is 5 mL (A63880; the other
+      sizes are 60 mL A63881 and 450 mL A63882), roughly eight times the whole
+      need, on an 18-month clock at 2-8 C. Buy only if the kit AXP is missing,
+      short, or past expiry. If that happens, price a cheaper equivalent
+      (Omega Mag-Bind TotalPure NGS, KAPA Pure Beads) against the 5 mL bottle —
+      equivalence for LSK114 is UNVERIFIED and would need a measured recovery
+      comparison before it is trusted.
 
 extraction:
   - id: edta-tubes
@@ -437,10 +510,10 @@ qc:
     # cannot do fluorometric quant well enough for library QC.
     contingent_on: open-colorimeter-plus
     contingency: >
-      Buy only if the Open Colorimeter Plus fails as a fluorometer. That
-      question is settled by the emission filter and the IO Rodeo filter-slot
-      dimensions, so resolve those first — this is the expensive answer to a
-      question that has a cheap one.
+      Purchase remains a fallback. Seek reference fluorometry through a loan,
+      shared lab, or measurement service. If access is unavailable, record the
+      pilot limitations. Compare extraction and library concentrations before
+      deciding whether a purchase is needed.
     rationale: >
       Functionally identical to the Qubit 4 for dsDNA HS and BR. The 4 adds
       RNA IQ, which this workflow does not need. Assays are shared between the
@@ -455,9 +528,41 @@ qc:
   - id: accuclear
     name: AccuClear Ultra High Sensitivity dsDNA Quantitation Kit
     vendor: Biotium
+    part: 31028-T
     variant: trial size, 200 assays
-    confidence: estimated
+    price: 89
+    confidence: verified
     priority: high
+    storage: 2-8 C — belongs in the fridge with the flow cells, not the freezer.
+    not_available_from_neb: >
+      Asked twice, 2026-09-07 and again 2026-09-08 as "can we get something
+      SIMILAR at NEB". Checked properly the second time. The answer is still
+      no, and there is no near-equivalent either.
+
+      NEB sells no fluorometric dsDNA quantitation kit at all. Their own FAQ
+      on quantitating input DNA points customers at Qubit assays or "any
+      quantification method using an intercalating fluorescent dye that is
+      measured relative to known standards" — that is, at somebody else's
+      product. The only quantitation kit in the catalogue is the NEBNext
+      Library Quant Kit for Illumina (E7630) with its DNA Standards (E7642),
+      and it is wrong on both axes: qPCR rather than fluorometry, so it needs
+      a real-time instrument this bench does not have, and its primers target
+      the Illumina P5 and P7 adaptors, which an ONT library does not carry.
+      Luna qPCR Master Mix (M3003) contains a SYBR-like intercalating dye
+      emitting near 535 nm, but it is a reaction mix, not an assay, and again
+      assumes a qPCR machine.
+
+      The constraint that picked AccuClear is not brand loyalty and is not
+      going to be satisfied by consolidating orders: the assay has to excite
+      near 470 nm to match the owned LED board and emit far enough away to sit
+      behind the ~500 nm longpass. AccuClear's 468/507 is the match. If a
+      substitute is ever wanted, the candidates are Invitrogen Quant-iT
+      PicoGreen (480/520) or Promega QuantiFluor dsDNA (504/531), and neither
+      is from NEB either. Order AccuClear from Fisher or Biotium.
+    options:
+      - {source: "Fisher Scientific, 200-assay trial", price: 88.74, confidence: verified}
+      - {source: "Fisher Scientific, 1000-assay, part 31028", price: 370.26, confidence: verified, note: "Only this size carries the 7-standard set."}
+      - {source: "Biotium direct, biotium.com", confidence: verified}
     notes: >
       Ex/Em 468/507 nm, linear 0.03-250 ng, store 2-8 C, 20X buffer concentrate.
       468 nm excitation matches the owned 470 nm LED board.
@@ -492,20 +597,35 @@ qc:
       blog.iorodeo.com/open-colorimeter-plus-led-boards/ — the vendor's own DNA
       assay results. Also github.com/traulab/diynafluor, an open-source DNA
       fluorometer from AliExpress parts for about $80.
+    what_it_does: >
+      The 470 nm LED excites AccuClear, which emits at about 507 nm. Only 37 nm
+      separates them. Without a filter the scattered excitation light reaches
+      the detector at orders of magnitude more intensity than the dye emission,
+      and the reading is lamp leak rather than DNA. A ~500 nm longpass sits
+      between sample and detector, blocking 470 and passing 507. The 90 degree
+      geometry already rejects the direct beam; the filter handles the scatter.
+      This part is what makes the owned colorimeter into a fluorometer.
+    blocked_on: >
+      MEASURE THE FILTER HOLDER FIRST. IO Rodeo's fluorescence article
+      documents a 6 x 6 mm holder. Every 25 mm round option below is useless if
+      that is what the assembled unit has. This is a two-minute measurement on
+      hardware already on the bench and it decides a $30 versus $115 purchase.
+      Do not order a filter before it is done.
     options:
-      - {source: "eBay, MidOpt used, seller discount-optics", price: 30, confidence: verified}
-      - {source: "Thorlabs FEL0500 longpass", price: 90, confidence: estimated}
+      - {source: "eBay, MidOpt used, seller discount-optics", price: 30, confidence: verified, note: "Cheapest path. Check the form factor against the measured holder."}
+      - {source: "MidOpt LP500", confidence: verified, note: "50 percent T at 495 nm, >90 percent peak, 510-1100 nm pass. Sold threaded (M49, M52), not as bare glass — likely wrong form factor for a 6 x 6 mm holder."}
+      - {source: "Thorlabs FEL0500, 1 inch longpass", price: 115, confidence: verified, note: "Price corrected from the earlier $90 estimate, checked 2026-09-07. FELH0500 is the 25.0 mm premium version."}
       - {source: "Edmund #29363, 525 nm CWL 25 mm OD4 50 nm BP", price: 275, confidence: verified, note: "bandpass — the earlier plan, superseded"}
     technique: >
       Two stacked OD3 filters give OD6. Cheaper than one mid-tier filter and
       often sufficient in 90 deg geometry, where the background is scatter
       rather than the direct beam.
     open_question: >
-      Filter slot dimensions are unpublished — 12.5 mm versus 25 mm changes the
-      price by half. Worth asking IO Rodeo in the same message whether a 230 nm
-      board exists: the AS7331 in the UV Open Colorimeter already reads down to
-      230 nm, so A260/230 is a missing emitter rather than a missing detector,
-      and a 230 nm board would close the last gap in the QC bench.
+      IO Rodeo documents a 6 x 6 mm filter holder in its fluorescence article.
+      Confirm the assembled holder revision, fitted filter, optical background,
+      and assay performance against reference fluorometry. The current UV bench
+      has no validated A260/A230 measurement. A new emitter would also require
+      compatible optics and reference comparison.
 
   - id: excitation-filter
     name: Excitation filter, 470/40 bandpass
@@ -622,32 +742,91 @@ bench:
     name: Sous vide immersion circulator
     spec: holds 56 C and 65 C in a water bath
     notes: >
-      ONT's consumables list specifies a thermal cycler at 20 C and 65 C. A
-      published home run used a heat block at 56 C and 65 C, with the 20 C
-      end-prep step at room temperature. Both temperatures are in active use:
-      65 C for LSK114 end-prep and FFPE repair, 56 C for Nanobind lysis.
-      A used thermal cycler at $200-500 covers the same ground and adds PCR.
+      Match incubation equipment to the selected extraction and library
+      instructions. Confirm actual sample temperatures with a probe before
+      substituting a water bath for specified equipment. Record the method and
+      temperature checks in the readiness checklist.
 
   - id: vortex
     name: Vortex mixer
-    price: 100
+    price: 34
     confidence: estimated
-    priority: high
-    notes: For reagents. Never for HMW DNA or enzyme mixes.
+    ordered: >
+      ORDERED from Amazon 2026-09-08 (Colby). Priority removed so it leaves
+      the buy list. Not yet on the bench — confirm the unit on arrival and
+      move this into bench_equipment with the actual model and price.
+    not_covered_by: >
+      The owned ONiLAB mini centrifuge (B08TT24L1V) is centrifuge-only —
+      7000 rpm, 2680 x g, two rotors for 8 x 0.2/0.5/1.5/2.0 mL and 0.2 mL x 32
+      PCR strips. It has no vortex function. ONiLAB sells the vortex as a
+      separate product. Checked 2026-09-07.
+    selection_rule: >
+      Model codes are a distraction. ONiLAB's own store publishes no MX-E or
+      MX-Mini designation at all — those appear only in third-party Amazon and
+      eBay listings, where MX-E is the 100 x 100 x 79 mm body and MX-Mini the
+      133 x 133 x 80 mm one. Both run 3,000 rpm on a 4 mm orbit, which is the
+      same mixing action, so the code is a body size and does not matter.
+      Buy the mini touch vortex. The full-size unit's variable speed is real
+      but does not justify a 3x premium for this workload, which is 30-second
+      hand-held mixes either way.
+      PRICE CORRECTED 2026-09-08: an earlier revision of this entry recorded
+      $19.99 for the full-size mixer. That figure is the collection page's
+      "from" price, which belongs to a tube-insert accessory, not to any
+      mixer. Do not trust a Shopify "from" price for a page that sells
+      accessories as variants.
+    options:
+      - {source: "ONiLAB Mini Vortex Mixer, touch function", price: 33.99, confidence: verified, note: "PREFERRED. Sale price; $55.99 regular. onilabus.com/products/onilab-mini-vortex-mixer-with-touch-function-lab-mixing-nail-polish-eyelash-adhesives-and-acrylic-paints-mixing-lab-vortexer-for-centrifuge-tubes-and-test-tubes"}
+      - {source: "ONiLAB Mini Vortex Mixer, aluminium casting base, 120 mixing balls", price: 35.00, confidence: verified}
+      - {source: "ONiLAB Lab Vortex Mixer, full size, fixed 3,000 rpm", price: 79.99, confidence: verified}
+      - {source: "ONiLAB Lab Vortex Mixer, full size, variable 0-3,000 rpm", price: 109.99, confidence: verified, note: "Same product page, variant selector. Overkill here."}
+    notes: >
+      Follow the mixing instructions for each reagent and extraction stage.
+      A mini touch vortex is sufficient; this does not need a full-size unit,
+      which is why the estimate came down from $100.
+      Scope is narrow and specific: resuspending AMPure beads to homogeneity
+      before use, and mixing reagents. It is NOT for the DNA itself — LSK114
+      calls for flicking and gentle pipette mixing on the library, because
+      vortexing shears high molecular weight DNA and read N50 is the whole
+      point of the platform. Buying it does not license using it everywhere.
 
   - id: pcr-tubes
     name: 0.2 mL thin-walled tubes
     price: 40
     confidence: estimated
-    priority: high
+    ordered: >
+      ORDERED from Amazon 2026-09-08 (Colby). Priority removed so it leaves
+      the buy list. On arrival check they are clear and unfrosted, since these
+      double as the colorimeter cuvettes, then move to consumables.
+    spec: >
+      0.2 mL, thin-walled, optically clear, NOT frosted or coloured — they are
+      read through. Minimum fill on the Open Colorimeter Plus is 50 uL.
+    not_already_owned: >
+      Checked against the 2026-01-26 Amazon order 2026-09-07: that order holds
+      20 uL tips, 200 uL tips, nuclease-free water and 1.5 mL Protein LoBind
+      tubes. No 0.2 mL tube of any kind. The owned mini centrifuge ships a
+      0.2 mL x 32 PCR strip rotor, so the rotor exists and the tubes do not.
     notes: >
       Not for PCR — no step here amplifies. These are the cuvettes for the Open
       Colorimeter Plus, which is built around the 0.2 mL tube format. Without
       them the fluorometer has nothing to read a sample in.
+      LSK114 also lists "PCR tubes and Eppendorf tubes" in its third-party
+      consumables, so the same purchase covers the library-prep incubations.
+      Optical clarity matters here in a way it does not for a thermal cycler.
 
 # Owned bench equipment — tools, not consumables. Pipettes are instruments and
 # are listed as such; the tips they take are consumables and are listed below.
 bench_equipment:
+  - id: pipette-10
+    name: ONiLAB adjustable single-channel micropipette, 1-10 uL
+    confidence: verified
+    source: colby-confirmed-2026-09-07
+    flag: uncalibrated
+    approved: true
+    note: >
+      Confirmed owned 2026-09-07. Covers the 1 uL handling that LSK114 and
+      fluorometric assays require. 1 uL sits at the very bottom of its range,
+      which is where accuracy is worst — gravimetric check before first use.
+
   - id: pipette-100
     name: ONiLAB adjustable single-channel micropipette, 10-100 uL
     price: 26.99
@@ -675,9 +854,10 @@ bench_equipment:
     flag: g-force-limited
     approved: true
     note: >
-      2,680 x g. Adequate for quick collection spins. ONT's optional equipment
-      list names an Eppendorf 5424 or equivalent, which reaches 21,130 x g.
-      Silica spin columns generally want 8,000-16,000 x g.
+      2,680 x g. Adequate for quick collection spins. The cited PacBio blood
+      procedure includes a 10,000 x g recovery spin. Borrow suitable equipment
+      or review an explicit recovery adaptation. Do not infer equivalent force
+      from an rpm setting. Record recovery and residual DNA on the disk.
 
   - id: tube-rack-60
     name: Polypropylene microcentrifuge tube rack, 60-well, 0.5/1.5 mL
@@ -694,7 +874,7 @@ bench_equipment:
       1.5 mL magnetic rack that was previously on the buy list.
 
   - {id: ice-bucket, name: Ice bucket}
-  - {id: freezer, name: Chest freezer, adjustable setpoint, note: "Manual defrost, which suits reagent storage. Verify with a probe over 24 h. No flammables inside."}
+  - {id: freezer, name: Chest freezer, adjustable setpoint, note: "Manual defrost, which suits reagent storage. Verify with a probe over 24 h. No flammables inside. Holds the -20 C reagents: SQK-LSK114 and the NEBNext module. NOT the flow cells and NOT the AMPure beads — both are destroyed by freezing."}
   - {id: printer-3d, name: 3D printer}
 
 # Owned consumables — things that get used up.
@@ -703,11 +883,10 @@ consumables:
     name: PacBio Nanobind HMW DNA kit
     vendor: PacBio
     note: >
-      Extraction chemistry for high-molecular-weight DNA. The kit ships in
-      variants matched to the sample type — Blood and Cell Culture, Tissue,
-      Plant Nuclei — and the protocols differ between them, so check which
-      variant you have before starting. Blood and Cell Culture is the one for
-      the human sequencing path here.
+      Owned extraction kit. Exact variant and catalog number remain unconfirmed.
+      Record the physical kit identity before selecting a procedure or collecting
+      the sample. PacBio blood document 102-573-500 REV04 lists CBB 102-301-900
+      and PanDNA 103-260-000. Other kits require their own instructions.
 
   # Amazon order 111-2672589-3182644, placed 2026-01-26, $113.57 total
   - id: tips-20
@@ -733,22 +912,24 @@ consumables:
       Single-use aliquots. Preferable to a bulk bottle — no repeated opening,
       no contamination accumulation. Satisfies the ONT nuclease-free water
       requirement; no need to also buy AM9937.
+      Nor NEB's Nuclease-free Water (B1500S 25 mL, B1500L 100 mL), checked
+      2026-09-08 — same reasoning, the requirement is already met.
 
   - id: lobind-protein
     name: Eppendorf Protein LoBind tubes, 1.5 mL, PCR Clean, 100 pk
     asin: B005GRGDZS
-    part: 022431081
+    part: '022431081'
     link: https://www.amazon.com/dp/B005GRGDZS
     price: 37
     confidence: verified
     source: amazon-order-2026-01-26
-    flag: wrong-variant
+    flag: stage-specific
     approved: true
     note: >
-      This is Protein LoBind. ONT specifies DNA LoBind (Eppendorf 022431021),
-      a different surface treatment. DNA LoBind minimises DNA adsorption to
-      the tube wall, which is the reason to use them at all when handling
-      15 uL of library.
+      Correct tube for the cited PacBio blood extraction procedure, which lists
+      this exact part number. ONT specifies DNA LoBind for library preparation.
+      Keep the two stages distinct. Review a library-stage tube substitution
+      through measured recovery before generalizing it.
 
   - id: ethanol-denatured
     name: Natural Cosmetic Labs ethyl alcohol 99.5%, denatured 40-B, 32 oz spray
@@ -775,12 +956,18 @@ consumables:
 
   - id: everclear
     name: Everclear 190 proof grain alcohol
+    neb_check: >
+      Asked 2026-09-08 whether ethanol could be added to the NEB order. NEB
+      does not sell ethanol. Nothing to add — this item is already covered.
     note: >
       Undenatured, bought from a liquor store. Replaces the molecular-grade
-      ethanol that was on the buy list — 190 proof is 95% ethanol, and AMPure
-      washes are made fresh to 70% in nuclease-free water, so the dilution
-      absorbs the difference. No denaturants to carry through a bead wash,
-      which is what ruled out the owned 40-B spray.
+      ethanol that was on the buy list — 190 proof is 95% ethanol, and the
+      wash is made fresh in nuclease-free water, so the dilution absorbs the
+      difference. No denaturants to carry through a bead wash, which is what
+      ruled out the owned 40-B spray.
+      CORRECTED 2026-09-07: this entry previously said 70%. The LSK114
+      protocol specifies "freshly prepared 80% ethanol in nuclease-free
+      water". Use 80% for the LSK114 bead washes. Make it the day of use.
 
   # Owned, not in the Amazon order
   - {id: widebore-tips, name: Wide-bore filter tips}
@@ -792,22 +979,115 @@ consumables:
 
 gaps:
   - id: pipette-small
-    name: Small-volume pipettes — P2 or P10, and P20
-    priority: critical
+    name: P20 pipette, 2-20 uL
+    priority: low
+    optional: true
+    # Revised twice on 2026-09-07. First from critical to high once Colby
+    # confirmed the ONiLAB 1-10 uL is owned; then to low/optional once the
+    # LSK114 volumes were actually read. Owned set: 1-10, 10-100, 100-1000.
     rationale: >
-      Owned range starts at 10 uL. LSK114 and any fluorometric assay require
-      1 uL handling, which the 10-100 uL unit cannot do. Accuracy at the
-      bottom of a pipette's range is also its worst, so the 12 uL flow cell
-      load currently sits in the least reliable part of the only pipette
-      that can reach it.
-    spec: P2 (0.1-2 uL), P10 (0.5-10 uL), P20 (2-20 uL)
-    source_advice: >
-      Buy refurbished-and-calibrated from Gilson, Rainin, or Eppendorf, or
-      buy cheap and send for calibration before first use. A P20 delivering
-      18 uL when set to 20 fails silently; the symptom is a flow cell that
-      underperforms with no attributable cause.
-    price: 400
+      Convenience, not a blocker. LSK114 asks for no single draw in the
+      10-20 uL band that the owned pipettes cannot make accurately. The
+      10 uL Salt-T4 DNA Ligase addition sits at the TOP of the 1-10 unit's
+      range, which is its most accurate point — better than 20 uL on the
+      10-100 unit, which is that unit's worst. The two awkward volumes,
+      15 uL (EB resuspension and eluate retention) and 12 uL (library into
+      the load), split as 10+5 and 10+2 on the 1-10 unit. Ruled by Colby
+      2026-09-07: 10-20 is covered by pipetting 10 twice.
+    residual_risk: >
+      Splitting the 15 uL eluate retention means two draws off a bead pellet
+      rather than one, which is two chances to carry beads over. Watch for it
+      in the first prep and record what happens. The 2 uL half of the 12 uL
+      library split is at 20 percent of the 1-10 unit's range.
+      Calibration is the larger accuracy exposure here, not range coverage:
+      all three ONiLAB units are uncalibrated and the pocket scale cannot
+      verify delivery below about 100 uL.
+    spec: P20 (2-20 uL)
+    price: 150
     confidence: estimated
+
+  - id: lobind-dna
+    name: Eppendorf DNA LoBind tubes, 1.5 mL, PCR clean
+    vendor: Eppendorf
+    part: '022431021'
+    pack: 250 (5 x 50)
+    price: 55
+    confidence: verified
+    owned: >
+      OWNED — Colby 2026-09-08: the Eppendorf 1.5 mL tubes are already on the
+      bench and this does not belong on the buy list. Priority removed.
+    open_check: >
+      One thing to confirm at the bench, because the two names are one word
+      apart. The register separately records Eppendorf PROTEIN LoBind, part
+      022431081, bought for the PacBio blood extraction which names that exact
+      number. LSK114 asks for DNA LoBind. If both boxes are there, nothing to
+      do. If the only 1.5 mL tubes are the Protein LoBind, the library stage
+      is running on the extraction tube. Not urgent and not a purchase
+      decision until someone reads the box.
+
+  - id: bsa
+    name: Albumin for flow cell priming
+    vendor: New England Biolabs
+    part: B9211S
+    variant: Recombinant Albumin, Molecular Biology Grade, glycerol-free, 20 mg/ml
+    priority: high
+    price: 43
+    confidence: estimated
+    status: >
+      IN CART at NEB 2026-09-08 alongside the NEBNext Companion Module v2.
+      Left on the buy list until the order is placed.
+    storage: Follow the supplier label. Aliquot; avoid repeated freeze-thaw.
+    options:
+      - {source: "Thermo Fisher direct, thermofisher.com/order/catalog/product/AM2616", price: 157, confidence: verified, note: "$156.65; list $170. 1 x 50 mg at 50 mg/mL. The exact part ONT names."}
+      - {source: "Fisher Scientific, same catalogue number AM2616", confidence: verified}
+      - {source: "Thermo AM2618, 5 x 50 mg", confidence: verified, note: "Larger pack. Pointless here — see the overkill note."}
+    overkill: >
+      5 uL per flow cell against 1 mL of stock is roughly 200 flow cells' worth.
+      This is the smallest pack sold, so the waste is unavoidable. Judged worth
+      it against the cost of a compromised $988 flow cell, but it is legitimate
+      to run the first cell without BSA and see, since ONT frames it as
+      recommended rather than required.
+    neb_option_preferred: >
+      REVISED 2026-09-08 (Colby). The earlier entry ruled NEB out on glycerol.
+      That reasoning does not survive contact with the catalogue: NEB sells a
+      GLYCEROL-FREE version, B9211S, and the objection simply does not apply
+      to it. Ordering albumin on the NEB line is cheaper and lands in one
+      cold-chain shipment instead of two.
+
+      NEB's current albumin line, verified 2026-09-08:
+        B9000S  BSA, Molecular Biology Grade, 20 mg/ml, 50 percent glycerol.
+                DISCONTINUED 15 Dec 2022. Not orderable.
+        B9200S  Recombinant Albumin, Molecular Biology Grade. 20 mg/ml,
+                36-month shelf life, -20 C, contains glycerol. 12 mg, ~$43.
+        B9211S  The same, GLYCEROL-FREE. This is the one to order.
+      Both B9200S and B9211S are recombinant HUMAN serum albumin expressed in
+      yeast, not bovine.
+
+      Volume changes with the concentration, nothing else: the priming mix needs
+      240 ug of albumin, which is ~5 uL of AM2616 at 50 mg/ml or ~12 uL of the
+      NEB product at 20 mg/ml. 12 mg at 20 mg/ml is 0.6 mL, about 50 flow cells.
+
+      Why this is a reasonable bet rather than a gamble: NEB converted every
+      BSA-containing NEBuffer to rAlbumin (r1.1, r2.1, r3.1, rCutSmart) and
+      states it "rigorously tested both and has not seen a difference in enzyme
+      performance," at the same price. rAlbumin is already arriving on this
+      bench inside the NEBNext v2 module. The function wanted here — coating
+      surfaces so material does not adsorb to them — is the same function NEB
+      sells it for.
+    residual_uncertainty: >
+      ONT names AM2616, non-acetylated BSA at 50 mg/ml. NEB's equivalence data
+      covers restriction digests, not nanopore flow cell priming, and nobody
+      has published rAlbumin for this use. The exposure is bounded: ONT frames
+      the BSA addition as recommended rather than required, so the worst case
+      is the output a run without it would have given. RECORD WHICH ALBUMIN WAS
+      USED IN THE RUN RECORD. If pore occupancy disappoints on the first cell,
+      this is one of the few deliberate deviations from the protocol and should
+      be on the list of things to change.
+    fallback: >
+      Invitrogen UltraPure BSA AM2616, 1 x 50 mg at 50 mg/ml, $156.65 from
+      Thermo or Fisher. The exact part ONT specifies. Buy this instead if a
+      first run underperforms and albumin is a suspect, or if a second
+      cold-chain shipment is not a concern.
 
   - id: scale-pocket
     name: Digital pocket scale, 0.01 g
