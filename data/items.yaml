@@ -891,7 +891,7 @@ consumables:
   - id: lobind-protein
     name: Eppendorf Protein LoBind tubes, 1.5 mL, PCR Clean, 100 pk
     asin: B005GRGDZS
-    part: 022431081
+    part: '022431081'
     link: https://www.amazon.com/dp/B005GRGDZS
     price: 37
     confidence: verified
@@ -982,7 +982,7 @@ gaps:
   - id: lobind-dna
     name: Eppendorf DNA LoBind tubes, 1.5 mL, PCR clean
     vendor: Eppendorf
-    part: 022431021
+    part: '022431021'
     pack: 250 (5 x 50)
     priority: high
     price: 55
