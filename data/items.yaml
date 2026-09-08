@@ -535,9 +535,30 @@ qc:
     priority: high
     storage: 2-8 C — belongs in the fridge with the flow cells, not the freezer.
     not_available_from_neb: >
-      Asked 2026-09-07. No. This is a Biotium product; NEB does not sell
-      fluorometric dsDNA quantitation kits, so it cannot be added to the
-      NEBNext order. Order it separately.
+      Asked twice, 2026-09-07 and again 2026-09-08 as "can we get something
+      SIMILAR at NEB". Checked properly the second time. The answer is still
+      no, and there is no near-equivalent either.
+
+      NEB sells no fluorometric dsDNA quantitation kit at all. Their own FAQ
+      on quantitating input DNA points customers at Qubit assays or "any
+      quantification method using an intercalating fluorescent dye that is
+      measured relative to known standards" — that is, at somebody else's
+      product. The only quantitation kit in the catalogue is the NEBNext
+      Library Quant Kit for Illumina (E7630) with its DNA Standards (E7642),
+      and it is wrong on both axes: qPCR rather than fluorometry, so it needs
+      a real-time instrument this bench does not have, and its primers target
+      the Illumina P5 and P7 adaptors, which an ONT library does not carry.
+      Luna qPCR Master Mix (M3003) contains a SYBR-like intercalating dye
+      emitting near 535 nm, but it is a reaction mix, not an assay, and again
+      assumes a qPCR machine.
+
+      The constraint that picked AccuClear is not brand loyalty and is not
+      going to be satisfied by consolidating orders: the assay has to excite
+      near 470 nm to match the owned LED board and emit far enough away to sit
+      behind the ~500 nm longpass. AccuClear's 468/507 is the match. If a
+      substitute is ever wanted, the candidates are Invitrogen Quant-iT
+      PicoGreen (480/520) or Promega QuantiFluor dsDNA (504/531), and neither
+      is from NEB either. Order AccuClear from Fisher or Biotium.
     options:
       - {source: "Fisher Scientific, 200-assay trial", price: 88.74, confidence: verified}
       - {source: "Fisher Scientific, 1000-assay, part 31028", price: 370.26, confidence: verified, note: "Only this size carries the 7-standard set."}
@@ -730,7 +751,10 @@ bench:
     name: Vortex mixer
     price: 34
     confidence: estimated
-    priority: high
+    ordered: >
+      ORDERED from Amazon 2026-09-08 (Colby). Priority removed so it leaves
+      the buy list. Not yet on the bench — confirm the unit on arrival and
+      move this into bench_equipment with the actual model and price.
     not_covered_by: >
       The owned ONiLAB mini centrifuge (B08TT24L1V) is centrifuge-only —
       7000 rpm, 2680 x g, two rotors for 8 x 0.2/0.5/1.5/2.0 mL and 0.2 mL x 32
@@ -769,7 +793,10 @@ bench:
     name: 0.2 mL thin-walled tubes
     price: 40
     confidence: estimated
-    priority: high
+    ordered: >
+      ORDERED from Amazon 2026-09-08 (Colby). Priority removed so it leaves
+      the buy list. On arrival check they are clear and unfrosted, since these
+      double as the colorimeter cuvettes, then move to consumables.
     spec: >
       0.2 mL, thin-walled, optically clear, NOT frosted or coloured — they are
       read through. Minimum fill on the Open Colorimeter Plus is 50 uL.
@@ -984,29 +1011,19 @@ gaps:
     vendor: Eppendorf
     part: '022431021'
     pack: 250 (5 x 50)
-    priority: high
     price: 55
     confidence: verified
-    rationale: >
-      PROMOTED TO THE BUY LIST 2026-09-08. This was already recorded as a
-      stage-specific flag on the owned Protein LoBind tubes, where it stayed
-      invisible in the totals and in any list anyone would shop from.
-      LSK114 specifies 1.5 mL Eppendorf DNA LoBind. The owned tubes are
-      Protein LoBind, part 022431081, bought because the PacBio blood
-      extraction document names that exact number. Both are LoBind and the
-      names are one word apart, which is precisely why this needs to be an
-      explicit line rather than a footnote — they are different surface
-      treatments for different analytes and the substitution runs the wrong
-      way for library prep.
-      Also the specified storage tube for the finished library: 4 C for short
-      term, -80 C beyond three months.
-    options:
-      - {source: "pipettes.com, case of 250", price: 53.30, confidence: verified}
-      - {source: "USA Scientific", price: 60.43, confidence: verified}
-      - {source: "Sigma-Aldrich EP022431021, or Fisher 13698791", confidence: verified}
-    not_from_neb: >
-      Checked 2026-09-08 while asking what else the NEB order could absorb.
-      NEB does not sell labware. Order from Eppendorf or a distributor.
+    owned: >
+      OWNED — Colby 2026-09-08: the Eppendorf 1.5 mL tubes are already on the
+      bench and this does not belong on the buy list. Priority removed.
+    open_check: >
+      One thing to confirm at the bench, because the two names are one word
+      apart. The register separately records Eppendorf PROTEIN LoBind, part
+      022431081, bought for the PacBio blood extraction which names that exact
+      number. LSK114 asks for DNA LoBind. If both boxes are there, nothing to
+      do. If the only 1.5 mL tubes are the Protein LoBind, the library stage
+      is running on the extraction tube. Not urgent and not a purchase
+      decision until someone reads the box.
 
   - id: bsa
     name: Albumin for flow cell priming
@@ -1016,6 +1033,9 @@ gaps:
     priority: high
     price: 43
     confidence: estimated
+    status: >
+      IN CART at NEB 2026-09-08 alongside the NEBNext Companion Module v2.
+      Left on the buy list until the order is placed.
     storage: Follow the supplier label. Aliquot; avoid repeated freeze-thaw.
     options:
       - {source: "Thermo Fisher direct, thermofisher.com/order/catalog/product/AM2616", price: 157, confidence: verified, note: "$156.65; list $170. 1 x 50 mg at 50 mg/mL. The exact part ONT names."}
