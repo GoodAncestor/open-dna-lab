@@ -314,6 +314,20 @@ sequencing:
         # Already paid for inside the pack price. Listed for the running cost it
         # implies, but excluded from totals so the pack is not counted twice.
         included_in: minion-mk1d-pack
+        warranty: >
+          12 weeks from delivery date, minimum 800 pores. Verified 2026-09-07
+          from ONT's warranty and storage page. The warranty applies ONLY to a
+          flow cell check performed BEFORE the first sequencing run — it does
+          not apply to checks after sequencing and washing. Report failures
+          within 2 business days of the check. Practical consequence: check
+          every cell on arrival, before anything else, or a dud $988 cell is
+          unrecoverable.
+        storage: >
+          2-8 C from receipt (35.6-46.4 F). ONT: flow cells "do not tolerate
+          freezing temperatures even for short period of time." A domestic
+          fridge is in range, but the rear wall and the air off the cold vent
+          drop below freezing — front of a middle shelf, never the door, never
+          near the freezer compartment, probe-verified over 24 h first.
         notes: >
           Five included in the recorded Mk1D pack. Verify stock, storage history,
           and the flow-cell check before use. Follow current ONT instructions
@@ -329,7 +343,10 @@ sequencing:
         confidence: verified
         source: https://stockroom.tamu.edu/products/Flow-Cell-Wash-Kit-Oxford-Nanopore-Technologies-6-reactions-76487-116-p577969515
         kit_item: true
+        storage: Per the supplier label. Not a flow cell — does not share the 2-8 C rule.
         notes: >
+          Supplied with the recorded Mk1D pack (confirmed by Colby 2026-09-07);
+          price is the reorder cost.
           Six washes. This is what turns the flow cell from single-use into
           reusable — reload a half-spent cell for roughly $17 per wash.
 
@@ -343,6 +360,15 @@ sequencing:
         # Comes with the Mk1D pack, and is also offered as an option on it.
         # Price kept here for the reorder cost once the bundle is used up.
         included_in: minion-mk1d-pack
+        storage: >
+          -20 C for long-term storage. ONT states its sequencing kits keep
+          1-2 weeks at ambient (25 C) and up to 4 weeks at 4 C. Kits carry a
+          printed lot expiry — record it on arrival.
+        supplies: >
+          Contains AMPure XP Beads (AXP) at the volume both cleanups need, plus
+          LA, LNB, LFB, SFB, EB, DNA Control Sample, and the flow cell
+          components (Flow Cell Flush, Flow Cell Tether, Library Beads,
+          Sequencing Buffer). No separate priming kit is required.
         notes: >
           Supplied with the Mk1D pack. Preserves base modifications. No
           PCR-based kit can be used for epigenome work — amplification erases
@@ -378,13 +404,21 @@ sequencing:
         availability: unconfirmed
         consumable: true
         optional: true
+        kit_item: true
+        warranty: >
+          4 weeks from receipt, minimum 50 pores — a THIRD of the MinION cell's
+          12 weeks. Verified 2026-09-07 from ONT's flow cell warranty page. As
+          with MinION cells, the warranty covers only a flow cell check run
+          BEFORE the first sequencing run.
+        storage: 2-8 C from receipt. Never freeze.
         rationale: >
           Not listed on the ONT US price list as of 2026-09-07. Confirm with ONT
           sales before planning a pilot. Useful life is about four weeks from
           receipt, so these cannot be stocked ahead of a run.
         notes: >
           Availability unconfirmed as of 2026-09-07. Four-week useful life
-          prevents stocking ahead of a run.
+          prevents stocking ahead of a run. The adapter carries no clock; only
+          the cells do, so order cells last, against a set run date.
 
       - id: nebnext-v2
         name: NEBNext Companion Module v2 for ONT Ligation Sequencing
@@ -394,6 +428,12 @@ sequencing:
         confidence: estimated
         pack: 24 reactions
         kit_item: true
+        storage: >
+          -20 C. NEB states expiry is lot-specific and printed on the
+          Certificate of Analysis — record it on arrival. NEB's product page
+          blocks automated retrieval; storage temperature taken from the
+          distributor listings 2026-09-07 and should be confirmed against the
+          box label.
         notes: >
           ONT recommends v2 over the older E7180S — better dA-tailing and
           ligation from FFPEv2 Repair Buffer and Salt-T4 Ligase, lower cost per
@@ -402,16 +442,32 @@ sequencing:
 
 library_prep:
   - id: ampure-xp
-    name: AMPure XP beads
+    name: AMPure XP beads (AXP)
     vendor: Beckman Coulter
     part: A63880
-    price: 300
-    confidence: estimated
+    price: 552
+    confidence: verified
     pack: 5 mL
-    priority: high
+    shelf_life: 18 months
+    storage: 2-8 C. Do not freeze — freezing destroys the beads permanently.
+    # SUPPLIED INSIDE THE KIT. ONT's SQK-LSK114 protocol lists kit contents as
+    # "Ligation Adapter (LA), Ligation Buffer (LNB), Long Fragment Buffer (LFB),
+    # S Fragment Buffer (SFB), AMPure XP Beads (AXP), Elution Buffer (EB)" and
+    # supplies AXP at the volume needed for both cleanups. Removed from the buy
+    # list 2026-09-07 (Colby); price kept for the reorder case only.
+    included_in: minion-mk1d-pack
+    source: https://nanoporetech.com/document/genomic-dna-by-ligation-sqk-lsk114
     notes: >
-      LSK114 runs two bead cleanups — after end-prep and after adapter
-      ligation. Core to library prep, not optional.
+      Supplied with SQK-LSK114 — do not buy separately for the bundled
+      reactions. LSK114 runs two bead cleanups: 60 uL of AXP at end-prep and
+      40 uL after adapter ligation, so 100 uL per prep, 600 uL across the six
+      bundled reactions. Beckman's smallest bottle is 5 mL (A63880; the other
+      sizes are 60 mL A63881 and 450 mL A63882), roughly eight times the whole
+      need, on an 18-month clock at 2-8 C. Buy only if the kit AXP is missing,
+      short, or past expiry. If that happens, price a cheaper equivalent
+      (Omega Mag-Bind TotalPure NGS, KAPA Pure Beads) against the 5 mL bottle —
+      equivalence for LSK114 is UNVERIFIED and would need a measured recovery
+      comparison before it is trusted.
 
 extraction:
   - id: edta-tubes
@@ -664,6 +720,17 @@ bench:
 # Owned bench equipment — tools, not consumables. Pipettes are instruments and
 # are listed as such; the tips they take are consumables and are listed below.
 bench_equipment:
+  - id: pipette-10
+    name: ONiLAB adjustable single-channel micropipette, 1-10 uL
+    confidence: verified
+    source: colby-confirmed-2026-09-07
+    flag: uncalibrated
+    approved: true
+    note: >
+      Confirmed owned 2026-09-07. Covers the 1 uL handling that LSK114 and
+      fluorometric assays require. 1 uL sits at the very bottom of its range,
+      which is where accuracy is worst — gravimetric check before first use.
+
   - id: pipette-100
     name: ONiLAB adjustable single-channel micropipette, 10-100 uL
     price: 26.99
@@ -711,7 +778,7 @@ bench_equipment:
       1.5 mL magnetic rack that was previously on the buy list.
 
   - {id: ice-bucket, name: Ice bucket}
-  - {id: freezer, name: Chest freezer, adjustable setpoint, note: "Manual defrost, which suits reagent storage. Verify with a probe over 24 h. No flammables inside."}
+  - {id: freezer, name: Chest freezer, adjustable setpoint, note: "Manual defrost, which suits reagent storage. Verify with a probe over 24 h. No flammables inside. Holds the -20 C reagents: SQK-LSK114 and the NEBNext module. NOT the flow cells and NOT the AMPure beads — both are destroyed by freezing."}
   - {id: printer-3d, name: 3D printer}
 
 # Owned consumables — things that get used up.
@@ -793,10 +860,13 @@ consumables:
     name: Everclear 190 proof grain alcohol
     note: >
       Undenatured, bought from a liquor store. Replaces the molecular-grade
-      ethanol that was on the buy list — 190 proof is 95% ethanol, and AMPure
-      washes are made fresh to 70% in nuclease-free water, so the dilution
-      absorbs the difference. No denaturants to carry through a bead wash,
-      which is what ruled out the owned 40-B spray.
+      ethanol that was on the buy list — 190 proof is 95% ethanol, and the
+      wash is made fresh in nuclease-free water, so the dilution absorbs the
+      difference. No denaturants to carry through a bead wash, which is what
+      ruled out the owned 40-B spray.
+      CORRECTED 2026-09-07: this entry previously said 70%. The LSK114
+      protocol specifies "freshly prepared 80% ethanol in nuclease-free
+      water". Use 80% for the LSK114 bead washes. Make it the day of use.
 
   # Owned, not in the Amazon order
   - {id: widebore-tips, name: Wide-bore filter tips}
@@ -808,22 +878,48 @@ consumables:
 
 gaps:
   - id: pipette-small
-    name: Small-volume pipettes — P2 or P10, and P20
-    priority: critical
+    name: P20 pipette, 2-20 uL
+    priority: high
+    # Revised 2026-09-07. Colby confirmed an ONiLAB 1-10 uL is also owned, so
+    # the 1 uL handling this entry was written around is covered. Owned set is
+    # now 1-10, 10-100, 100-1000. ONT's LSK114 third-party equipment list asks
+    # for P2, P10, P20, P100, P200 and P1000.
     rationale: >
-      Owned range starts at 10 uL. LSK114 and any fluorometric assay require
-      1 uL handling, which the 10-100 uL unit cannot do. Accuracy at the
-      bottom of a pipette's range is also its worst, so the 12 uL flow cell
-      load currently sits in the least reliable part of the only pipette
-      that can reach it.
-    spec: P2 (0.1-2 uL), P10 (0.5-10 uL), P20 (2-20 uL)
+      The 10-20 uL band is the one nothing covers well. The 1-10 unit cannot
+      reach 12 uL at all, and the 10-100 unit hits it at the very bottom of
+      its range, where accuracy is worst. That is exactly where the flow cell
+      load and several LSK114 transfers sit.
+    spec: P20 (2-20 uL)
     source_advice: >
       Buy refurbished-and-calibrated from Gilson, Rainin, or Eppendorf, or
       buy cheap and send for calibration before first use. A P20 delivering
       18 uL when set to 20 fails silently; the symptom is a flow cell that
-      underperforms with no attributable cause.
-    price: 400
+      underperforms with no attributable cause. The three owned ONiLAB units
+      are all uncalibrated — the pocket scale gives a free gravimetric check
+      at 100 uL and above, but cannot verify sub-10 uL delivery.
+    price: 150
     confidence: estimated
+
+  - id: bsa
+    name: Bovine serum albumin, 50 mg/ml
+    vendor: Invitrogen
+    part: AM2616
+    priority: high
+    price: 60
+    confidence: estimated
+    storage: Follow the supplier label. Aliquot; avoid repeated freeze-thaw.
+    source: https://nanoporetech.com/document/genomic-dna-by-ligation-sqk-lsk114
+    rationale: >
+      Named in the LSK114 third-party consumables list and missing from this
+      register until 2026-09-07. Goes into the flow cell PRIMING mix, not the
+      library: 5 uL of the 50 mg/ml stock into 1,170 uL Flow Cell Flush plus
+      30 uL Flow Cell Tether, for a final 0.2 mg/ml. ONT frames it as
+      recommended rather than mandatory, "for optimal sequencing performance
+      and improved output" — it passivates the flow cell surface so library
+      is not lost to it. Cheap insurance on a $988 consumable, so treat it as
+      required here. ONT names Invitrogen UltraPure AM2616 specifically.
+      Not interchangeable with nuclease-free water, which is already owned and
+      is the diluent, not the additive.
 
   - id: scale-pocket
     name: Digital pocket scale, 0.01 g
