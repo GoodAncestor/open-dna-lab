@@ -885,6 +885,8 @@ consumables:
       Single-use aliquots. Preferable to a bulk bottle — no repeated opening,
       no contamination accumulation. Satisfies the ONT nuclease-free water
       requirement; no need to also buy AM9937.
+      Nor NEB's Nuclease-free Water (B1500S 25 mL, B1500L 100 mL), checked
+      2026-09-08 — same reasoning, the requirement is already met.
 
   - id: lobind-protein
     name: Eppendorf Protein LoBind tubes, 1.5 mL, PCR Clean, 100 pk
@@ -927,6 +929,9 @@ consumables:
 
   - id: everclear
     name: Everclear 190 proof grain alcohol
+    neb_check: >
+      Asked 2026-09-08 whether ethanol could be added to the NEB order. NEB
+      does not sell ethanol. Nothing to add — this item is already covered.
     note: >
       Undenatured, bought from a liquor store. Replaces the molecular-grade
       ethanol that was on the buy list — 190 proof is 95% ethanol, and the
@@ -973,6 +978,35 @@ gaps:
     spec: P20 (2-20 uL)
     price: 150
     confidence: estimated
+
+  - id: lobind-dna
+    name: Eppendorf DNA LoBind tubes, 1.5 mL, PCR clean
+    vendor: Eppendorf
+    part: 022431021
+    pack: 250 (5 x 50)
+    priority: high
+    price: 55
+    confidence: verified
+    rationale: >
+      PROMOTED TO THE BUY LIST 2026-09-08. This was already recorded as a
+      stage-specific flag on the owned Protein LoBind tubes, where it stayed
+      invisible in the totals and in any list anyone would shop from.
+      LSK114 specifies 1.5 mL Eppendorf DNA LoBind. The owned tubes are
+      Protein LoBind, part 022431081, bought because the PacBio blood
+      extraction document names that exact number. Both are LoBind and the
+      names are one word apart, which is precisely why this needs to be an
+      explicit line rather than a footnote — they are different surface
+      treatments for different analytes and the substitution runs the wrong
+      way for library prep.
+      Also the specified storage tube for the finished library: 4 C for short
+      term, -80 C beyond three months.
+    options:
+      - {source: "pipettes.com, case of 250", price: 53.30, confidence: verified}
+      - {source: "USA Scientific", price: 60.43, confidence: verified}
+      - {source: "Sigma-Aldrich EP022431021, or Fisher 13698791", confidence: verified}
+    not_from_neb: >
+      Checked 2026-09-08 while asking what else the NEB order could absorb.
+      NEB does not sell labware. Order from Eppendorf or a distributor.
 
   - id: bsa
     name: Albumin for flow cell priming
