@@ -528,9 +528,20 @@ qc:
   - id: accuclear
     name: AccuClear Ultra High Sensitivity dsDNA Quantitation Kit
     vendor: Biotium
+    part: 31028-T
     variant: trial size, 200 assays
-    confidence: estimated
+    price: 89
+    confidence: verified
     priority: high
+    storage: 2-8 C — belongs in the fridge with the flow cells, not the freezer.
+    not_available_from_neb: >
+      Asked 2026-09-07. No. This is a Biotium product; NEB does not sell
+      fluorometric dsDNA quantitation kits, so it cannot be added to the
+      NEBNext order. Order it separately.
+    options:
+      - {source: "Fisher Scientific, 200-assay trial", price: 88.74, confidence: verified}
+      - {source: "Fisher Scientific, 1000-assay, part 31028", price: 370.26, confidence: verified, note: "Only this size carries the 7-standard set."}
+      - {source: "Biotium direct, biotium.com", confidence: verified}
     notes: >
       Ex/Em 468/507 nm, linear 0.03-250 ng, store 2-8 C, 20X buffer concentrate.
       468 nm excitation matches the owned 470 nm LED board.
@@ -565,9 +576,24 @@ qc:
       blog.iorodeo.com/open-colorimeter-plus-led-boards/ — the vendor's own DNA
       assay results. Also github.com/traulab/diynafluor, an open-source DNA
       fluorometer from AliExpress parts for about $80.
+    what_it_does: >
+      The 470 nm LED excites AccuClear, which emits at about 507 nm. Only 37 nm
+      separates them. Without a filter the scattered excitation light reaches
+      the detector at orders of magnitude more intensity than the dye emission,
+      and the reading is lamp leak rather than DNA. A ~500 nm longpass sits
+      between sample and detector, blocking 470 and passing 507. The 90 degree
+      geometry already rejects the direct beam; the filter handles the scatter.
+      This part is what makes the owned colorimeter into a fluorometer.
+    blocked_on: >
+      MEASURE THE FILTER HOLDER FIRST. IO Rodeo's fluorescence article
+      documents a 6 x 6 mm holder. Every 25 mm round option below is useless if
+      that is what the assembled unit has. This is a two-minute measurement on
+      hardware already on the bench and it decides a $30 versus $115 purchase.
+      Do not order a filter before it is done.
     options:
-      - {source: "eBay, MidOpt used, seller discount-optics", price: 30, confidence: verified}
-      - {source: "Thorlabs FEL0500 longpass", price: 90, confidence: estimated}
+      - {source: "eBay, MidOpt used, seller discount-optics", price: 30, confidence: verified, note: "Cheapest path. Check the form factor against the measured holder."}
+      - {source: "MidOpt LP500", confidence: verified, note: "50 percent T at 495 nm, >90 percent peak, 510-1100 nm pass. Sold threaded (M49, M52), not as bare glass — likely wrong form factor for a 6 x 6 mm holder."}
+      - {source: "Thorlabs FEL0500, 1 inch longpass", price: 115, confidence: verified, note: "Price corrected from the earlier $90 estimate, checked 2026-09-07. FELH0500 is the 25.0 mm premium version."}
       - {source: "Edmund #29363, 525 nm CWL 25 mm OD4 50 nm BP", price: 275, confidence: verified, note: "bandpass — the earlier plan, superseded"}
     technique: >
       Two stacked OD3 filters give OD6. Cheaper than one mid-tier filter and
@@ -702,20 +728,47 @@ bench:
 
   - id: vortex
     name: Vortex mixer
-    price: 100
+    price: 50
     confidence: estimated
     priority: high
-    notes: Follow the mixing instructions for each reagent and extraction stage.
+    not_covered_by: >
+      The owned ONiLAB mini centrifuge (B08TT24L1V) is centrifuge-only —
+      7000 rpm, 2680 x g, two rotors for 8 x 0.2/0.5/1.5/2.0 mL and 0.2 mL x 32
+      PCR strips. It has no vortex function. ONiLAB sells the vortex as a
+      separate product. Checked 2026-09-07.
+    options:
+      - {source: "ONiLAB Mini Vortex Mixer, touch function, ASIN B0913J5TWS", price: 50, confidence: estimated}
+      - {source: "ONiLAB direct, onilabus.com/collections/vortex-mixer", confidence: estimated}
+    notes: >
+      Follow the mixing instructions for each reagent and extraction stage.
+      A mini touch vortex is sufficient; this does not need a full-size unit,
+      which is why the estimate came down from $100.
+      Scope is narrow and specific: resuspending AMPure beads to homogeneity
+      before use, and mixing reagents. It is NOT for the DNA itself — LSK114
+      calls for flicking and gentle pipette mixing on the library, because
+      vortexing shears high molecular weight DNA and read N50 is the whole
+      point of the platform. Buying it does not license using it everywhere.
 
   - id: pcr-tubes
     name: 0.2 mL thin-walled tubes
     price: 40
     confidence: estimated
     priority: high
+    spec: >
+      0.2 mL, thin-walled, optically clear, NOT frosted or coloured — they are
+      read through. Minimum fill on the Open Colorimeter Plus is 50 uL.
+    not_already_owned: >
+      Checked against the 2026-01-26 Amazon order 2026-09-07: that order holds
+      20 uL tips, 200 uL tips, nuclease-free water and 1.5 mL Protein LoBind
+      tubes. No 0.2 mL tube of any kind. The owned mini centrifuge ships a
+      0.2 mL x 32 PCR strip rotor, so the rotor exists and the tubes do not.
     notes: >
       Not for PCR — no step here amplifies. These are the cuvettes for the Open
       Colorimeter Plus, which is built around the 0.2 mL tube format. Without
       them the fluorometer has nothing to read a sample in.
+      LSK114 also lists "PCR tubes and Eppendorf tubes" in its third-party
+      consumables, so the same purchase covers the library-prep incubations.
+      Optical clarity matters here in a way it does not for a thermal cycler.
 
 # Owned bench equipment — tools, not consumables. Pipettes are instruments and
 # are listed as such; the tips they take are consumables and are listed below.
@@ -910,9 +963,30 @@ gaps:
     vendor: Invitrogen
     part: AM2616
     priority: high
-    price: 60
-    confidence: estimated
+    price: 157
+    confidence: verified
     storage: Follow the supplier label. Aliquot; avoid repeated freeze-thaw.
+    options:
+      - {source: "Thermo Fisher direct, thermofisher.com/order/catalog/product/AM2616", price: 157, confidence: verified, note: "$156.65; list $170. 1 x 50 mg at 50 mg/mL. The exact part ONT names."}
+      - {source: "Fisher Scientific, same catalogue number AM2616", confidence: verified}
+      - {source: "Thermo AM2618, 5 x 50 mg", confidence: verified, note: "Larger pack. Pointless here — see the overkill note."}
+    overkill: >
+      5 uL per flow cell against 1 mL of stock is roughly 200 flow cells' worth.
+      This is the smallest pack sold, so the waste is unavoidable. Judged worth
+      it against the cost of a compromised $988 flow cell, but it is legitimate
+      to run the first cell without BSA and see, since ONT frames it as
+      recommended rather than required.
+    neb_alternative_rejected: >
+      Asked 2026-09-07 whether this could ride along on the NEB order. It cannot
+      be treated as a drop-in. NEB's BSA Molecular Biology Grade (B9000S) was
+      DISCONTINUED in December 2022 and replaced by Recombinant Albumin,
+      Molecular Biology Grade (B9200S) at 20 mg/ml — recombinant albumin, not
+      BSA, and supplied in 50 percent glycerol. A glycerol-free version exists
+      (B9211S). ONT specifies non-acetylated BSA at 50 mg/ml, and 20 mg/ml
+      would mean 12.5 uL rather than 5 uL for the same 0.2 mg/ml final.
+      Substitution is UNVERIFIED for flow cell priming and is not recommended
+      without a measured comparison. Moot in any case — the NEB order lands
+      within 48 h of 2026-09-07.
     source: https://nanoporetech.com/document/genomic-dna-by-ligation-sqk-lsk114
     rationale: >
       Named in the LSK114 third-party consumables list and missing from this
