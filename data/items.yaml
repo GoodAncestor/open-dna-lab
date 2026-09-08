@@ -728,7 +728,7 @@ bench:
 
   - id: vortex
     name: Vortex mixer
-    price: 20
+    price: 34
     confidence: estimated
     priority: high
     not_covered_by: >
@@ -737,21 +737,24 @@ bench:
       PCR strips. It has no vortex function. ONiLAB sells the vortex as a
       separate product. Checked 2026-09-07.
     selection_rule: >
-      Choose on MODE AND SPEED, not on model code. ONiLAB's own store does not
-      publish the MX-E / MX-Mini codes at all — those appear only in third-party
-      Amazon and eBay listings, where MX-E is the 100 x 100 x 79 mm body and
-      MX-Mini the 133 x 133 x 80 mm one. Both run 3,000 rpm on a 4 mm orbit,
-      which is the same mixing action. The code is a body size, so it does not
-      matter here.
-      What does matter: take VARIABLE speed (0-3,000 rpm) over fixed 3,000, and
-      take a unit with a CONTINUOUS mode as well as touch-start. Fixed 3,000 is
-      fine for driving AMPure beads back into suspension but too aggressive for
-      gentle reagent mixing, and touch-only means holding a tube down by hand
-      for every 30-second mix. Checked 2026-09-08.
+      Model codes are a distraction. ONiLAB's own store publishes no MX-E or
+      MX-Mini designation at all — those appear only in third-party Amazon and
+      eBay listings, where MX-E is the 100 x 100 x 79 mm body and MX-Mini the
+      133 x 133 x 80 mm one. Both run 3,000 rpm on a 4 mm orbit, which is the
+      same mixing action, so the code is a body size and does not matter.
+      Buy the mini touch vortex. The full-size unit's variable speed is real
+      but does not justify a 3x premium for this workload, which is 30-second
+      hand-held mixes either way.
+      PRICE CORRECTED 2026-09-08: an earlier revision of this entry recorded
+      $19.99 for the full-size mixer. That figure is the collection page's
+      "from" price, which belongs to a tube-insert accessory, not to any
+      mixer. Do not trust a Shopify "from" price for a page that sells
+      accessories as variants.
     options:
-      - {source: "ONiLAB Lab Vortex Mixer, variable 0-3000 rpm, touch start plus continuous, ASIN B089NWRMYZ", price: 20, confidence: verified, note: "Cheapest AND most capable on the vendor's own listing — from $19.99. Preferred."}
-      - {source: "ONiLAB Mini Vortex Mixer, touch function, aluminum base", price: 35, confidence: verified}
-      - {source: "ONiLAB Mini Vortex Mixer, touch function", price: 34, confidence: verified, note: "$33.99 on sale, $55.99 regular."}
+      - {source: "ONiLAB Mini Vortex Mixer, touch function", price: 33.99, confidence: verified, note: "PREFERRED. Sale price; $55.99 regular. onilabus.com/products/onilab-mini-vortex-mixer-with-touch-function-lab-mixing-nail-polish-eyelash-adhesives-and-acrylic-paints-mixing-lab-vortexer-for-centrifuge-tubes-and-test-tubes"}
+      - {source: "ONiLAB Mini Vortex Mixer, aluminium casting base, 120 mixing balls", price: 35.00, confidence: verified}
+      - {source: "ONiLAB Lab Vortex Mixer, full size, fixed 3,000 rpm", price: 79.99, confidence: verified}
+      - {source: "ONiLAB Lab Vortex Mixer, full size, variable 0-3,000 rpm", price: 109.99, confidence: verified, note: "Same product page, variant selector. Overkill here."}
     notes: >
       Follow the mixing instructions for each reagent and extraction stage.
       A mini touch vortex is sufficient; this does not need a full-size unit,
