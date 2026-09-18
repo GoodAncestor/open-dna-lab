@@ -66,7 +66,9 @@ def validate(run,rows,plan,base):
   if r['measurement'] in ['raw_fluorescence','concentration']:
    require(r['preparation_id'] in preps,id+': unknown preparation')
    prep=preps[r['preparation_id']]
-   dilution=number(prep['pre_dilution'],id)*number(prep['assay_volume_ul'],id)/number(prep['sample_aliquot_ul'],id)
+   pre=number(prep['pre_dilution'],id);volume=number(prep['assay_volume_ul'],id);aliquot=number(prep['sample_aliquot_ul'],id)
+   require(pre>=1 and volume>0 and aliquot>0 and aliquot<=volume,id+': physical dilution quantities require pre_dilution>=1 and 0<aliquot<=assay volume')
+   dilution=pre*volume/aliquot
    require(dilution>=1 and math.isclose(number(r['dilution_factor'],id),dilution,rel_tol=1e-9),id+': total dilution mismatch; avoid double application')
    require(r['calibration_id'] in calibrations,id+': unknown calibration')
    cal=calibrations[r['calibration_id']]
@@ -83,12 +85,18 @@ def validate(run,rows,plan,base):
    require(src['measurement']=='raw_fluorescence' and standards[src['standard_id']]['role']=='independent_check',id+': concentration source must be raw withheld check')
    require(all(r[k]==src[k] for k in ['calibration_id','preparation_id','dilution_factor','standard_id']),id+': concentration/source metadata mismatch')
  for calid,c in calibrations.items():
-  require(c['concentration_unit']=='ng/uL','Only ng/uL concentration calibration supported')
+  fluorescence=any(r['calibration_id']==calid and r['measurement'] in ['raw_fluorescence','concentration'] for r in rows)
+  microscopy=any(x['calibration_id']==calid for x in plan.get('scale_spans',[]))
   require(c['criterion_id'] in criteria,'Unknown calibration criterion')
-  for k in ['blank_drift_max_rfu','check_recovery_min_pct','check_recovery_max_pct','repeatability_max_cv_pct','scale_error_max_pct']:
+  keys=[]
+  if fluorescence:
+   require(c['concentration_unit']=='ng/uL','Only ng/uL concentration calibration supported')
+   keys+=['blank_drift_max_rfu','check_recovery_min_pct','check_recovery_max_pct','repeatability_max_cv_pct']
+  if microscopy:keys+=['scale_error_max_pct']
+  for k in keys:
    require(number(c[k],k)>=0,'Acceptance limits must be nonnegative: '+k)
    require(criteria[c['criterion_id']]['limit'].get(k)==c[k],'Plan limit differs from predeclared criterion: '+k)
- for c in calibrations.values():require(c['check_recovery_min_pct']<=c['check_recovery_max_pct'],'Recovery limits reversed')
+  if fluorescence:require(c['check_recovery_min_pct']<=c['check_recovery_max_pct'],'Recovery limits reversed')
  require(len({s['measurement_id'] for s in plan.get('scale_spans',[])})==len(plan.get('scale_spans',[])),'Duplicate microscope span')
  for span in plan.get('scale_spans',[]):
   require(span['calibration_id'] in calibrations,'Unknown span calibration')
@@ -109,44 +117,45 @@ def analyze(run,rows,plan,standards):
   if r['status'] not in ['measured','derived'] or r['qc_status']=='fail':excluded.append(dict(measurement_id=r['measurement_id'],status=r['status'],reason=r['notes'] or 'record QC fail'))
  for calid,c in plan['calibrations'].items():
   raw=[r for r in rows if r['calibration_id']==calid and r['measurement']=='raw_fluorescence' and r['status']=='measured' and r['qc_status']!='fail']
-  groups={}
-  for r in raw:groups.setdefault(r['preparation_id'],[]).append(r)
-  points=[];cal_groups=[]
-  for prep,rr in groups.items():
-   ids={r['standard_id'] for r in rr};require(len(ids)==1,'Preparation mixed standards: '+prep)
-   std=standards[rr[0]['standard_id']];ys=[number(r['value'],prep) for r in rr];mean=statistics.mean(ys)
-   require(len({(r['instrument_id'],r['configuration_id'],r['matrix']) for r in rr})==1,'Preparation mixes configuration/matrix')
-   cv=100*statistics.stdev(ys)/abs(mean) if len(ys)>1 and mean!=0 else None
-   repeat.append(dict(preparation_id=prep,standard_role=std['role'],read_repeats=len(ys),mean_signal=mean,sd_signal=statistics.stdev(ys) if len(ys)>1 else None,cv_pct=cv,criterion_result='pending' if cv is None else ('within_limit' if cv<=c['repeatability_max_cv_pct'] else 'outside_limit')))
-   if std['role']=='calibration_standard':
-    require(all(float(r['dilution_factor'])==1 for r in rr),'Calibrator values must name final assay concentration, dilution=1')
-    points.append((number(std['assigned_value'],prep),mean));cal_groups.append((prep,number(std['assigned_value'],prep),mean))
-  prep_groups={}
-  for prep,rr in groups.items():
-   key=(rr[0]['standard_id'],float(rr[0]['dilution_factor']))
-   prep_groups.setdefault(key,[]).append(statistics.mean(float(r['value']) for r in rr))
-  for (std,dilution),values in prep_groups.items():
-   mean=statistics.mean(values);sd=statistics.stdev(values) if len(values)>1 else None
-   prep_repeat.append(dict(calibration_id=calid,standard_id=std,dilution_factor=dilution,independent_preparations=len(values),mean_signal=mean,sd_signal=sd,cv_pct=100*sd/abs(mean) if sd is not None and mean!=0 else None))
-  slope,intercept=fit_line(points);lo=min(x for x,y in points);hi=max(x for x,y in points)
-  calout.append(dict(calibration_id=calid,slope_rfu_per_ng_ul=slope,intercept_rfu=intercept,range_min_ng_ul=lo,range_max_ng_ul=hi,preparations=len(points)))
-  for prep,x,y in cal_groups:results.append(dict(kind='calibration',measurement_id=prep,assigned=x,estimated=(y-intercept)/slope,residual_rfu=y-(slope*x+intercept),recovery_pct=None,dilution_factor=1,criterion_result='calibration_only'))
-  br=sorted([r for r in raw if standards[r['standard_id']]['role']=='blank'],key=lambda r:timestamp(r['timestamp']))
-  if len(br)>=2:
-   drift=float(br[-1]['value'])-float(br[0]['value'])
-   blanks.append(dict(calibration_id=calid,first_rfu=float(br[0]['value']),last_rfu=float(br[-1]['value']),drift_rfu=drift,reads=len(br),criterion_result='within_limit' if abs(drift)<=c['blank_drift_max_rfu'] else 'outside_limit'))
-  else:blanks.append(dict(calibration_id=calid,reads=len(br),criterion_result='pending'))
-  for r in raw:
-   std=standards[r['standard_id']]
-   if std['role']!='independent_check':continue
-   assay=(float(r['value'])-intercept)/slope;estimated=assay*float(r['dilution_factor']);assigned=number(std['assigned_value'],'check assigned')
-   require(assigned>0,'Check concentration must be positive');recovery=100*estimated/assigned
-   within=lo<=assay<=hi;independent=std.get('independent_of_calibration_stock') is True
-   outcome='outside_calibrated_range' if not within else ('pending_stock_independence' if not independent else ('within_limit' if c['check_recovery_min_pct']<=recovery<=c['check_recovery_max_pct'] else 'outside_limit'))
-   results.append(dict(kind='withheld_check',measurement_id=r['measurement_id'],assigned=assigned,estimated=estimated,residual_rfu=None,recovery_pct=recovery,dilution_factor=float(r['dilution_factor']),criterion_result=outcome))
-   for derived in rows:
-    if derived['measurement']=='concentration' and derived['status']=='derived' and derived['derived_from']==r['measurement_id']:
-     require(math.isclose(float(derived['value']),estimated,rel_tol=1e-6,abs_tol=1e-9),derived['measurement_id']+': derived concentration disagrees; possible double dilution')
+  if raw:
+   groups={}
+   for r in raw:groups.setdefault(r['preparation_id'],[]).append(r)
+   points=[];cal_groups=[]
+   for prep,rr in groups.items():
+    ids={r['standard_id'] for r in rr};require(len(ids)==1,'Preparation mixed standards: '+prep)
+    std=standards[rr[0]['standard_id']];ys=[number(r['value'],prep) for r in rr];mean=statistics.mean(ys)
+    require(len({(r['instrument_id'],r['configuration_id'],r['matrix']) for r in rr})==1,'Preparation mixes configuration/matrix')
+    cv=100*statistics.stdev(ys)/abs(mean) if len(ys)>1 and mean!=0 else None
+    repeat.append(dict(source_qc_status=';'.join(sorted({r['qc_status'] for r in rr})),preparation_id=prep,standard_role=std['role'],read_repeats=len(ys),mean_signal=mean,sd_signal=statistics.stdev(ys) if len(ys)>1 else None,cv_pct=cv,criterion_result='pending' if cv is None else ('within_limit' if cv<=c['repeatability_max_cv_pct'] else 'outside_limit')))
+    if std['role']=='calibration_standard':
+     require(all(float(r['dilution_factor'])==1 for r in rr),'Calibrator values must name final assay concentration, dilution=1')
+     points.append((number(std['assigned_value'],prep),mean));cal_groups.append((prep,number(std['assigned_value'],prep),mean))
+   prep_groups={}
+   for prep,rr in groups.items():
+    key=(rr[0]['standard_id'],float(rr[0]['dilution_factor']))
+    prep_groups.setdefault(key,[]).append(statistics.mean(float(r['value']) for r in rr))
+   for (std,dilution),values in prep_groups.items():
+    mean=statistics.mean(values);sd=statistics.stdev(values) if len(values)>1 else None
+    prep_repeat.append(dict(source_qc_status=';'.join(sorted({r['qc_status'] for r in raw if r['standard_id']==std and float(r['dilution_factor'])==dilution})),calibration_id=calid,standard_id=std,dilution_factor=dilution,independent_preparations=len(values),mean_signal=mean,sd_signal=sd,cv_pct=100*sd/abs(mean) if sd is not None and mean!=0 else None))
+   slope,intercept=fit_line(points);lo=min(x for x,y in points);hi=max(x for x,y in points)
+   calout.append(dict(source_qc_status=';'.join(sorted({r['qc_status'] for r in raw if standards[r['standard_id']]['role']=='calibration_standard'})),calibration_id=calid,slope_rfu_per_ng_ul=slope,intercept_rfu=intercept,range_min_ng_ul=lo,range_max_ng_ul=hi,preparations=len(points)))
+   for prep,x,y in cal_groups:results.append(dict(kind='calibration',source_qc_status=';'.join(sorted({r['qc_status'] for r in groups[prep]})),measurement_id=prep,assigned=x,estimated=(y-intercept)/slope,residual_rfu=y-(slope*x+intercept),recovery_pct=None,dilution_factor=1,criterion_result='calibration_only'))
+   br=sorted([r for r in raw if standards[r['standard_id']]['role']=='blank'],key=lambda r:timestamp(r['timestamp']))
+   if len(br)>=2:
+    drift=float(br[-1]['value'])-float(br[0]['value'])
+    blanks.append(dict(source_qc_status=';'.join(sorted({r['qc_status'] for r in br})),calibration_id=calid,first_rfu=float(br[0]['value']),last_rfu=float(br[-1]['value']),drift_rfu=drift,reads=len(br),criterion_result='within_limit' if abs(drift)<=c['blank_drift_max_rfu'] else 'outside_limit'))
+   else:blanks.append(dict(source_qc_status=';'.join(sorted({r['qc_status'] for r in br})),calibration_id=calid,reads=len(br),criterion_result='pending'))
+   for r in raw:
+    std=standards[r['standard_id']]
+    if std['role']!='independent_check':continue
+    assay=(float(r['value'])-intercept)/slope;estimated=assay*float(r['dilution_factor']);assigned=number(std['assigned_value'],'check assigned')
+    require(assigned>0,'Check concentration must be positive');recovery=100*estimated/assigned
+    within=lo<=assay<=hi;independent=std.get('independent_of_calibration_stock') is True
+    outcome='outside_calibrated_range' if not within else ('pending_stock_independence' if not independent else ('within_limit' if c['check_recovery_min_pct']<=recovery<=c['check_recovery_max_pct'] else 'outside_limit'))
+    results.append(dict(kind='withheld_check',source_qc_status=r['qc_status'],measurement_id=r['measurement_id'],assigned=assigned,estimated=estimated,residual_rfu=None,recovery_pct=recovery,dilution_factor=float(r['dilution_factor']),criterion_result=outcome))
+    for derived in rows:
+     if derived['measurement']=='concentration' and derived['status']=='derived' and derived['derived_from']==r['measurement_id']:
+      require(math.isclose(float(derived['value']),estimated,rel_tol=1e-6,abs_tol=1e-9),derived['measurement_id']+': derived concentration disagrees; possible double dilution')
   relevant=[s for s in plan.get('scale_spans',[]) if s['calibration_id']==calid and byid[s['measurement_id']]['status']=='measured' and byid[s['measurement_id']]['qc_status']!='fail']
   configurations={(byid[s['measurement_id']]['instrument_id'],byid[s['measurement_id']]['configuration_id']) for s in relevant}
   require(len(configurations)<=1,'Microscope spans mix optical configurations')
@@ -161,7 +170,7 @@ def analyze(run,rows,plan,standards):
   for s in relevant:
    r=byid[s['measurement_id']];pix=float(r['value']);scale=float(s['known_um'])/pix
    err=100*(ref*pix/float(s['known_um'])-1) if ref else None
-   spans.append(dict(measurement_id=s['measurement_id'],axis=s['axis'],position=s['position'],role=s['role'],known_um=s['known_um'],pixels=pix,um_per_pixel=scale,reference_um_per_pixel=ref,check_error_pct=err,criterion_result='calibration_only' if s['role']=='calibration' else ('pending' if err is None else ('within_limit' if abs(err)<=c['scale_error_max_pct'] else 'outside_limit'))))
+   spans.append(dict(source_qc_status=r['qc_status'],measurement_id=s['measurement_id'],axis=s['axis'],position=s['position'],role=s['role'],known_um=s['known_um'],pixels=pix,um_per_pixel=scale,reference_um_per_pixel=ref,check_error_pct=err,criterion_result='calibration_only' if s['role']=='calibration' else ('pending' if err is None else ('within_limit' if abs(err)<=c['scale_error_max_pct'] else 'outside_limit'))))
  return dict(source_kind=plan['source_kind'],run_id=run['run_id'],calibrations=calout,values=results,blank_drift=blanks,read_repeatability=repeat,microscope_spans=spans,preparation_repeatability=prep_repeat,excluded=excluded,interpretation='Calculation checks only. Reference agreement, matrix transfer and instrument fitness require review.')
 
 def plots(result,out):

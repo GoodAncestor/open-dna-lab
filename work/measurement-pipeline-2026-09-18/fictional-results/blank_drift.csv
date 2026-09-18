@@ -1,2 +1,2 @@
-calibration_id,first_rfu,last_rfu,drift_rfu,reads,criterion_result
-curve1,10.0,11.0,1.0,2,within_limit
+source_qc_status,calibration_id,first_rfu,last_rfu,drift_rfu,reads,criterion_result
+pending,curve1,10.0,11.0,1.0,2,within_limit

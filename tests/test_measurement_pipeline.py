@@ -42,5 +42,15 @@ class MeasurementPipeline(unittest.TestCase):
   self.rows[-1]['qc_status']='fail';r=self.calc();self.assertEqual(len(r['microscope_spans']),3);self.assertEqual(r['excluded'][0]['measurement_id'],'span4')
  def test_mixed_microscope_configuration(self):
   self.run['instruments'].append(dict(instrument_id='microscope',configuration_id='objective2'));self.rows[-1]['configuration_id']='objective2';self.reject()
+ def test_negative_physical_values_do_not_cancel(self):
+  self.plan['preparations']['blankprep'].update(pre_dilution=-1,assay_volume_ul=-200);self.reject()
+ def test_aliquot_larger_than_assay_rejected(self):
+  self.plan['preparations']['blankprep'].update(pre_dilution=2,sample_aliquot_ul=400);self.reject()
+ def test_microscope_only_session(self):
+  self.rows=[r for r in self.rows if r['measurement']=='scale_span_pixels'];self.plan['preparations']={};self.run['standards']=[]
+  self.plan['calibrations']['curve1']={k:v for k,v in self.plan['calibrations']['curve1'].items() if k in ['criterion_id','scale_error_max_pct']}
+  r=self.calc();self.assertEqual(r['calibrations'],[]);self.assertEqual(len(r['microscope_spans']),4)
+ def test_source_qc_preserved(self):
+  self.rows[20]['qc_status']='limited';r=self.calc();x=next(x for x in r['values'] if x['measurement_id']==self.rows[20]['measurement_id']);self.assertEqual(x['source_qc_status'],'limited');self.assertEqual(r['microscope_spans'][0]['source_qc_status'],'pending')
  def test_unknown_span_calibration(self):self.plan['scale_spans'][0]['calibration_id']='unknown';self.reject()
 if __name__=='__main__':unittest.main()

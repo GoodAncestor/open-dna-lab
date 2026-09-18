@@ -8,8 +8,10 @@ The committed fictional run has 32 rows. Its known fluorescence curve is 10 + 10
 
 The blank drifts by 1 RFU within its fictional 2-RFU limit. Its two readings also exceed the separate 5% CV limit because their mean signal is small. The report preserves that outside-limit result. These synthetic limits and results make no statement about the actual instruments.
 
-Twenty mechanism tests pass. They cover finite values, unknown joins, units, duplicate IDs, artifact tampering, absolute-path rejection, late criteria, mismatched limits, stock independence, dilution errors, excluded observations, optical-configuration mixing and preservation of preparation counts. The generated six-panel figure was opened and inspected. All figures and results are labelled fictional.
+Twenty-four mechanism tests pass. They cover finite values, unknown joins, units, duplicate IDs, artifact tampering, absolute-path rejection, late criteria, mismatched limits, stock independence, dilution errors, excluded observations, optical-configuration mixing and preservation of preparation counts. The generated six-panel figure was opened and inspected. All figures and results are labelled fictional.
 
 The CLI uses existing PyYAML/Matplotlib dependencies and runs offline. No raw human data, personal genome, device access, purchases, model inference or deployment was involved. A real standards session still needs an operator, actual configuration/material identity and predeclared acceptance criteria.
 
 The repository leakage scan passes. The unchanged equipment-register validator fails on two existing price-source entries, `accuclear` and `lobind-dna`. The register remains byte-identical to the base revision. Those inventory corrections are outside this measurement-software lane and are recorded as an outstanding repository check.
+
+Review corrections add per-quantity physical dilution checks, a microscope-only calculation path, and explicit preservation of source QC status in every derived result family. The microscope-only path also completed a separate CLI run with plotting.
