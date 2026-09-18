@@ -1,0 +1,15 @@
+preparation_id,standard_role,read_repeats,mean_signal,sd_signal,cv_pct,criterion_result
+blankprep,blank,2,10.5,0.7071067811865476,6.734350297014738,outside_limit
+cal1-prep1,calibration_standard,2,109.0,0.3535533905932738,0.3243609088011686,within_limit
+cal1-prep2,calibration_standard,2,110.0,0.3535533905932738,0.32141217326661253,within_limit
+cal1-prep3,calibration_standard,2,111.0,0.3535533905932738,0.3185165681020484,within_limit
+cal3-prep1,calibration_standard,2,309.0,0.3535533905932738,0.11441857300753197,within_limit
+cal3-prep2,calibration_standard,2,310.0,0.3535533905932738,0.11404948083653993,within_limit
+cal3-prep3,calibration_standard,2,311.0,0.3535533905932738,0.11368276224864109,within_limit
+cal6-prep1,calibration_standard,2,609.0,0.3535533905932738,0.05805474393978223,within_limit
+cal6-prep2,calibration_standard,2,610.0,0.3535533905932738,0.05795957222840554,within_limit
+cal6-prep3,calibration_standard,2,611.0,0.3535533905932738,0.05786471204472566,within_limit
+check-d10-prep1,independent_check,2,509.0,0.0,0.0,within_limit
+check-d10-prep2,independent_check,2,511.0,0.0,0.0,within_limit
+check-d20-prep1,independent_check,2,259.0,0.0,0.0,within_limit
+check-d20-prep2,independent_check,2,261.0,0.0,0.0,within_limit

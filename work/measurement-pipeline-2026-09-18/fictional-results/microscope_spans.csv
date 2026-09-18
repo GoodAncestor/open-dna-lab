@@ -1,0 +1,5 @@
+measurement_id,axis,position,role,known_um,pixels,um_per_pixel,reference_um_per_pixel,check_error_pct,criterion_result
+span1,x,center,calibration,100,2000.0,0.05,0.05,0.0,calibration_only
+span2,y,center,calibration,200,4000.0,0.05,0.05,0.0,calibration_only
+span3,x,edge,withheld_check,100,1990.0,0.05025125628140704,0.05,-0.5000000000000004,within_limit
+span4,y,edge,withheld_check,100,2010.0,0.04975124378109453,0.05,0.49999999999998934,within_limit
