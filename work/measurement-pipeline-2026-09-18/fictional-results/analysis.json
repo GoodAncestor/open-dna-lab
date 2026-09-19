@@ -1,0 +1,480 @@
+{
+  "source_kind": "fictional",
+  "run_id": "FICTIONAL-001",
+  "calibrations": [
+    {
+      "source_qc_status": "pending",
+      "calibration_id": "curve1",
+      "slope_rfu_per_ng_ul": 100.0,
+      "intercept_rfu": 9.999999999999943,
+      "range_min_ng_ul": 1.0,
+      "range_max_ng_ul": 6.0,
+      "preparations": 9
+    }
+  ],
+  "values": [
+    {
+      "kind": "calibration",
+      "source_qc_status": "pending",
+      "measurement_id": "cal1-prep1",
+      "assigned": 1.0,
+      "estimated": 0.9900000000000005,
+      "residual_rfu": -0.9999999999999432,
+      "recovery_pct": null,
+      "dilution_factor": 1,
+      "criterion_result": "calibration_only"
+    },
+    {
+      "kind": "calibration",
+      "source_qc_status": "pending",
+      "measurement_id": "cal1-prep2",
+      "assigned": 1.0,
+      "estimated": 1.0000000000000007,
+      "residual_rfu": 5.684341886080802e-14,
+      "recovery_pct": null,
+      "dilution_factor": 1,
+      "criterion_result": "calibration_only"
+    },
+    {
+      "kind": "calibration",
+      "source_qc_status": "pending",
+      "measurement_id": "cal1-prep3",
+      "assigned": 1.0,
+      "estimated": 1.0100000000000007,
+      "residual_rfu": 1.0000000000000568,
+      "recovery_pct": null,
+      "dilution_factor": 1,
+      "criterion_result": "calibration_only"
+    },
+    {
+      "kind": "calibration",
+      "source_qc_status": "pending",
+      "measurement_id": "cal3-prep1",
+      "assigned": 3.0,
+      "estimated": 2.9900000000000007,
+      "residual_rfu": -0.9999999999999432,
+      "recovery_pct": null,
+      "dilution_factor": 1,
+      "criterion_result": "calibration_only"
+    },
+    {
+      "kind": "calibration",
+      "source_qc_status": "pending",
+      "measurement_id": "cal3-prep2",
+      "assigned": 3.0,
+      "estimated": 3.0000000000000004,
+      "residual_rfu": 5.684341886080802e-14,
+      "recovery_pct": null,
+      "dilution_factor": 1,
+      "criterion_result": "calibration_only"
+    },
+    {
+      "kind": "calibration",
+      "source_qc_status": "pending",
+      "measurement_id": "cal3-prep3",
+      "assigned": 3.0,
+      "estimated": 3.0100000000000007,
+      "residual_rfu": 1.0000000000000568,
+      "recovery_pct": null,
+      "dilution_factor": 1,
+      "criterion_result": "calibration_only"
+    },
+    {
+      "kind": "calibration",
+      "source_qc_status": "pending",
+      "measurement_id": "cal6-prep1",
+      "assigned": 6.0,
+      "estimated": 5.99,
+      "residual_rfu": -1.0,
+      "recovery_pct": null,
+      "dilution_factor": 1,
+      "criterion_result": "calibration_only"
+    },
+    {
+      "kind": "calibration",
+      "source_qc_status": "pending",
+      "measurement_id": "cal6-prep2",
+      "assigned": 6.0,
+      "estimated": 6.0,
+      "residual_rfu": 0.0,
+      "recovery_pct": null,
+      "dilution_factor": 1,
+      "criterion_result": "calibration_only"
+    },
+    {
+      "kind": "calibration",
+      "source_qc_status": "pending",
+      "measurement_id": "cal6-prep3",
+      "assigned": 6.0,
+      "estimated": 6.01,
+      "residual_rfu": 1.0,
+      "recovery_pct": null,
+      "dilution_factor": 1,
+      "criterion_result": "calibration_only"
+    },
+    {
+      "kind": "withheld_check",
+      "source_qc_status": "pending",
+      "measurement_id": "check-d10-prep1-read1",
+      "assigned": 50.0,
+      "estimated": 49.900000000000006,
+      "residual_rfu": null,
+      "recovery_pct": 99.80000000000001,
+      "dilution_factor": 10.0,
+      "criterion_result": "within_limit"
+    },
+    {
+      "kind": "withheld_check",
+      "source_qc_status": "pending",
+      "measurement_id": "check-d10-prep1-read2",
+      "assigned": 50.0,
+      "estimated": 49.900000000000006,
+      "residual_rfu": null,
+      "recovery_pct": 99.80000000000001,
+      "dilution_factor": 10.0,
+      "criterion_result": "within_limit"
+    },
+    {
+      "kind": "withheld_check",
+      "source_qc_status": "pending",
+      "measurement_id": "check-d10-prep2-read1",
+      "assigned": 50.0,
+      "estimated": 50.10000000000001,
+      "residual_rfu": null,
+      "recovery_pct": 100.20000000000002,
+      "dilution_factor": 10.0,
+      "criterion_result": "within_limit"
+    },
+    {
+      "kind": "withheld_check",
+      "source_qc_status": "pending",
+      "measurement_id": "check-d10-prep2-read2",
+      "assigned": 50.0,
+      "estimated": 50.10000000000001,
+      "residual_rfu": null,
+      "recovery_pct": 100.20000000000002,
+      "dilution_factor": 10.0,
+      "criterion_result": "within_limit"
+    },
+    {
+      "kind": "withheld_check",
+      "source_qc_status": "pending",
+      "measurement_id": "check-d20-prep1-read1",
+      "assigned": 50.0,
+      "estimated": 49.80000000000001,
+      "residual_rfu": null,
+      "recovery_pct": 99.60000000000002,
+      "dilution_factor": 20.0,
+      "criterion_result": "within_limit"
+    },
+    {
+      "kind": "withheld_check",
+      "source_qc_status": "pending",
+      "measurement_id": "check-d20-prep1-read2",
+      "assigned": 50.0,
+      "estimated": 49.80000000000001,
+      "residual_rfu": null,
+      "recovery_pct": 99.60000000000002,
+      "dilution_factor": 20.0,
+      "criterion_result": "within_limit"
+    },
+    {
+      "kind": "withheld_check",
+      "source_qc_status": "pending",
+      "measurement_id": "check-d20-prep2-read1",
+      "assigned": 50.0,
+      "estimated": 50.20000000000002,
+      "residual_rfu": null,
+      "recovery_pct": 100.40000000000003,
+      "dilution_factor": 20.0,
+      "criterion_result": "within_limit"
+    },
+    {
+      "kind": "withheld_check",
+      "source_qc_status": "pending",
+      "measurement_id": "check-d20-prep2-read2",
+      "assigned": 50.0,
+      "estimated": 50.20000000000002,
+      "residual_rfu": null,
+      "recovery_pct": 100.40000000000003,
+      "dilution_factor": 20.0,
+      "criterion_result": "within_limit"
+    }
+  ],
+  "blank_drift": [
+    {
+      "source_qc_status": "pending",
+      "calibration_id": "curve1",
+      "first_rfu": 10.0,
+      "last_rfu": 11.0,
+      "drift_rfu": 1.0,
+      "reads": 2,
+      "criterion_result": "within_limit"
+    }
+  ],
+  "read_repeatability": [
+    {
+      "source_qc_status": "pending",
+      "preparation_id": "blankprep",
+      "standard_role": "blank",
+      "read_repeats": 2,
+      "mean_signal": 10.5,
+      "sd_signal": 0.7071067811865476,
+      "cv_pct": 6.734350297014738,
+      "criterion_result": "outside_limit"
+    },
+    {
+      "source_qc_status": "pending",
+      "preparation_id": "cal1-prep1",
+      "standard_role": "calibration_standard",
+      "read_repeats": 2,
+      "mean_signal": 109.0,
+      "sd_signal": 0.3535533905932738,
+      "cv_pct": 0.3243609088011686,
+      "criterion_result": "within_limit"
+    },
+    {
+      "source_qc_status": "pending",
+      "preparation_id": "cal1-prep2",
+      "standard_role": "calibration_standard",
+      "read_repeats": 2,
+      "mean_signal": 110.0,
+      "sd_signal": 0.3535533905932738,
+      "cv_pct": 0.32141217326661253,
+      "criterion_result": "within_limit"
+    },
+    {
+      "source_qc_status": "pending",
+      "preparation_id": "cal1-prep3",
+      "standard_role": "calibration_standard",
+      "read_repeats": 2,
+      "mean_signal": 111.0,
+      "sd_signal": 0.3535533905932738,
+      "cv_pct": 0.3185165681020484,
+      "criterion_result": "within_limit"
+    },
+    {
+      "source_qc_status": "pending",
+      "preparation_id": "cal3-prep1",
+      "standard_role": "calibration_standard",
+      "read_repeats": 2,
+      "mean_signal": 309.0,
+      "sd_signal": 0.3535533905932738,
+      "cv_pct": 0.11441857300753197,
+      "criterion_result": "within_limit"
+    },
+    {
+      "source_qc_status": "pending",
+      "preparation_id": "cal3-prep2",
+      "standard_role": "calibration_standard",
+      "read_repeats": 2,
+      "mean_signal": 310.0,
+      "sd_signal": 0.3535533905932738,
+      "cv_pct": 0.11404948083653993,
+      "criterion_result": "within_limit"
+    },
+    {
+      "source_qc_status": "pending",
+      "preparation_id": "cal3-prep3",
+      "standard_role": "calibration_standard",
+      "read_repeats": 2,
+      "mean_signal": 311.0,
+      "sd_signal": 0.3535533905932738,
+      "cv_pct": 0.11368276224864109,
+      "criterion_result": "within_limit"
+    },
+    {
+      "source_qc_status": "pending",
+      "preparation_id": "cal6-prep1",
+      "standard_role": "calibration_standard",
+      "read_repeats": 2,
+      "mean_signal": 609.0,
+      "sd_signal": 0.3535533905932738,
+      "cv_pct": 0.05805474393978223,
+      "criterion_result": "within_limit"
+    },
+    {
+      "source_qc_status": "pending",
+      "preparation_id": "cal6-prep2",
+      "standard_role": "calibration_standard",
+      "read_repeats": 2,
+      "mean_signal": 610.0,
+      "sd_signal": 0.3535533905932738,
+      "cv_pct": 0.05795957222840554,
+      "criterion_result": "within_limit"
+    },
+    {
+      "source_qc_status": "pending",
+      "preparation_id": "cal6-prep3",
+      "standard_role": "calibration_standard",
+      "read_repeats": 2,
+      "mean_signal": 611.0,
+      "sd_signal": 0.3535533905932738,
+      "cv_pct": 0.05786471204472566,
+      "criterion_result": "within_limit"
+    },
+    {
+      "source_qc_status": "pending",
+      "preparation_id": "check-d10-prep1",
+      "standard_role": "independent_check",
+      "read_repeats": 2,
+      "mean_signal": 509.0,
+      "sd_signal": 0.0,
+      "cv_pct": 0.0,
+      "criterion_result": "within_limit"
+    },
+    {
+      "source_qc_status": "pending",
+      "preparation_id": "check-d10-prep2",
+      "standard_role": "independent_check",
+      "read_repeats": 2,
+      "mean_signal": 511.0,
+      "sd_signal": 0.0,
+      "cv_pct": 0.0,
+      "criterion_result": "within_limit"
+    },
+    {
+      "source_qc_status": "pending",
+      "preparation_id": "check-d20-prep1",
+      "standard_role": "independent_check",
+      "read_repeats": 2,
+      "mean_signal": 259.0,
+      "sd_signal": 0.0,
+      "cv_pct": 0.0,
+      "criterion_result": "within_limit"
+    },
+    {
+      "source_qc_status": "pending",
+      "preparation_id": "check-d20-prep2",
+      "standard_role": "independent_check",
+      "read_repeats": 2,
+      "mean_signal": 261.0,
+      "sd_signal": 0.0,
+      "cv_pct": 0.0,
+      "criterion_result": "within_limit"
+    }
+  ],
+  "microscope_spans": [
+    {
+      "source_qc_status": "pending",
+      "measurement_id": "span1",
+      "axis": "x",
+      "position": "center",
+      "role": "calibration",
+      "known_um": 100,
+      "pixels": 2000.0,
+      "um_per_pixel": 0.05,
+      "reference_um_per_pixel": 0.05,
+      "check_error_pct": 0.0,
+      "criterion_result": "calibration_only"
+    },
+    {
+      "source_qc_status": "pending",
+      "measurement_id": "span2",
+      "axis": "y",
+      "position": "center",
+      "role": "calibration",
+      "known_um": 200,
+      "pixels": 4000.0,
+      "um_per_pixel": 0.05,
+      "reference_um_per_pixel": 0.05,
+      "check_error_pct": 0.0,
+      "criterion_result": "calibration_only"
+    },
+    {
+      "source_qc_status": "pending",
+      "measurement_id": "span3",
+      "axis": "x",
+      "position": "edge",
+      "role": "withheld_check",
+      "known_um": 100,
+      "pixels": 1990.0,
+      "um_per_pixel": 0.05025125628140704,
+      "reference_um_per_pixel": 0.05,
+      "check_error_pct": -0.5000000000000004,
+      "criterion_result": "within_limit"
+    },
+    {
+      "source_qc_status": "pending",
+      "measurement_id": "span4",
+      "axis": "y",
+      "position": "edge",
+      "role": "withheld_check",
+      "known_um": 100,
+      "pixels": 2010.0,
+      "um_per_pixel": 0.04975124378109453,
+      "reference_um_per_pixel": 0.05,
+      "check_error_pct": 0.49999999999998934,
+      "criterion_result": "within_limit"
+    }
+  ],
+  "preparation_repeatability": [
+    {
+      "source_qc_status": "pending",
+      "calibration_id": "curve1",
+      "standard_id": "blank",
+      "dilution_factor": 1.0,
+      "independent_preparations": 1,
+      "mean_signal": 10.5,
+      "sd_signal": null,
+      "cv_pct": null
+    },
+    {
+      "source_qc_status": "pending",
+      "calibration_id": "curve1",
+      "standard_id": "cal1",
+      "dilution_factor": 1.0,
+      "independent_preparations": 3,
+      "mean_signal": 110.0,
+      "sd_signal": 1.0,
+      "cv_pct": 0.9090909090909091
+    },
+    {
+      "source_qc_status": "pending",
+      "calibration_id": "curve1",
+      "standard_id": "cal3",
+      "dilution_factor": 1.0,
+      "independent_preparations": 3,
+      "mean_signal": 310.0,
+      "sd_signal": 1.0,
+      "cv_pct": 0.3225806451612903
+    },
+    {
+      "source_qc_status": "pending",
+      "calibration_id": "curve1",
+      "standard_id": "cal6",
+      "dilution_factor": 1.0,
+      "independent_preparations": 3,
+      "mean_signal": 610.0,
+      "sd_signal": 1.0,
+      "cv_pct": 0.16393442622950818
+    },
+    {
+      "source_qc_status": "pending",
+      "calibration_id": "curve1",
+      "standard_id": "check50",
+      "dilution_factor": 10.0,
+      "independent_preparations": 2,
+      "mean_signal": 510.0,
+      "sd_signal": 1.4142135623730951,
+      "cv_pct": 0.277296776935901
+    },
+    {
+      "source_qc_status": "pending",
+      "calibration_id": "curve1",
+      "standard_id": "check50",
+      "dilution_factor": 20.0,
+      "independent_preparations": 2,
+      "mean_signal": 260.0,
+      "sd_signal": 1.4142135623730951,
+      "cv_pct": 0.5439282932204212
+    }
+  ],
+  "excluded": [],
+  "interpretation": "Calculation checks only. Reference agreement, matrix transfer and instrument fitness require review.",
+  "input_hashes": {
+    "run.json": "0045b03a3be2dd4379c90ac1fb2715a9b3f768db91367e26b0caff943c97d66e",
+    "measurements.csv": "94404a7ab442d16f8624243662173f9607016dfec7492f017f2db84b1f724acd",
+    "analysis-plan.json": "22beff08d0430eab16c580626d1622147564f35e2c25a88aa79c1b4498ec4906"
+  }
+}

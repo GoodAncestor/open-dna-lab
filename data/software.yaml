@@ -11,7 +11,7 @@
 #   role:    what it does in this lab, in one line.
 
 meta:
-  updated: 2026-07-29
+  updated: 2026-09-06
 
 groups:
   - id: ours
@@ -69,8 +69,8 @@ groups:
         role: Device control, live basecalling, adaptive sampling.
         install: vendor
         note: >
-          Free ONT Community account required. Version 24.11.10 or later for
-          the Mk1D.
+          ONT account required. Check the current Mk1D host requirements and
+          record the installed version in the run record.
 
       - id: dorado
         name: Dorado
@@ -78,9 +78,9 @@ groups:
         role: Basecaller, including modified-base calling for methylation.
         install: see software/install-dorado.sh
         note: >
-          HAC runs in real time on modest hardware. SUP is roughly ten times
-          slower and is the mode that matters here, because super-accuracy plus
-          modified-base calling is what the epigenome work needs.
+          Record the complete canonical and modification model identifiers.
+          Benchmark the chosen configuration on available hardware. Retain POD5
+          for offline processing when live basecalling cannot keep pace.
 
       - id: modkit
         name: modkit
