@@ -1,24 +1,27 @@
 #!/usr/bin/env bash
-# publish.sh — build the Good Ancestor open lab site and deploy to Cloudflare Pages.
+# publish.sh — build the Good Ancestor open lab site and deploy it to the staging Worker.
 #
 # Adapted from GoodAncestor/seagrass. Same toolchain, same build_site.py dialect.
 #
 #   Usage:
 #     ./publish.sh build      # generate pages + render HTML into publish/  (no deploy)
-#     ./publish.sh deploy     # build, then deploy to the pages.dev staging URL
+#     ./publish.sh deploy     # build, then deploy to the staging Worker (openlab.ancestor.workers.dev)
 #     ./publish.sh            # same as build
 #
 #   Requirements:
 #     - python3 with pyyaml
-#     - wrangler (npm i -g wrangler)                        — only for `deploy`
-#     - env: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID    — only for `deploy`
+#     - wrangler (npm i -g wrangler), logged in to the goodancestor account
+#       (OAuth `wrangler login`, or CLOUDFLARE_API_TOKEN)   — only for `deploy`
 #
 #   Four of the five pages are generated from data/items.yaml on every build.
 #   They are never committed; editing site/_generated/ by hand does nothing.
 #
-#   STAGING ONLY. This script deploys to the pages.dev URL. The custom domain is
-#   production and is not configured here — binding it needs an explicit
-#   go-ahead, per the house rule inherited from the seagrass project.
+#   STAGING ONLY. This script deploys to the Workers static-assets Worker
+#   `openlab` (https://openlab.ancestor.workers.dev). It used to name a Pages
+#   project `openlab`, which no longer exists in the goodancestor account
+#   (openlab.pages.dev is a third party's site). Production is a DIFFERENT
+#   Worker, `open-dna-lab`, built by Workers Builds from `main` and bound to
+#   openlab.goodancestor.com; this script refuses to deploy to it.
 
 set -euo pipefail
 cd "$(dirname "$0")"
@@ -27,8 +30,8 @@ MODE="${1:-build}"
 SITE=site
 GEN=site/_generated
 PUB=publish
-PROJECT=openlab           # Cloudflare Pages project name
-BRANCH=main
+WORKER=openlab            # staging Worker (static assets). NOT open-dna-lab (production)
+PROD_WORKER=open-dna-lab
 
 # md source -> output html  (nav active-state key = output name)
 declare -a PAGES=(
@@ -75,9 +78,11 @@ if [ "$MODE" != "deploy" ]; then
   exit 0
 fi
 
-echo "==> deploy to Cloudflare Pages ($PROJECT) — STAGING"
-: "${CLOUDFLARE_API_TOKEN:?set CLOUDFLARE_API_TOKEN}"
-: "${CLOUDFLARE_ACCOUNT_ID:?set CLOUDFLARE_ACCOUNT_ID}"
-wrangler pages deploy "$PUB" --project-name "$PROJECT" --branch "$BRANCH" --commit-dirty=true
-echo "==> staging: https://${PROJECT}.pages.dev"
-echo "    Custom domain is NOT bound. That needs an explicit go-ahead."
+if [ "$WORKER" = "$PROD_WORKER" ]; then
+  echo "refusing: $PROD_WORKER is production (deploys only from main via Workers Builds)" >&2
+  exit 1
+fi
+echo "==> deploy to Worker $WORKER — STAGING"
+wrangler deploy --name "$WORKER" --assets "$PUB" --compatibility-date 2026-11-08
+echo "==> staging: https://${WORKER}.ancestor.workers.dev"
+echo "    openlab.goodancestor.com is production and only deploys from main."
