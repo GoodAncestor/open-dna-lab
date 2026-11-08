@@ -1,0 +1,7 @@
+source_qc_status,calibration_id,standard_id,dilution_factor,independent_preparations,mean_signal,sd_signal,cv_pct
+pending,curve1,blank,1.0,1,10.5,,
+pending,curve1,cal1,1.0,3,110.0,1.0,0.9090909090909091
+pending,curve1,cal3,1.0,3,310.0,1.0,0.3225806451612903
+pending,curve1,cal6,1.0,3,610.0,1.0,0.16393442622950818
+pending,curve1,check50,10.0,2,510.0,1.4142135623730951,0.277296776935901
+pending,curve1,check50,20.0,2,260.0,1.4142135623730951,0.5439282932204212

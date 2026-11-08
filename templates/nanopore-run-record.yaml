@@ -1,0 +1,126 @@
+# Blank human sequencing record. Complete only in private storage.
+# Null means unrecorded. Never infer a pass from an empty field.
+record_version: 1
+sample:
+  private_code: null
+  tissue: null
+  collection_method: null
+  collection_utc: null
+  tube_type: null
+  storage_history: []
+  freeze_thaw_count: null
+  extraction_utc: null
+run:
+  private_code: null
+  operator_code: null
+  purpose: null
+  coverage_objective: null
+  readiness_decision: pending
+  decision_reason: null
+  decision_utc: null
+protocols:
+  extraction: {title: null, revision: null, url: null, archived_file: null, sha256: null}
+  library: {title: null, revision: null, url: null, archived_file: null, sha256: null}
+  input_qc: {title: null, revision: null, url: null, archived_file: null, sha256: null}
+  fluorometric_assay: {title: null, revision: null, url: null, archived_file: null, sha256: null}
+  device: {title: null, revision: null, url: null, archived_file: null, sha256: null}
+reagents:
+  extraction: {kit: null, catalog_number: null, lot: null, expiry: null, storage_check: null}
+  library: {kit: null, catalog_number: null, lot: null, expiry: null, storage_check: null}
+  companion: {kit: null, catalog_number: null, lot: null, expiry: null, storage_check: null}
+  additional_lots_and_storage: []
+instrument_checks:
+  pipette_records: []
+  temperature_records: []
+  magnetic_rack_record: null
+  fluorometer_comparison_record: null
+  reference_fluorometer: null
+  reference_spectrophotometer: null
+  fragment_sizing_method: null
+  hardware_check_report: null
+  control_run_record: null
+extraction_qc:
+  concentration_ng_per_ul: null
+  concentration_replicates_ng_per_ul: []
+  assay_and_instrument: null
+  dilution_factor: null
+  eluate_volume_ul: null
+  dna_mass_ng: null
+  a260_a280: null
+  a260_a230: null
+  uv_spectrum_file: null
+  fragment_size_file: null
+  decision: pending
+  decision_reason: null
+library_qc:
+  input_mass_ng: null
+  input_volume_ul: null
+  after_end_prep_mass_ng: null
+  prepared_concentration_ng_per_ul: null
+  prepared_volume_ul: null
+  loaded_mass_ng: null
+  loaded_volume_ul: null
+  remaining_library_storage: null
+  raw_measurement_files: []
+  decision: pending
+  decision_reason: null
+acquisition:
+  device_model: null
+  device_id: null
+  flow_cell_type: null
+  flow_cell_id: null
+  flow_cell_storage_history: null
+  flow_cell_check_utc: null
+  active_pores_before_loading: null
+  flow_cell_check_report: null
+  minknow_version: null
+  adaptive_sampling_enabled: false
+  run_configuration_file: null
+  start_utc: null
+  stop_utc: null
+  events: []
+  pod5_directory: null
+  raw_manifest_sha256: null
+  backup_location: null
+  backup_verified_utc: null
+  run_report: null
+analysis:
+  dna_report_version_or_commit: null
+  basecaller_version: null
+  canonical_model: null
+  modification_model: null
+  caller_version: null
+  caller_model: null
+  modkit_version: null
+  reference_build: null
+  reference_fasta_sha256: null
+  contig_naming: null
+  configuration_file: null
+  source_manifest_file: null
+  source_manifest_sha256: null
+  aligned_modbam_file: null
+  variants_file: null
+  cpg_bedmethyl_file: null
+  report_file: null
+  artifact_hash_manifest: null
+  mapped_bases: null
+  coverage_summary_file: null
+  callable_regions_file: null
+  methylation_coverage_file: null
+  missing_loci_summary: null
+  array_trained_clocks_enabled: false
+  validation_dataset_and_result: null
+  decision: pending
+  decision_reason: null
+costs:
+  currency: null
+  actual_consumables: []
+  repeat_costs: []
+  total: null
+adaptations: [] # proposal, reason, departure, evidence, test, outcome, limitation
+deviations: []
+limitations: []
+public_release:
+  approved_material: []
+  review_utc: null
+  reviewer_code: null

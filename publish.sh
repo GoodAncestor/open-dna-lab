@@ -38,6 +38,7 @@ declare -a PAGES=(
   "$GEN/software.md:software.html"
   "$GEN/open-questions.md:open-questions.html"
   "$SITE/sequencing-protocol.md:protocol.html"
+  "$SITE/adapted-methods.md:adaptations.html"
   "$SITE/colorimetry-protocol.md:colorimetry.html"
 )
 
@@ -64,7 +65,7 @@ done
 
 echo "==> copy hardware downloads"
 mkdir -p "$PUB/downloads"
-for f in hardware/*.scad hardware/*.stl; do
+for f in hardware/*.scad hardware/*.stl templates/*.md templates/*.yaml templates/*.csv; do
   [ -e "$f" ] && cp "$f" "$PUB/downloads/"
 done
 echo "   downloads/ has $(ls "$PUB/downloads" | wc -l | tr -d ' ') files"

@@ -1,0 +1,109 @@
+{
+  "record_version": 1,
+  "run_id": "FICTIONAL-001",
+  "purpose": "Fictional software validation only",
+  "sample_id": null,
+  "event_id": null,
+  "operator": "fictional",
+  "timestamps": {
+    "start": "2026-09-18T09:00:00+00:00",
+    "end": "2026-09-18T12:00:00+00:00"
+  },
+  "protocol_id": "FICTIONAL-STANDARDS",
+  "protocol_version": "1",
+  "instruments": [
+    {
+      "instrument_id": "fluorometer",
+      "configuration_id": "optics1",
+      "configuration": {
+        "LED": "fictional",
+        "gain": 1
+      }
+    },
+    {
+      "instrument_id": "microscope",
+      "configuration_id": "objective1",
+      "configuration": {
+        "objective": "fictional",
+        "camera": "fictional"
+      }
+    }
+  ],
+  "standards": [
+    {
+      "standard_id": "blank",
+      "role": "blank",
+      "matrix": "buffer",
+      "assigned_value": 0,
+      "unit": "ng/uL",
+      "stock_id": "reagent",
+      "independent_of_calibration_stock": false
+    },
+    {
+      "standard_id": "cal1",
+      "role": "calibration_standard",
+      "matrix": "buffer",
+      "assigned_value": 1,
+      "unit": "ng/uL",
+      "stock_id": "cal-stock",
+      "independent_of_calibration_stock": false
+    },
+    {
+      "standard_id": "cal3",
+      "role": "calibration_standard",
+      "matrix": "buffer",
+      "assigned_value": 3,
+      "unit": "ng/uL",
+      "stock_id": "cal-stock",
+      "independent_of_calibration_stock": false
+    },
+    {
+      "standard_id": "cal6",
+      "role": "calibration_standard",
+      "matrix": "buffer",
+      "assigned_value": 6,
+      "unit": "ng/uL",
+      "stock_id": "cal-stock",
+      "independent_of_calibration_stock": false
+    },
+    {
+      "standard_id": "check50",
+      "role": "independent_check",
+      "matrix": "buffer",
+      "assigned_value": 50,
+      "unit": "ng/uL",
+      "stock_id": "check-stock",
+      "independent_of_calibration_stock": true
+    }
+  ],
+  "acceptance_criteria": [
+    {
+      "criterion_id": "limits1",
+      "measurement": "fictional_session_checks",
+      "limit": {
+        "blank_drift_max_rfu": 2,
+        "check_recovery_min_pct": 90,
+        "check_recovery_max_pct": 110,
+        "repeatability_max_cv_pct": 5,
+        "scale_error_max_pct": 2
+      },
+      "unit": "see named limit units",
+      "rationale_or_source": "Fictional software test limits; not acceptance for a physical assay",
+      "declared_at": "2026-09-17T09:00:00+00:00"
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "raw1",
+      "artifact": "raw/readings.txt",
+      "checksum": "sha256:7c9f70f06c26b5fd92325c73273da2b50940411b87c5f0ed9aaca3fef2510bc5",
+      "role": "fictional_raw_readings"
+    }
+  ],
+  "qc": {
+    "status": "pending",
+    "limitations": [
+      "No real instrument measurement"
+    ]
+  }
+}

@@ -6,7 +6,7 @@ Everything here is free. Install it while hardware ships.
 
 | Tool | Purpose | Install |
 |---|---|---|
-| MinKNOW | Drives the flow cell, real-time basecalling, adaptive sampling | Vendor download, requires a free ONT Community account. 24.11.10 or later for Mk1D. |
+| MinKNOW | Drives the flow cell, real-time basecalling, adaptive sampling | Vendor download, requires a free ONT Community account. Use the currently supported release for the Mk1D host. |
 | Dorado | Basecalling and modified-base calling | `github.com/nanoporetech/dorado` |
 | Readfish | Open adaptive sampling | `github.com/LooseLab/readfish` |
 | minimap2 | Alignment | `conda install -c bioconda minimap2` |
@@ -14,36 +14,13 @@ Everything here is free. Install it while hardware ships.
 | mosdepth | Per-target coverage | `conda install -c bioconda mosdepth` |
 | EPI2ME | Vendor analysis workflows, local or cloud | Vendor download |
 
-### Basecalling
+### Native genome and methylome integration
 
-HAC runs in real time on modest hardware. SUP is roughly 10x slower and is the
-mode that matters here, because super-accuracy plus modified-base calling is
-what the epigenome work needs.
+Use the [analysis handoff](../templates/nanopore-analysis.md) with the [preparation protocol](../site/sequencing-protocol.md). Record the exact software, model, and reference versions for each run.
 
-```bash
-# whole run, SUP with CpG methylation
-dorado basecaller \
-  -x auto \
-  --modified-bases 5mCG_5hmCG \
-  models/dna_r10.4.1_e8.2_400bps_sup@v5.2.0 \
-  runs/<date>/pod5/ > reads.sup.bam
-```
+Dorado basecalling must retain modification tags in BAM. Alignment must preserve those tags. The previous minimap2 example incorrectly supplied BAM as sequence input. The integration performs the supported alignment path and checks its output.
 
-```bash
-# align, sort, index, coverage
-minimap2 -ax map-ont --MD ref/GRCh38.fa reads.sup.bam \
-  | samtools sort -o aligned.bam -
-samtools index aligned.bam
-samtools flagstat aligned.bam
-mosdepth --by panels/<panel>.bed cov aligned.bam
-```
-
-Keep POD5. Storage runs about 7 GB per gigabase, so a 30 Gb run is roughly
-210 GB. Re-basecalling archived signal against improved Dorado modification
-models is a recurring gain, and most labs give it up because they cannot
-afford the storage. Capacity here is not a constraint.
-
-Outputs go to `colbyt/genomics`, never to this repo.
+Retain POD5 and verify a second private copy. Record actual storage use and allow space for analysis work files. Human sample inputs, alignments, variants, methylation, and reports remain outside this public repository.
 
 ## Instrument control
 

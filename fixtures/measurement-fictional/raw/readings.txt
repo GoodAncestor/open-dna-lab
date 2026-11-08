@@ -1,0 +1,3 @@
+FICTIONAL readings generated for software validation. No physical measurement.
+Fluorescence model: RFU = 10 + 100 * assay concentration, with stated small offsets.
+Microscope spans are fictional pixel distances.

@@ -1,0 +1,84 @@
+# Blank shared record for an instrument session, sequencing run, or collection.
+# Store completed human-sample records privately. Null means unrecorded, never zero.
+# Field definitions and links: openlab-record-guide.md
+record_version: 1
+run_id: null
+purpose: null
+sample_id: null
+event_id: null
+operator: null
+timestamps:
+  start: null # ISO 8601 with timezone
+  end: null
+protocol_id: null
+protocol_version: null
+protocols:
+  - protocol_id: null
+    protocol_version: null
+    source_url: null
+    artifact: null
+    checksum: null # sha256:<hex>
+instruments:
+  - instrument_id: null
+    configuration_id: null
+    configuration:
+      model: null
+      hardware_revision: null
+      firmware_or_server_version: null
+      optics: {} # LED, detector geometry, filters, objective, camera, path length
+      settings: {} # gain, integration, exposure, image dimensions, etc.
+      configuration_photo_artifact: null
+standards:
+  - standard_id: null
+    role: null # blank, calibration_standard, independent_check
+    product: null
+    catalog_number: null
+    lot: null
+    expiry: null
+    matrix: null
+    assigned_value: null
+    unit: null
+    uncertainty: null
+    stock_id: null
+    independent_of_calibration_stock: null
+    preparation_artifact: null
+    assay_volume_ul: null
+    sample_aliquot_ul: null
+acceptance_criteria:
+  - criterion_id: null
+    measurement: null
+    limit: null
+    unit: null
+    rationale_or_source: null
+    declared_at: null
+measurements_artifact: null # openlab-measurements.csv; one observation per row
+adaptations:
+  - adaptation_id: null
+    reference_method: null
+    exact_change: null
+    access_or_cost_reason: null
+    expected_benefit: null
+    possible_failure: null
+    criterion_id: null
+    evidence_artifacts: []
+    outcome: null
+    limitation: null
+    decision: pending # keep, revise, retest, pending
+qc:
+  status: pending # pass, fail, limited, pending, not_applicable
+  evidence_artifacts: []
+  supported_range: null
+  supported_matrices: []
+  limitations: []
+  next_action: null
+  reviewer: null
+  reviewed_at: null
+artifacts:
+  - artifact_id: null
+    artifact: null # original file path or stable URI
+    checksum: null # sha256:<hex>, of the original file bytes
+    role: null # raw_readings, image, calibration, protocol, manifest, report
+    generated_at: null
+    derived_from: [] # artifact IDs
+report: null # artifact ID of the session report
+related_records: [] # private sequencing record or linked collection records

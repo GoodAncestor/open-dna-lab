@@ -1,0 +1,126 @@
+{
+  "source_kind": "fictional",
+  "run_id": "FICTIONAL-001",
+  "declared_at": "2026-09-17T09:00:00+00:00",
+  "preparations": {
+    "blankprep": {
+      "pre_dilution": 1,
+      "assay_volume_ul": 200,
+      "sample_aliquot_ul": 200
+    },
+    "cal1-prep1": {
+      "pre_dilution": 1,
+      "assay_volume_ul": 200,
+      "sample_aliquot_ul": 200
+    },
+    "cal1-prep2": {
+      "pre_dilution": 1,
+      "assay_volume_ul": 200,
+      "sample_aliquot_ul": 200
+    },
+    "cal1-prep3": {
+      "pre_dilution": 1,
+      "assay_volume_ul": 200,
+      "sample_aliquot_ul": 200
+    },
+    "cal3-prep1": {
+      "pre_dilution": 1,
+      "assay_volume_ul": 200,
+      "sample_aliquot_ul": 200
+    },
+    "cal3-prep2": {
+      "pre_dilution": 1,
+      "assay_volume_ul": 200,
+      "sample_aliquot_ul": 200
+    },
+    "cal3-prep3": {
+      "pre_dilution": 1,
+      "assay_volume_ul": 200,
+      "sample_aliquot_ul": 200
+    },
+    "cal6-prep1": {
+      "pre_dilution": 1,
+      "assay_volume_ul": 200,
+      "sample_aliquot_ul": 200
+    },
+    "cal6-prep2": {
+      "pre_dilution": 1,
+      "assay_volume_ul": 200,
+      "sample_aliquot_ul": 200
+    },
+    "cal6-prep3": {
+      "pre_dilution": 1,
+      "assay_volume_ul": 200,
+      "sample_aliquot_ul": 200
+    },
+    "check-d10-prep1": {
+      "pre_dilution": 1,
+      "assay_volume_ul": 200,
+      "sample_aliquot_ul": 20.0
+    },
+    "check-d10-prep2": {
+      "pre_dilution": 1,
+      "assay_volume_ul": 200,
+      "sample_aliquot_ul": 20.0
+    },
+    "check-d20-prep1": {
+      "pre_dilution": 1,
+      "assay_volume_ul": 200,
+      "sample_aliquot_ul": 10.0
+    },
+    "check-d20-prep2": {
+      "pre_dilution": 1,
+      "assay_volume_ul": 200,
+      "sample_aliquot_ul": 10.0
+    }
+  },
+  "sample_events": {},
+  "calibrations": {
+    "curve1": {
+      "concentration_unit": "ng/uL",
+      "criterion_id": "limits1",
+      "instrument_id": "fluorometer",
+      "configuration_id": "optics1",
+      "matrix": "buffer",
+      "blank_drift_max_rfu": 2,
+      "check_recovery_min_pct": 90,
+      "check_recovery_max_pct": 110,
+      "repeatability_max_cv_pct": 5,
+      "scale_error_max_pct": 2
+    }
+  },
+  "scale_spans": [
+    {
+      "measurement_id": "span1",
+      "known_um": 100,
+      "axis": "x",
+      "position": "center",
+      "role": "calibration",
+      "calibration_id": "curve1"
+    },
+    {
+      "measurement_id": "span2",
+      "known_um": 200,
+      "axis": "y",
+      "position": "center",
+      "role": "calibration",
+      "calibration_id": "curve1"
+    },
+    {
+      "measurement_id": "span3",
+      "known_um": 100,
+      "axis": "x",
+      "position": "edge",
+      "role": "withheld_check",
+      "calibration_id": "curve1"
+    },
+    {
+      "measurement_id": "span4",
+      "known_um": 100,
+      "axis": "y",
+      "position": "edge",
+      "role": "withheld_check",
+      "calibration_id": "curve1"
+    }
+  ]
+}
