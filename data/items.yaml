@@ -532,6 +532,7 @@ qc:
     variant: trial size, 200 assays
     price: 89
     confidence: verified
+    source: "Fisher Scientific 200-assay trial, $88.74 (quoted in 147d9dc); Biotium direct lists 31028-T at $87, checked 2026-11-08 at https://biotium.com/product/accuclear-ultra-high-sensitivity-dsdna-quantitation-kit/"
     priority: high
     storage: 2-8 C — belongs in the fridge with the flow cells, not the freezer.
     not_available_from_neb: >
@@ -562,7 +563,7 @@ qc:
     options:
       - {source: "Fisher Scientific, 200-assay trial", price: 88.74, confidence: verified}
       - {source: "Fisher Scientific, 1000-assay, part 31028", price: 370.26, confidence: verified, note: "Only this size carries the 7-standard set."}
-      - {source: "Biotium direct, biotium.com", confidence: verified}
+      - {source: "Biotium direct, https://biotium.com/product/accuclear-ultra-high-sensitivity-dsdna-quantitation-kit/", price: 87, confidence: verified, note: "Checked 2026-11-08."}
     notes: >
       Ex/Em 468/507 nm, linear 0.03-250 ng, store 2-8 C, 20X buffer concentrate.
       468 nm excitation matches the owned 470 nm LED board.
@@ -1012,7 +1013,10 @@ gaps:
     part: '022431021'
     pack: 250 (5 x 50)
     price: 55
-    confidence: verified
+    confidence: estimated
+    price_note: >
+      Midpoint of two quotes recorded in 4c41747 (pipettes.com case of 250,
+      $53.30; USA Scientific, $60.43). Owned, so not re-quoted.
     owned: >
       OWNED — Colby 2026-09-08: the Eppendorf 1.5 mL tubes are already on the
       bench and this does not belong on the buy list. Priority removed.
